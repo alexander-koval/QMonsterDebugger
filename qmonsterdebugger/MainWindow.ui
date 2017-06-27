@@ -19,14 +19,34 @@
   <property name="windowTitle">
    <string>Monster Debugger</string>
   </property>
-  <widget class="QTabBar" name="centralWidget"/>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QTabBar" name="tabBar" native="true">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1200</width>
+      <height>800</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>600</width>
+      <height>400</height>
+     </size>
+    </property>
+   </widget>
+  </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>1200</width>
-     <height>18</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 
+#include <memory>
 #include <QMainWindow>
 
 namespace Ui {
@@ -16,7 +17,10 @@ public:
     ~MainWindow();
 
 private:
-    Ui::MainWindow *ui;
+    using MainWindowPtr = std::unique_ptr<Ui::MainWindow>;
+
+    MainWindowPtr mainView;
+
 };
 
 #endif // MAINWINDOW_HPP

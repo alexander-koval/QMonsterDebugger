@@ -3,13 +3,19 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    mainView(std::make_unique<Ui::MainWindow>())
 {
-    ui->setupUi(this);
-    ui->centralWidget->addTab("Home");
+    mainView->setupUi(this);
+    QTabBar* tabBar = mainView->tabBar;
+    QWidget* tabView = new QWidget(tabBar);
+//    tabView->setStyleSheet("background-color:black;");
+    tabBar->setObjectName(QStringLiteral("tabBar"));
+    tabBar->setGeometry(QRect(0, 0, 1200, 800));
+//    tabBar->setStyleSheet("QTabBar::tab { height: 30px; width: 100px; }");
+    tabBar->addTab("Home");
+    tabBar->setExpanding(false);
 }
 
-MainWindow::~MainWindow()
-{
-    delete ui;
+MainWindow::~MainWindow() {
+
 }
