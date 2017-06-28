@@ -20,7 +20,7 @@
    <string>Monster Debugger</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QTabBar" name="tabBar" native="true">
+   <widget class="MonsterTabWidget" name="tabBar" native="true">
     <property name="enabled">
      <bool>true</bool>
     </property>
@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>1200</width>
-     <height>22</height>
+     <height>18</height>
     </rect>
    </property>
   </widget>
@@ -55,9 +55,9 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>QTabBar</class>
+   <class>MonsterTabWidget</class>
    <extends>QWidget</extends>
-   <header>QTabBar.hpp</header>
+   <header>MonsterTabWidget.hpp</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
