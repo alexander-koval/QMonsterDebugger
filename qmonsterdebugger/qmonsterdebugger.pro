@@ -15,9 +15,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         MainWindow.cpp \
-    MonsterTabWidget.cpp
+    MonsterTabWidget.cpp \
+    DebuggerInfo.cpp
 
 HEADERS  += MainWindow.hpp \
-    MonsterTabWidget.hpp
+    MonsterTabWidget.hpp \
+    DebuggerInfo.hpp
 
 FORMS    += MainWindow.ui

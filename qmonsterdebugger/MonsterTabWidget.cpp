@@ -19,7 +19,7 @@ MonsterTabWidget::MonsterTabWidget(QWidget* parent /*= nullptr*/)
 //    m_tabBar->setGeometry(geom);
     m_tabBar->setMinimumSize(minimumSize());
     m_tabBar->setExpanding(false);
-//    m_tabBar->setDrawBase(false);
+    m_tabBar->setDrawBase(false);
 //    m_stack->setVisible(false);
 //    const QRect& barGeom = m_tabBar->geometry();
     m_stack->setObjectName(QStringLiteral("stack"));
@@ -33,8 +33,8 @@ MonsterTabWidget::MonsterTabWidget(QWidget* parent /*= nullptr*/)
     layout->addWidget(m_stack);
     setLayout(layout);
 
-    connect(m_tabBar, &QTabBar::tabBarClicked, this,
-            &MonsterTabWidget::onTabClicked);
+    connect(m_tabBar, &QTabBar::currentChanged, this,
+            &MonsterTabWidget::onCurrentChanged);
 }
 
 MonsterTabWidget::~MonsterTabWidget() {
@@ -86,7 +86,7 @@ void MonsterTabWidget::relayout() {
 //    }
 }
 
-void MonsterTabWidget::onTabClicked(int index) {
+void MonsterTabWidget::onCurrentChanged(int index) {
     qDebug("index %d", index);
     m_stack->setCurrentIndex(index);
 }

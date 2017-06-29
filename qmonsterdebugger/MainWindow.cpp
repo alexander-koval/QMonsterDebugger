@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_mainView->setupUi(this);
     MonsterTabWidget* tabBar = m_mainView->tabBar;
     QWidget* tabView = new QWidget(tabBar);
-    tabView->setStyleSheet("background-color: red;");
+//    tabView->setStyleSheet("background-color: red;");
 //    tabView->setStyleSheet("background-color:black;");
     tabBar->setObjectName(QStringLiteral("tabBar"));    
 //    tabBar->setStyleSheet("QTabBar::tab { height: 30px; width: 100px; }");

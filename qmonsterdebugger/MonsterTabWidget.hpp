@@ -25,9 +25,7 @@ public:
     void relayout();
 
 public slots:
-    void onTabClicked(int index);
-
-private:
+    void onCurrentChanged(int index);
 
 private:
     QStackedWidget* m_stack;
