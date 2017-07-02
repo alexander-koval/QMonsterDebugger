@@ -16,10 +16,15 @@ TEMPLATE = app
 SOURCES += main.cpp\
         MainWindow.cpp \
     MonsterTabWidget.cpp \
-    DebuggerInfo.cpp
+    DebuggerInfo.cpp \
+    panels/traceitem.cpp \
+    panels/tracemodel.cpp
 
 HEADERS  += MainWindow.hpp \
     MonsterTabWidget.hpp \
-    DebuggerInfo.hpp
+    DebuggerInfo.hpp \
+    panels/traceitem.h \
+    panels/tracemodel.h
 
-FORMS    += MainWindow.ui
+FORMS    += MainWindow.ui \
+    traceview.ui

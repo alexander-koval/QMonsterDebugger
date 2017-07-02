@@ -6,6 +6,7 @@
 
 namespace Ui {
 class MainWindow;
+class TraceView;
 }
 
 class MainWindow : public QMainWindow
@@ -24,7 +25,7 @@ private:
 
 private:
     using MainWindowPtr = std::unique_ptr<Ui::MainWindow>;
-
+    using TraceViewPtr  = std::unique_ptr<Ui::TraceView>;
     MainWindowPtr m_mainView;
 };
 
