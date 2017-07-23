@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     MonsterTabWidget* tabBar = m_mainView->tabBar;
     QWidget* tabView = new QWidget(tabBar);
 
-    TraceModel* model = new TraceModel(this);
+    TraceModel* traceModel = new TraceModel(this);
 //    QStringListModel* model = new QStringListModel(this);
     TraceViewPtr traceView(std::make_unique<Ui::TraceView>());
     traceView->setupUi(this);
@@ -23,27 +23,27 @@ MainWindow::MainWindow(QWidget *parent) :
 //    QStringList headerLabels;
 //    headerLabels << "Title" << "Director" << "Year" << "Counter" << "Rating";
 
-    tableView->setModel(model);
+    tableView->setModel(traceModel);
     QList<TraceItem*> items;
     TraceItem *item = new TraceItem();
     item->line = 0;
-    items << item;
-    model->insertRow(model->rowCount());
-    model->insertColumn(model->columnCount());
-    model->insertRow(model->rowCount());
-    model->insertColumn(model->columnCount());
-    model->insertRow(model->rowCount());
-    model->insertColumn(model->columnCount());
-    model->insertRow(model->rowCount());
-    model->insertColumn(model->columnCount());
-    model->setData(model->index(model->rowCount() - 1, 0), QVariant(2));
-    model->setData(model->index(model->rowCount() - 1, 1), QVariant(2));
-    model->setData(model->index(model->rowCount() - 1, 0), QVariant(2));
-    model->setData(model->index(model->rowCount() - 1, 1), QVariant(2));
-    model->setData(model->index(model->rowCount() - 1, 0), QVariant(2));
-    model->setData(model->index(model->rowCount() - 1, 1), QVariant(2));
-    model->setData(model->index(model->rowCount() - 1, 0), QVariant(2));
-    model->setData(model->index(model->rowCount() - 1, 1), QVariant(2));
+//    items << item;
+    traceModel->insertRow(traceModel->rowCount());
+    traceModel->insertColumn(traceModel->columnCount());
+    traceModel->insertRow(traceModel->rowCount());
+    traceModel->insertColumn(traceModel->columnCount());
+    traceModel->insertRow(traceModel->rowCount());
+    traceModel->insertColumn(traceModel->columnCount());
+    traceModel->insertRow(traceModel->rowCount());
+    traceModel->insertColumn(traceModel->columnCount());
+    traceModel->setData(traceModel->index(traceModel->rowCount() - 1, 0), QVariant(2));
+    traceModel->setData(traceModel->index(traceModel->rowCount() - 1, 1), QVariant(2));
+    traceModel->setData(traceModel->index(traceModel->rowCount() - 1, 0), QVariant(2));
+    traceModel->setData(traceModel->index(traceModel->rowCount() - 1, 1), QVariant(2));
+    traceModel->setData(traceModel->index(traceModel->rowCount() - 1, 0), QVariant(2));
+    traceModel->setData(traceModel->index(traceModel->rowCount() - 1, 1), QVariant(2));
+    traceModel->setData(traceModel->index(traceModel->rowCount() - 1, 0), QVariant(2));
+    traceModel->setData(traceModel->index(traceModel->rowCount() - 1, 1), QVariant(2));
 
 //    tabView->setStyleSheet("background-color: red;");
 //    tabView->setStyleSheet("background-color:black;");

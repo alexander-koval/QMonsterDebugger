@@ -7,14 +7,15 @@
 struct TraceItem
 {
 public:
-    enum Names {Line, Time, Memory, Target, Label, Person, Count};
+    enum Names {Line, Time, Target, Message, Label, Person, Memory, Count};
     explicit TraceItem();
 
     quint64 line;
     QString time;
-    QString memory;
     QString target;
+    QString message;
     QString label;
+    QString memory;
     QString person;
 };
 

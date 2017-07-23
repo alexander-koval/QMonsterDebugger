@@ -27,10 +27,11 @@ QVariant TraceModel::data(const QModelIndex &index, int role) const {
             switch (index.column()) {
             case TraceItem::Line: return item.line;
             case TraceItem::Time: return item.time;
-            case TraceItem::Memory: return item.memory;
             case TraceItem::Target: return item.target;
+            case TraceItem::Message: return item.message;
             case TraceItem::Label: return item.label;
             case TraceItem::Person: return item.person;
+            case TraceItem::Memory: return item.memory;
             default: Q_ASSERT(false);
         }
     }
@@ -42,12 +43,13 @@ QVariant TraceModel::headerData(int section, Qt::Orientation orientation, int ro
             return QVariant();
     if (orientation == Qt::Horizontal) {
         switch (section) {
-        case TraceItem::Line: return tr("Line");
+        case TraceItem::Line: return tr("#");
         case TraceItem::Time: return tr("Time");
-        case TraceItem::Memory: return tr("Memory");
         case TraceItem::Target: return tr("Target");
+        case TraceItem::Message: return tr("Message");
         case TraceItem::Label: return tr("Label");
         case TraceItem::Person: return tr("Person");
+        case TraceItem::Memory: return tr("Memory");
         default: Q_ASSERT(false);
         }
     }
@@ -76,10 +78,11 @@ bool TraceModel::setData(const QModelIndex &index, const QVariant &value, int ro
             break;
         }
         case TraceItem::Time: item.time = value.toString(); break;
-        case TraceItem::Memory: item.memory = value.toString(); break;
         case TraceItem::Target: item.target = value.toString(); break;
+        case TraceItem::Message: item.message = value.toString(); break;
         case TraceItem::Label: item.label = value.toString(); break;
         case TraceItem::Person: item.person = value.toString(); break;
+        case TraceItem::Memory: item.memory = value.toString(); break;
         default: Q_ASSERT(false);
         }
         emit dataChanged(index, index);
