@@ -19,17 +19,23 @@ SOURCES += main.cpp\
     DebuggerInfo.cpp \
     panels/traceitem.cpp \
     panels/tracemodel.cpp \
-    debugger/sessions/sessions.cpp \
-    debugger/monsterserver.cpp
+    streaming/sessions/sessions.cpp \
+    streaming/monsterserver.cpp \
+    streaming/socket/socketapplication.cpp \
+    streaming/applicationstreamer.cpp \
+    streaming/sessions/session.cpp
 
 HEADERS  += MainWindow.hpp \
     MonsterTabWidget.hpp \
     DebuggerInfo.hpp \
     panels/traceitem.h \
     panels/tracemodel.h \
-    debugger/sessions/sessions.h \
-    debugger/sessions/session.h \
-    debugger/monsterserver.h
+    streaming/sessions/sessions.h \
+    streaming/sessions/session.h \
+    streaming/monsterserver.h \
+    streaming/debuggable.h \
+    streaming/socket/socketapplication.h \
+    streaming/applicationstreamer.h
 
 FORMS    += MainWindow.ui \
     traceview.ui

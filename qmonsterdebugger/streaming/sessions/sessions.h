@@ -16,7 +16,7 @@ public:
     Sessions() : m_sessions() {}
 
     void add(const SessionPtr& session) {
-//        m_sessions.insert(std::make_pair(session))
+        m_sessions.insert(std::make_pair(session))
     }
 
     void remove(const SessionPtr& session);
