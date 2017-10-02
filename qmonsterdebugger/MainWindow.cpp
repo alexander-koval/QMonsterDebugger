@@ -1,61 +1,49 @@
 #include "MainWindow.hpp"
 #include "ui_MainWindow.h"
-#include "ui_traceview.h"
-#include "panels/tracemodel.h"
-#include <QStringListModel>
+#include "panels/traceview.h"
+#include "panels/streamview.h"
 #include <QResizeEvent>
+#include <QAction>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    m_mainView(std::make_unique<Ui::MainWindow>())
+    m_mainView(std::make_unique<Ui::MainWindow>()),
+    m_traceView(std::make_unique<TraceView>(this)),
+    m_streamView(std::make_unique<StreamView>(this))
 {
     m_mainView->setupUi(this);
 
     MonsterTabWidget* tabBar = m_mainView->tabBar;
     QWidget* tabView = new QWidget(tabBar);
-
-    TraceModel* traceModel = new TraceModel(this);
-//    QStringListModel* model = new QStringListModel(this);
-    TraceViewPtr traceView(std::make_unique<Ui::TraceView>());
-    traceView->setupUi(this);
-    QTableView* tableView = traceView->tableView;
-    tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-//    QStringList headerLabels;
-//    headerLabels << "Title" << "Director" << "Year" << "Counter" << "Rating";
-
-    tableView->setModel(traceModel);
-    QList<TraceItem*> items;
-    TraceItem *item = new TraceItem();
-    item->line = 0;
-//    items << item;
-    traceModel->insertRow(traceModel->rowCount());
-    traceModel->insertColumn(traceModel->columnCount());
-    traceModel->insertRow(traceModel->rowCount());
-    traceModel->insertColumn(traceModel->columnCount());
-    traceModel->insertRow(traceModel->rowCount());
-    traceModel->insertColumn(traceModel->columnCount());
-    traceModel->insertRow(traceModel->rowCount());
-    traceModel->insertColumn(traceModel->columnCount());
-    traceModel->setData(traceModel->index(traceModel->rowCount() - 1, 0), QVariant(2));
-    traceModel->setData(traceModel->index(traceModel->rowCount() - 1, 1), QVariant(2));
-    traceModel->setData(traceModel->index(traceModel->rowCount() - 1, 0), QVariant(2));
-    traceModel->setData(traceModel->index(traceModel->rowCount() - 1, 1), QVariant(2));
-    traceModel->setData(traceModel->index(traceModel->rowCount() - 1, 0), QVariant(2));
-    traceModel->setData(traceModel->index(traceModel->rowCount() - 1, 1), QVariant(2));
-    traceModel->setData(traceModel->index(traceModel->rowCount() - 1, 0), QVariant(2));
-    traceModel->setData(traceModel->index(traceModel->rowCount() - 1, 1), QVariant(2));
-
 //    tabView->setStyleSheet("background-color: red;");
 //    tabView->setStyleSheet("background-color:black;");
-    tabBar->setObjectName(QStringLiteral("tabBar"));    
-//    tabBar->setStyleSheet("QTabBar::tab { height: 30px; width: 100px; }");
+    tabBar->setObjectName(QStringLiteral("tabBar"));
     tabBar->addTab(tabView, "Home");
-    tabBar->addTab(tableView, "Blood of Titans");
+    tabBar->addTab(m_traceView.get(), "Blood of Titans");
+    tabBar->addTab(m_streamView.get(), "File Stream");
+
+    QMenu* menu = new QMenu("Edit", this);
+    QAction* editAction = menu->addAction("Edit");
+    connect(editAction, SIGNAL(triggered()), this, SLOT(showOptionsDialog));
+    this->menuBar()->addMenu(menu);
+    menu = new QMenu("View", this);
+    QAction* viewAction = menu->addAction("View");
+    connect(viewAction, SIGNAL(triggered()), this, SLOT(showOptionsDialog));
+    this->menuBar()->addMenu(menu);
+    menu = new QMenu("Extra", this);
+    QAction* extraAction = menu->addAction("Options");
+    connect(extraAction, SIGNAL(triggered()), this, SLOT(showOptionsDialog));
+    this->menuBar()->addMenu(menu);
+
     relayout();
 }
 
 MainWindow::~MainWindow() {
+}
 
+void MainWindow::showOptionsDialog()
+{
+    qDebug("SHOW_OPTIONS_DIALOG");
 }
 
 void MainWindow::resizeEvent(QResizeEvent* event) {

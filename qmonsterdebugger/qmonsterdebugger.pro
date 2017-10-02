@@ -23,7 +23,9 @@ SOURCES += main.cpp\
     streaming/monsterserver.cpp \
     streaming/socket/socketapplication.cpp \
     streaming/applicationstreamer.cpp \
-    streaming/sessions/session.cpp
+    streaming/sessions/session.cpp \
+    panels/streamview.cpp \
+    panels/traceview.cpp
 
 HEADERS  += MainWindow.hpp \
     MonsterTabWidget.hpp \
@@ -35,7 +37,13 @@ HEADERS  += MainWindow.hpp \
     streaming/monsterserver.h \
     streaming/debuggable.h \
     streaming/socket/socketapplication.h \
-    streaming/applicationstreamer.h
+    streaming/applicationstreamer.h \
+    panels/streamview.h \
+    panels/traceview.h
 
 FORMS    += MainWindow.ui \
-    traceview.ui
+    traceview.ui \
+    streamview.ui
+
+
+MOC_DIR = autogen

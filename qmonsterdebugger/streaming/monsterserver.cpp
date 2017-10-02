@@ -55,7 +55,7 @@ bool MonsterServer::start(int port /*= 5840*/) {
 }
 
 void MonsterServer::incomingConnection(qintptr handle) {
-    MonsterThread* thread = new MonsterThread(handle, this);
-    connect(thread, &QThread::finished, thread, &QObject::deleteLater);
-    thread->start();
+//    MonsterThread* thread = new MonsterThread(handle, this);
+//    connect(thread, &QThread::finished, thread, &QObject::deleteLater);
+//    thread->start();
 }
