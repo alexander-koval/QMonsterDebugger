@@ -9,6 +9,8 @@ class Sessions;
 class MonsterServer : public QTcpServer {
 Q_OBJECT
 public:
+    using SessionsPtr = std::shared_ptr<Sessions>;
+
     MonsterServer(QObject* parent = nullptr);
 
     virtual ~MonsterServer();
@@ -16,10 +18,11 @@ public:
     bool start(int port = 5840);
 
 protected:
-    virtual void incomingConnection(qintptr handle);
+    virtual void incomingConnection(qintptr handle) override;
 
 private:
-    std::unique_ptr<Sessions> m_sessions;
+    SessionsPtr m_sessions;
+    QList<QPointer<QThread>> m_threads;
 };
 
 #endif // SOCKETSERVER_H

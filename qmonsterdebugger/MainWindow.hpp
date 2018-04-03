@@ -20,6 +20,7 @@ public:
 
     ~MainWindow();
 
+public slots:
     void showOptionsDialog();
 
 protected:

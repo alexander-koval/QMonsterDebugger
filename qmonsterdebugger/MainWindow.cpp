@@ -24,15 +24,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QMenu* menu = new QMenu("Edit", this);
     QAction* editAction = menu->addAction("Edit");
-    connect(editAction, SIGNAL(triggered()), this, SLOT(showOptionsDialog));
+    connect(editAction, SIGNAL(triggered()), this, SLOT(showOptionsDialog()));
     this->menuBar()->addMenu(menu);
     menu = new QMenu("View", this);
     QAction* viewAction = menu->addAction("View");
-    connect(viewAction, SIGNAL(triggered()), this, SLOT(showOptionsDialog));
+    connect(viewAction, SIGNAL(triggered()), this, SLOT(showOptionsDialog()));
     this->menuBar()->addMenu(menu);
     menu = new QMenu("Extra", this);
     QAction* extraAction = menu->addAction("Options");
-    connect(extraAction, SIGNAL(triggered()), this, SLOT(showOptionsDialog));
+    connect(extraAction, SIGNAL(triggered()), this, SLOT(showOptionsDialog()));
     this->menuBar()->addMenu(menu);
 
     relayout();

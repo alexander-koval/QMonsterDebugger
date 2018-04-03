@@ -2,6 +2,7 @@
 #include <QMessageBox>
 #include <QTcpSocket>
 #include <QThread>
+#include <QPointer>
 #include <memory>
 #include "sessions/session.h"
 #include "sessions/sessions.h"
@@ -39,13 +40,13 @@ MonsterServer::MonsterServer(QObject* parent /*= nullptr*/)
 
 MonsterServer::~MonsterServer() {
     qDebug("%s", "DESTROY");
-//    if (m_threads.begin() != m_threads.end()) {
-//        std::for_each(m_threads.begin(), m_threads.end(),
-//                      [](const std::pair<qintptr, QThread*>& pair){
-//            pair.second->quit();
-//            pair.second->wait();
-//        });
-//    }
+    if (m_threads.begin() != m_threads.end()) {
+        std::for_each(m_threads.begin(), m_threads.end(),
+                      [](const QPointer<QThread>& thread){
+            thread->quit();
+            thread->wait();
+        });
+    }
 }
 
 bool MonsterServer::start(int port /*= 5840*/) {
@@ -55,7 +56,8 @@ bool MonsterServer::start(int port /*= 5840*/) {
 }
 
 void MonsterServer::incomingConnection(qintptr handle) {
-//    MonsterThread* thread = new MonsterThread(handle, this);
-//    connect(thread, &QThread::finished, thread, &QObject::deleteLater);
-//    thread->start();
+    QPointer<QThread> thread = QPointer<QThread>(new MonsterThread(handle, m_sessions, this));
+    connect(thread, &QThread::finished, thread.data(), &QObject::deleteLater);
+    m_threads.append(thread);
+    thread->start();
 }
