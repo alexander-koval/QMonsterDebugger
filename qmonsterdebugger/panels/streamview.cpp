@@ -12,5 +12,5 @@ StreamView::StreamView(QWidget *parent)
 void StreamView::resizeEvent(QResizeEvent *event)
 {
     const QSize& size = event->size();
-    m_view->scrollArea->resize(size.width(), size.height());
+    m_view->textEdit->resize(size.width(), size.height());
 }
