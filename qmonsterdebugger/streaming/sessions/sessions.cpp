@@ -3,6 +3,8 @@
 #include <QWriteLocker>
 #include "session.h"
 
+namespace monster {
+
 void Sessions::add(const SessionPtr session) {
     QWriteLocker locker(&m_lock);
     m_sessions.insert(session->socketDescriptor(), session.toWeakRef());
@@ -19,4 +21,6 @@ const SessionMap &Sessions::getSessions() const {
 
 quint64 Sessions::size() const {
     return m_sessions.size();
+}
+
 }

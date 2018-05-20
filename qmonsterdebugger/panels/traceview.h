@@ -9,6 +9,8 @@ class TraceView;
 
 class QResizeEvent;
 
+namespace monster {
+
 class TraceView : public QWidget
 {
     Q_OBJECT
@@ -27,4 +29,5 @@ signals:
 public slots:
 };
 
+}
 #endif // TRACEVIEW_H

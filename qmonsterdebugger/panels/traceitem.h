@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <QString>
 
+namespace monster {
 struct TraceItem
 {
 public:
@@ -19,5 +20,5 @@ public:
     QString person;
 };
 
-
+}
 #endif // TRACEITEM_H

@@ -2,6 +2,7 @@
 #include <QTcpSocket>
 #include <QHostAddress>
 
+namespace monster {
 Session::Session(TcpSocketPtr socket) : m_socket(socket) {
 
 }
@@ -49,5 +50,4 @@ const QTcpSocket* Session::socket() const {
     return m_socket;
 }
 
-
-
+}

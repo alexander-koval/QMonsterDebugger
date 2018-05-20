@@ -4,6 +4,8 @@
 #include <QStringListModel>
 #include <QResizeEvent>
 
+namespace monster {
+
 TraceView::TraceView(QWidget *parent)
     : QWidget(parent)
     , m_view(new Ui::TraceView())
@@ -48,4 +50,4 @@ void TraceView::resizeEvent(QResizeEvent *event)
     m_view->tableView->resize(size.width(), size.height());
 }
 
-
+}

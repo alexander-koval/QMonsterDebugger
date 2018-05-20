@@ -3,6 +3,8 @@
 #include <QStyleOptionComboBox>
 #include <QApplication>
 
+namespace monster {
+
 TraceModel::TraceModel(QObject* parent /*= nullptr*/)
     : QAbstractTableModel(parent)
     , m_items() {
@@ -113,4 +115,4 @@ bool TraceModel::removeRows(int row, int count, const QModelIndex&) {
     return true;
 }
 
-
+}

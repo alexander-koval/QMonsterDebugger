@@ -7,6 +7,7 @@
 #include <QReadWriteLock>
 #include <qglobal.h>
 
+namespace monster {
 class Session;
 using SessionPtr = QSharedPointer<Session>;
 using SessionWPtr = QWeakPointer<Session>;
@@ -30,4 +31,5 @@ private:
     SessionMap m_sessions;
 };
 
+}
 #endif // SESSIONS_H

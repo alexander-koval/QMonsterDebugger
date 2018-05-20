@@ -7,6 +7,7 @@ namespace Ui {
 class StreamView;
 }
 
+namespace monster {
 class StreamView : public QWidget
 {
     Q_OBJECT
@@ -23,5 +24,5 @@ signals:
 
 public slots:
 };
-
+}
 #endif // STEAMVIEW_H

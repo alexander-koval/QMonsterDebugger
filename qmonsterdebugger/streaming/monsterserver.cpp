@@ -1,8 +1,13 @@
 #include "monsterserver.h"
 #include <QPointer>
 #include <QMessageBox>
+#include "MainWindow.hpp"
 #include "sessions/session.h"
 #include "sessions/sessions.h"
+
+namespace monster {
+
+MainWindow* g_window = nullptr;
 
 MonsterThread::MonsterThread(SessionPtr session, SessionsWPtr sessions, QObject *parent)
     : QThread(parent),
@@ -64,4 +69,14 @@ void MonsterServer::incomingConnection(qintptr handle) {
         m_threads.append(thread);
         thread->start();
     }
+}
+
+void reset_main_window(monster::MainWindow *window) {
+    monster::g_window = window;
+}
+
+MainWindow& get_main_window() {
+    return *monster::g_window;
+}
+
 }

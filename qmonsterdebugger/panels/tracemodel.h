@@ -4,6 +4,8 @@
 #include <QAbstractListModel>
 #include "traceitem.h"
 
+namespace monster {
+
 class TraceModel : public QAbstractTableModel
 {
     Q_OBJECT
@@ -35,4 +37,5 @@ private:
     QList<TraceItem> m_items;
 };
 
+}
 #endif // TRACEMODEL_H

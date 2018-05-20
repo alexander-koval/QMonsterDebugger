@@ -8,10 +8,11 @@
 #include <QWeakPointer>
 
 class QTcpSocket;
-class Session;
-using SessionWPtr = QWeakPointer<Session>;
-using SessionPtr = QSharedPointer<Session>;
+namespace monster { class Session; }
+using SessionWPtr = QWeakPointer<monster::Session>;
+using SessionPtr = QSharedPointer<monster::Session>;
 using TcpSocketPtr = QPointer<QTcpSocket>;
+namespace monster {
 class Session : public QObject {
 Q_OBJECT
 public:
@@ -31,5 +32,5 @@ public:
 private:
     TcpSocketPtr m_socket;
 };
-
+}
 #endif // SESSION_H

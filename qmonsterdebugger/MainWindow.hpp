@@ -4,10 +4,9 @@
 #include <memory>
 #include <QMainWindow>
 
-namespace Ui {
-class MainWindow;
-}
+namespace Ui { class MainWindow; }
 
+namespace monster {
 class TraceView;
 class StreamView;
 
@@ -37,5 +36,5 @@ private:
     TraceViewPtr m_traceView;
     StreamViewPtr m_streamView;
 };
-
+}
 #endif // MAINWINDOW_HPP

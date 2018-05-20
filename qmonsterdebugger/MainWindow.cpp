@@ -5,6 +5,7 @@
 #include <QResizeEvent>
 #include <QAction>
 
+namespace monster {
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     m_mainView(std::make_unique<Ui::MainWindow>()),
@@ -54,4 +55,5 @@ void MainWindow::resizeEvent(QResizeEvent* event) {
 void MainWindow::relayout() {
     MonsterTabWidget* tabBar = m_mainView->tabBar;
     tabBar->setGeometry(QRect(0, 0, this->width(), this->height()));
+}
 }

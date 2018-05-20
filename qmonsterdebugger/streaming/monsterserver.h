@@ -9,8 +9,11 @@
 #include <QScopedPointer>
 #include <map>
 
+namespace monster {
+
 class Session;
 class Sessions;
+class MainWindow;
 using SessionPtr = QSharedPointer<Session>;
 using SessionsWPtr = QWeakPointer<Sessions>;
 using SessionsPtr = QSharedPointer<Sessions>;
@@ -54,4 +57,9 @@ private:
     SessionsWPtr m_sessions;
 };
 
+void reset_main_window(MainWindow* window);
+
+MainWindow& get_main_window();
+
+}
 #endif // SOCKETSERVER_H
