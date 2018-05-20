@@ -20,10 +20,10 @@ SOURCES += main.cpp\
     panels/traceitem.cpp \
     panels/tracemodel.cpp \
     streaming/sessions/sessions.cpp \
+    streaming/sessions/session.cpp \
     streaming/monsterserver.cpp \
     streaming/socket/socketapplication.cpp \
     streaming/applicationstreamer.cpp \
-    streaming/sessions/session.cpp \
     panels/streamview.cpp \
     panels/traceview.cpp
 

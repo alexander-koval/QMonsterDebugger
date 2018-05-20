@@ -2,29 +2,51 @@
 #include <QTcpSocket>
 #include <QHostAddress>
 
-Session::Session(QTcpSocket *socket) : m_socket(socket) {
+Session::Session(TcpSocketPtr socket) : m_socket(socket) {
 
 }
 
 bool Session::connected() const {
-    return m_socket && m_socket->isOpen();
+    TcpSocketPtr socket = m_socket;
+    if (socket) {
+        return socket->isOpen();
+    }
+    return false;
 }
 
 bool Session::write(const QByteArray &msg) {
-    return m_socket->write(msg) == msg.size();
+    TcpSocketPtr socket = m_socket;
+    if (socket) {
+        return socket->write(msg) == msg.size();
+    }
+    return false;
 }
 
 void Session::close() {
-    m_socket->close();
+    TcpSocketPtr socket = m_socket;
+    if (socket) {
+        socket->close();
+    }
 }
 
-std::string Session::getAddress() const {
-    QString string = m_socket->localAddress().toString();
-    return string.toUtf8().constData();
+QString Session::address() const {
+    TcpSocketPtr socket = m_socket;
+    if (socket) {
+        return socket->localAddress().toString();
+    }
+    return QString();
 }
 
-qintptr Session::getId() const {
-    return m_socket->socketDescriptor();
+qintptr Session::socketDescriptor() const {
+    TcpSocketPtr socket = m_socket;
+    if (socket) {
+        return socket->socketDescriptor();
+    }
+    return -1;
+}
+
+const QTcpSocket* Session::socket() const {
+    return m_socket;
 }
 
 

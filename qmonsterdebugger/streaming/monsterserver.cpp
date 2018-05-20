@@ -1,40 +1,39 @@
 #include "monsterserver.h"
-#include <QMessageBox>
-#include <QTcpSocket>
-#include <QThread>
 #include <QPointer>
-#include <memory>
+#include <QMessageBox>
 #include "sessions/session.h"
 #include "sessions/sessions.h"
 
-class MonsterThread : public QThread {
-    using SessionsPtr = std::shared_ptr<Sessions>;
-public:
-    explicit MonsterThread(qintptr descriptor, SessionsPtr sessins, QObject* parent = nullptr)
-        : QThread(parent),
-          m_descriptor(descriptor),
-          m_socket(),
-          m_session() {
+MonsterThread::MonsterThread(SessionPtr session, SessionsWPtr sessions, QObject *parent)
+    : QThread(parent),
+      m_session(session),
+      m_sessions(sessions) {
 
+}
+
+void MonsterThread::run() {
+    const QTcpSocket* socket = m_session->socket();
+    connect(socket, SIGNAL(readyRead()),    this, SLOT(onReadyRead()), Qt::DirectConnection);
+    connect(socket, SIGNAL(disconnected()), this, SLOT(onDisconnected()), Qt::DirectConnection);
+
+    SessionsPtr sessions = m_sessions.toStrongRef();
+    if (sessions) {
+        sessions->add(m_session.toWeakRef());
     }
+    exec();
+}
 
-    virtual void run() override {
-        m_socket = new QTcpSocket(this);
-        if (m_socket->setSocketDescriptor(m_descriptor)) {
-            m_session = std::make_unique<Session>(m_socket);
-        }
-    }
+void MonsterThread::onReadyRead() {
+    qDebug("READY_READ");
+}
 
-private:
-    qintptr m_descriptor;
-    QTcpSocket* m_socket;
-
-    std::unique_ptr<Session> m_session;
-};
+void MonsterThread::onDisconnected() {
+    qDebug("DISCONNECTED");
+}
 
 MonsterServer::MonsterServer(QObject* parent /*= nullptr*/)
     : QTcpServer(parent),
-      m_sessions(std::make_unique<Sessions>()) {
+      m_sessions(SessionsPtr::create(this)) {
 
 }
 
@@ -49,15 +48,20 @@ MonsterServer::~MonsterServer() {
     }
 }
 
-bool MonsterServer::start(int port /*= 5840*/) {
+bool MonsterServer::start(quint16 port /*= 5840*/) {
     bool result = listen(QHostAddress::LocalHost, port);
     if (!result) { close(); }
     return result;
 }
 
 void MonsterServer::incomingConnection(qintptr handle) {
-    QPointer<QThread> thread = QPointer<QThread>(new MonsterThread(handle, m_sessions, this));
-    connect(thread, &QThread::finished, thread.data(), &QObject::deleteLater);
-    m_threads.append(thread);
-    thread->start();
+    Base::incomingConnection(handle);
+    if (hasPendingConnections()) {
+        QTcpSocket* socket = nextPendingConnection();
+        SessionPtr session = SessionPtr::create(socket);
+        QPointer<QThread> thread = new MonsterThread(session, m_sessions.toWeakRef(), this);
+        connect(thread, &QThread::finished, thread.data(), &QObject::deleteLater);
+        m_threads.append(thread);
+        thread->start();
+    }
 }

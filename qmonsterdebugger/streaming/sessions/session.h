@@ -2,13 +2,20 @@
 #define SESSION_H
 
 #include <string>
+#include <QObject>
 #include <QByteArray>
+#include <QPointer>
+#include <QWeakPointer>
 
 class QTcpSocket;
-class Session
-{
+class Session;
+using SessionWPtr = QWeakPointer<Session>;
+using SessionPtr = QSharedPointer<Session>;
+using TcpSocketPtr = QPointer<QTcpSocket>;
+class Session : public QObject {
+Q_OBJECT
 public:
-    explicit Session(QTcpSocket* socket);
+    explicit Session(TcpSocketPtr socket);
 
     bool connected() const;
 
@@ -16,12 +23,13 @@ public:
 
     void close();
 
-    std::string getAddress() const;
+    QString address() const;
 
-    qintptr getId() const;
+    qintptr socketDescriptor() const;
 
+    const QTcpSocket* socket() const;
 private:
-    QTcpSocket* m_socket;
+    TcpSocketPtr m_socket;
 };
 
 #endif // SESSION_H

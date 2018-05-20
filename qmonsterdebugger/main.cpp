@@ -1,6 +1,6 @@
 #include "MainWindow.hpp"
 #include <QApplication>
-#include <memory>
+#include <QScopedPointer>
 #include "streaming/monsterserver.h"
 
 int main(int argc, char *argv[])
@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     MainWindow w;
-    std::unique_ptr<MonsterServer> server = std::make_unique<MonsterServer>(&a);
+    QScopedPointer<MonsterServer> server(new MonsterServer(&a));
     if (server->start()) {
         w.show();
     } else {

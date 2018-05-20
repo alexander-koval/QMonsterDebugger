@@ -1,31 +1,32 @@
 #ifndef SESSIONS_H
 #define SESSIONS_H
 
-#include <map>
-#include <memory>
+#include <QMap>
+#include <QObject>
+#include <QSharedPointer>
+#include <QReadWriteLock>
 #include <qglobal.h>
 
 class Session;
-using SessionPtr = std::shared_ptr<Session>;
-using SessionWPtr = std::weak_ptr<Session>;
-using SessionMap = std::map<quint64, const SessionWPtr&>;
+using SessionPtr = QSharedPointer<Session>;
+using SessionWPtr = QWeakPointer<Session>;
+using SessionMap = QMap<quint64, SessionWPtr>;
 
-class Sessions
-{
+class Sessions : public QObject {
+Q_OBJECT
 public:
-    Sessions() : m_sessions() {}
+    Sessions(QObject* parent) : QObject(parent), m_lock(), m_sessions() {}
 
-    void add(const SessionPtr& session) {
-//        m_sessions.insert(std::make_pair(session->session));
-    }
+    void add(const SessionPtr session);
 
-    void remove(const SessionPtr& session);
+    void remove(quint16 id);
 
     const SessionMap& getSessions() const;
 
     quint64 size() const;
 
 private:
+    mutable QReadWriteLock m_lock;
     SessionMap m_sessions;
 };
 
