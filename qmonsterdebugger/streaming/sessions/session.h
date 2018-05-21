@@ -4,6 +4,7 @@
 #include <string>
 #include <QObject>
 #include <QByteArray>
+#include <QBuffer>
 #include <QPointer>
 #include <QWeakPointer>
 
@@ -16,6 +17,8 @@ namespace monster {
 class Session : public QObject {
 Q_OBJECT
 public:
+    using Base = QObject;
+
     explicit Session(TcpSocketPtr socket);
 
     void init();
@@ -32,12 +35,18 @@ public:
 
     const QTcpSocket* socket() const;
 
+private:
+    void encode();
+
 private slots:
     void onReadyRead();
 
     void onDisconnected();
 
 private:
+    uint32_t m_size;
+    QBuffer m_bytes;
+    QBuffer m_package;
     TcpSocketPtr m_socket;
 };
 }

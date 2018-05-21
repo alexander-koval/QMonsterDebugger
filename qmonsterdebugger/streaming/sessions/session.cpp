@@ -3,7 +3,8 @@
 #include <QHostAddress>
 
 namespace monster {
-Session::Session(TcpSocketPtr socket) : m_socket(socket) {
+Session::Session(TcpSocketPtr socket)
+    : QObject(), m_size(), m_bytes(), m_package(), m_socket(socket) {
 
 }
 
@@ -46,7 +47,10 @@ QString Session::address() const {
 void Session::onReadyRead() {
     qDebug("READY_READ");
     QByteArray bytes = m_socket->readAll();
-    qDebug() << bytes.data();
+    m_bytes.open(QIODevice::ReadWrite);
+    m_bytes.write(bytes);
+    m_bytes.seek(0);
+    encode();
 }
 
 void Session::onDisconnected() {
@@ -63,6 +67,14 @@ qintptr Session::socketDescriptor() const {
 
 const QTcpSocket* Session::socket() const {
     return m_socket;
+}
+
+void Session::encode() {
+    if (m_bytes.bytesAvailable() == 0) return;
+    if (m_size == 0) {
+        m_bytes.read(reinterpret_cast<char*>(&m_size), sizeof(uint32_t));
+    }
+    qDebug() << m_size;
 }
 
 }
