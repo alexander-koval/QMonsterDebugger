@@ -7,6 +7,11 @@ Session::Session(TcpSocketPtr socket) : m_socket(socket) {
 
 }
 
+void Session::init() {
+    connect(m_socket, SIGNAL(readyRead()),    this, SLOT(onReadyRead()), Qt::DirectConnection);
+    connect(m_socket, SIGNAL(disconnected()), this, SLOT(onDisconnected()), Qt::DirectConnection);
+}
+
 bool Session::connected() const {
     TcpSocketPtr socket = m_socket;
     if (socket) {
@@ -36,6 +41,16 @@ QString Session::address() const {
         return socket->localAddress().toString();
     }
     return QString();
+}
+
+void Session::onReadyRead() {
+    qDebug("READY_READ");
+    QByteArray bytes = m_socket->readAll();
+    qDebug() << bytes.data();
+}
+
+void Session::onDisconnected() {
+    qDebug("DISCONNECTED");
 }
 
 qintptr Session::socketDescriptor() const {

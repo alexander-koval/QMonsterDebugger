@@ -18,6 +18,8 @@ Q_OBJECT
 public:
     explicit Session(TcpSocketPtr socket);
 
+    void init();
+
     bool connected() const;
 
     bool write(const QByteArray& msg);
@@ -29,6 +31,12 @@ public:
     qintptr socketDescriptor() const;
 
     const QTcpSocket* socket() const;
+
+private slots:
+    void onReadyRead();
+
+    void onDisconnected();
+
 private:
     TcpSocketPtr m_socket;
 };

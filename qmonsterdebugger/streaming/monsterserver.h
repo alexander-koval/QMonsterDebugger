@@ -43,15 +43,6 @@ public:
     explicit MonsterThread(SessionPtr session, SessionsWPtr sessions, QObject* parent = nullptr);
 
     void run() override;
-
-signals:
-    void error(QTcpSocket::SocketError socketerror);
-
-private slots:
-    void onReadyRead();
-
-    void onDisconnected();
-
 private:
     SessionPtr m_session;
     SessionsWPtr m_sessions;

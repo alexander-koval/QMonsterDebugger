@@ -17,23 +17,11 @@ MonsterThread::MonsterThread(SessionPtr session, SessionsWPtr sessions, QObject 
 }
 
 void MonsterThread::run() {
-    const QTcpSocket* socket = m_session->socket();
-    connect(socket, SIGNAL(readyRead()),    this, SLOT(onReadyRead()), Qt::DirectConnection);
-    connect(socket, SIGNAL(disconnected()), this, SLOT(onDisconnected()), Qt::DirectConnection);
-
     SessionsPtr sessions = m_sessions.toStrongRef();
     if (sessions) {
         sessions->add(m_session.toWeakRef());
     }
     exec();
-}
-
-void MonsterThread::onReadyRead() {
-    qDebug("READY_READ");
-}
-
-void MonsterThread::onDisconnected() {
-    qDebug("DISCONNECTED");
 }
 
 MonsterServer::MonsterServer(QObject* parent /*= nullptr*/)
@@ -64,6 +52,7 @@ void MonsterServer::incomingConnection(qintptr handle) {
     if (hasPendingConnections()) {
         QTcpSocket* socket = nextPendingConnection();
         SessionPtr session = SessionPtr::create(socket);
+        session->init();
         QPointer<QThread> thread = new MonsterThread(session, m_sessions.toWeakRef(), this);
         connect(thread, &QThread::finished, thread.data(), &QObject::deleteLater);
         m_threads.append(thread);
