@@ -12,38 +12,50 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = qmonsterdebugger
 TEMPLATE = app
 
+INCLUDEPATH += src
+SOURCES += src/main.cpp\
+    src/MainWindow.cpp \
+    src/MonsterTabWidget.cpp \
+    src/DebuggerInfo.cpp \
+    src/panels/traceitem.cpp \
+    src/panels/tracemodel.cpp \
+    src/streaming/sessions/sessions.cpp \
+    src/streaming/sessions/session.cpp \
+    src/streaming/monsterserver.cpp \
+    src/streaming/socket/socketapplication.cpp \
+    src/streaming/applicationstreamer.cpp \
+    src/panels/streamview.cpp \
+    src/panels/traceview.cpp
 
-SOURCES += main.cpp\
-        MainWindow.cpp \
-    MonsterTabWidget.cpp \
-    DebuggerInfo.cpp \
-    panels/traceitem.cpp \
-    panels/tracemodel.cpp \
-    streaming/sessions/sessions.cpp \
-    streaming/sessions/session.cpp \
-    streaming/monsterserver.cpp \
-    streaming/socket/socketapplication.cpp \
-    streaming/applicationstreamer.cpp \
-    panels/streamview.cpp \
-    panels/traceview.cpp
+HEADERS  += src/MainWindow.hpp \
+    src/MonsterTabWidget.hpp \
+    src/DebuggerInfo.hpp \
+    src/panels/traceitem.h \
+    src/panels/tracemodel.h \
+    src/streaming/sessions/sessions.h \
+    src/streaming/sessions/session.h \
+    src/streaming/monsterserver.h \
+    src/streaming/debuggable.h \
+    src/streaming/socket/socketapplication.h \
+    src/streaming/applicationstreamer.h \
+    src/panels/streamview.h \
+    src/panels/traceview.h
 
-HEADERS  += MainWindow.hpp \
-    MonsterTabWidget.hpp \
-    DebuggerInfo.hpp \
-    panels/traceitem.h \
-    panels/tracemodel.h \
-    streaming/sessions/sessions.h \
-    streaming/sessions/session.h \
-    streaming/monsterserver.h \
-    streaming/debuggable.h \
-    streaming/socket/socketapplication.h \
-    streaming/applicationstreamer.h \
-    panels/streamview.h \
-    panels/traceview.h
-
-FORMS    += MainWindow.ui \
-    traceview.ui \
-    streamview.ui
+FORMS    += forms/MainWindow.ui \
+    forms/traceview.ui \
+    forms/streamview.ui
 
 
 MOC_DIR = autogen
+
+include(config/qmake-target-platform.pri)
+include(config/qmake-destination-path.pri)
+
+DESTDIR = $PWD/../bin/$$DESTINATION_PATH
+OBJECTS_DIR = $PWD/..//bin/$$DESTINATION_PATH/.obj
+MOC_DIR = $PWD/../bin/$$DESTINATION_PATH/.moc
+RCC_DIR = $PWD/../bin/$$DESTINATION_PATH/.qrc
+UI_DIR = $PWD/../bin/$$DESTINATION_PATH/.ui
+#MAKEFILE = $PWD/../../bin/$$DESTINATION_PATH/.makefile
+
+LIBS += -L$$PWD/../bin/$$DESTINATION_PATH
