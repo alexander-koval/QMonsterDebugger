@@ -1,16 +1,20 @@
 #include "session.h"
 #include <QTcpSocket>
 #include <QHostAddress>
+#include <QDataStream>
+#include <QTime>
+#include <QJsonDocument>
 
 namespace monster {
 Session::Session(TcpSocketPtr socket)
-    : QObject(), m_size(), m_bytes(), m_package(), m_socket(socket) {
+    : QObject(), m_size(), m_bytes(), m_package(), m_socket(socket), m_blockSize() {
 
 }
 
 void Session::init() {
     connect(m_socket, SIGNAL(readyRead()),    this, SLOT(onReadyRead()), Qt::DirectConnection);
     connect(m_socket, SIGNAL(disconnected()), this, SLOT(onDisconnected()), Qt::DirectConnection);
+    connect(m_socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(onSocketError(QAbstractSocket::SocketError)));
 }
 
 bool Session::connected() const {
@@ -51,10 +55,15 @@ void Session::onReadyRead() {
     m_bytes.write(bytes);
     m_bytes.seek(0);
     encode();
+    m_bytes.close();
 }
 
 void Session::onDisconnected() {
     qDebug("DISCONNECTED");
+}
+
+void Session::onSocketError(QAbstractSocket::SocketError error) {
+    int kkk = 0;
 }
 
 qintptr Session::socketDescriptor() const {
@@ -73,6 +82,8 @@ void Session::encode() {
     if (m_bytes.bytesAvailable() == 0) return;
     if (m_size == 0) {
         m_bytes.read(reinterpret_cast<char*>(&m_size), sizeof(uint32_t));
+        QString command = m_bytes.buffer();
+        qDebug() << "COMMAND: " << command;
     }
     qDebug() << m_size;
 }

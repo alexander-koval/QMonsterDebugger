@@ -14,6 +14,9 @@ int main(int argc, char *argv[])
     monster::reset_main_window(&w);
     QScopedPointer<MonsterServer> server(new MonsterServer(&a));
     if (server->start()) {
+        w.connect(server.data(), &MonsterServer::sessionCreated,
+                  &w, &MainWindow::onSessionCreated,
+                  Qt::DirectConnection);
         w.show();
     } else {
         qCritical() << "Unable to start the server";

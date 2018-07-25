@@ -43,8 +43,8 @@ HEADERS  += MainWindow.hpp \
     panels/traceview.h
 
 FORMS    += forms/MainWindow.ui \
-    forms/traceview.ui \
-    forms/streamview.ui
+    forms/streamview.ui \
+    forms/TraceView.ui
 
 
 MOC_DIR = autogen

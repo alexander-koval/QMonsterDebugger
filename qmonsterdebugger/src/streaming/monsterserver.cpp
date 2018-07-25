@@ -56,6 +56,7 @@ void MonsterServer::incomingConnection(qintptr handle) {
         QPointer<QThread> thread = new MonsterThread(session, m_sessions.toWeakRef(), this);
         connect(thread, &QThread::finished, thread.data(), &QObject::deleteLater);
         m_threads.append(thread);
+//        emit sessionCreated(session);
         thread->start();
     }
 }

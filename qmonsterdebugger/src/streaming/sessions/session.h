@@ -7,6 +7,7 @@
 #include <QBuffer>
 #include <QPointer>
 #include <QWeakPointer>
+#include <QAbstractSocket>
 
 class QTcpSocket;
 namespace monster { class Session; }
@@ -43,11 +44,14 @@ private slots:
 
     void onDisconnected();
 
+    void onSocketError(QAbstractSocket::SocketError);
+
 private:
     uint32_t m_size;
     QBuffer m_bytes;
     QBuffer m_package;
     TcpSocketPtr m_socket;
+    quint16     m_blockSize;
 };
 }
 #endif // SESSION_H

@@ -8,6 +8,7 @@
 #include <QSharedPointer>
 #include <QScopedPointer>
 #include <map>
+#include "streaming/sessions/session.h"
 
 namespace monster {
 
@@ -27,7 +28,10 @@ public:
 
     ~MonsterServer() override;
 
-    bool start(quint16 port = 5800/*5840*/);
+    bool start(quint16 port = /*5800*/5840);
+
+signals:
+    void sessionCreated(SessionPtr session);
 
 protected:
     virtual void incomingConnection(qintptr handle) override;

@@ -1,4 +1,4 @@
-#include "streamview.h"
+#include "StreamView.h"
 #include "ui_streamview.h"
 #include <QResizeEvent>
 
