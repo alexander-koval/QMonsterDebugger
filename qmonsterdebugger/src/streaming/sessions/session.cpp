@@ -4,6 +4,8 @@
 #include <QDataStream>
 #include <QTime>
 #include <QJsonDocument>
+#include "streaming/constants.h"
+#include <sstream>
 
 namespace monster {
 Session::Session(TcpSocketPtr socket)
@@ -83,6 +85,37 @@ void Session::encode() {
     if (m_size == 0) {
         m_bytes.read(reinterpret_cast<char*>(&m_size), sizeof(uint32_t));
         QString command = m_bytes.buffer();
+        if (command == "<hello/>\n") {
+            QByteArray item;
+            QByteArray bytesId;
+            QByteArray bytesData;
+
+            QDataStream streamID(&bytesId, QIODevice::WriteOnly);
+            streamID << QString(MONSTER_DEBUGGER_ID).toUtf8();
+//            streamID.writeRawData(MONSTER_DEBUGGER_ID, strlen(MONSTER_DEBUGGER_ID));
+
+            QDataStream streamData(&bytesData, QIODevice::WriteOnly);
+            std::stringstream stream;
+            stream << "{\"command\":\"" << COMMAND_HELLO << "\"}";
+            std::string data = stream.str();
+            streamData << QString(data.c_str()).toUtf8();
+//            streamData.writeRawData(data.c_str(), data.size());
+
+            QDataStream streamItem(&item, QIODevice::WriteOnly);
+            qDebug() << "ID: " << bytesId;
+            qDebug() << "DATA: " << bytesData;
+
+//            streamItem.writeBytes(bytesId, sizeof(uint32_t));
+//            streamItem.writeBytes(bytesData, sizeof(uint32_t));
+            streamItem << bytesId << bytesData;
+//            streamItem << (uint32_t)bytesId.size() << bytesId <<
+//                    (uint32_t)bytesData.size() << bytesData;
+
+            qDebug() << "ITEM: " << item;
+            qDebug() << "ITEM: " << item.size();
+            int result = write(item);
+            qDebug() << "RESULT: " << result;
+        }
         qDebug() << "COMMAND: " << command;
     }
     qDebug() << m_size;

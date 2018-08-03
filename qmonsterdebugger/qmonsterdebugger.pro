@@ -40,7 +40,8 @@ HEADERS  += MainWindow.hpp \
     streaming/socket/socketapplication.h \
     streaming/applicationstreamer.h \
     panels/streamview.h \
-    panels/traceview.h
+    panels/traceview.h \
+    src/streaming/constants.h
 
 FORMS    += forms/MainWindow.ui \
     forms/streamview.ui \
