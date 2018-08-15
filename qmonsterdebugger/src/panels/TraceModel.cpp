@@ -1,4 +1,4 @@
-#include "tracemodel.h"
+#include "TraceModel.h"
 #include <QFontMetrics>
 #include <QStyleOptionComboBox>
 #include <QApplication>

@@ -1,4 +1,4 @@
-#include "MonsterTabWidget.hpp"
+#include "MonsterTabWidget.h"
 #include <QStackedWidget>
 #include <QTabBar>
 #include <QResizeEvent>

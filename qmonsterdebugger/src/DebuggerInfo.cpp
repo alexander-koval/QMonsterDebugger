@@ -1,4 +1,4 @@
-#include "DebuggerInfo.hpp"
+#include "DebuggerInfo.h"
 #include <QString>
 #include <QObject>
 

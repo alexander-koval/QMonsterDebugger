@@ -1,5 +1,5 @@
 #include "StreamView.h"
-#include "ui_streamview.h"
+#include "ui_StreamView.h"
 #include <QResizeEvent>
 
 namespace monster {

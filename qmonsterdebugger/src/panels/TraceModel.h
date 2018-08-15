@@ -2,7 +2,7 @@
 #define TRACEMODEL_H
 
 #include <QAbstractListModel>
-#include "traceitem.h"
+#include "TraceItem.h"
 
 namespace monster {
 

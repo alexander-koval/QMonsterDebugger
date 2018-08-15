@@ -1,6 +1,6 @@
-#include "traceview.h"
-#include "ui_traceview.h"
-#include "panels/tracemodel.h"
+#include "TraceView.h"
+#include "ui_TraceView.h"
+#include "panels/TraceModel.h"
 #include <QStringListModel>
 #include <QResizeEvent>
 

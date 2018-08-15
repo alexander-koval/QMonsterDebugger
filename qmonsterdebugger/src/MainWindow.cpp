@@ -1,6 +1,6 @@
-#include "MainWindow.hpp"
+#include "MainWindow.h"
 #include "ui_MainWindow.h"
-#include "panels/traceview.h"
+#include "panels/TraceView.h"
 #include "panels/StreamView.h"
 #include "streaming/sessions/session.h"
 #include "streaming/monsterserver.h"
