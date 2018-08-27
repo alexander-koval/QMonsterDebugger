@@ -30,6 +30,7 @@ public:
 
     bool start(quint16 port = /*5800*/5840);
 
+    void onReadyRead();
 signals:
     void sessionCreated(SessionPtr session);
 

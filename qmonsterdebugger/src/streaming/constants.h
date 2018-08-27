@@ -1,6 +1,7 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+const char* ID = "im.siver.logger.v1";
 const char* MONSTER_DEBUGGER_ID = "com.demonsters.debugger.core";
 
 const char* COMMAND_HELLO = "HELLO";
