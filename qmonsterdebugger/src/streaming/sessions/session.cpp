@@ -41,35 +41,11 @@ public:
 
         QDataStream streamID(&bufferID, QIODevice::WriteOnly);
         QDataStream streamMsg(&bufferMsg, QIODevice::WriteOnly);
-        streamID.writeRawData(QByteArray::number(id.size()), sizeof(uint16_t));
-        streamID.writeBytes(id, id.size() + 2);
-        streamMsg.writeRawData(QByteArray::number(msg.size()), sizeof(uint16_t));
-        streamMsg.writeBytes(msg, msg.size() + 2);
-//        streamID << QByteArray::number(static_cast<uint16_t>(id.size()));// << id;
-//        streamMsg << QByteArray::number(static_cast<uint16_t>(msg.size()));// << msg;
-//        streamID.writeRawData(QByteArray::number(id.size()), sizeof(uint16_t));
-//        streamID.writeRawData(id, id.size());
-//        streamMsg.writeRawData(QByteArray::number(msg.size()), sizeof(uint16_t));
-//        streamMsg.writeRawData(msg, msg.size());
-
-        dataStream << bufferID;
-//        dataStream.writeRawData(QByteArray::number(streamID.size()),
-//                                sizeof(uint16_t) + 2);
-        dataStream << bufferMsg;
-//        dataStream.writeRawData(QByteArray::number(msg.size()),
-//                                sizeof(uint16_t) + 2);
-//        qDebug() << "ID: " << bytesId << " SIZE:" << bytesId.size();
-//        qDebug() << "DATA: " << bytesData << "SIZE: " << bytesData.size();
-
-//        dataStream.writeRawData(QByteArray::number(bytesId.size()), sizeof(uint32_t));
-//        dataStream.writeRawData(bytesId.data(), bytesId.size());
-//        dataStream.writeRawData(QByteArray::number(bytesData.size()), sizeof(uint32_t));
-//        dataStream.writeRawData(bytesData, bytesData.size());
-
-//        dataStream.writeBytes(bytesId, static_cast<uint>(bytesId.size()));
-//        dataStream.writeBytes(bytesData, static_cast<uint>(bytesId.size()));
-
-//        dataStream << bytesId << bytesData;
+        streamID << static_cast<quint16>(id.size());
+        streamID.writeRawData(id, static_cast<uint16_t>(id.size()));
+        streamMsg << static_cast<quint16>(msg.size());
+        streamMsg.writeRawData(msg, static_cast<uint16_t>(msg.size()));
+        dataStream << bufferID << bufferMsg;
     }
 };
 
@@ -162,7 +138,7 @@ void Session::encode() {
             qDebug() << "LENGTH: " << xml.length();
             m_socket->write(xml);
             m_socket->flush();
-        } else if (command == ID) {
+        } else if (command == "<hello/>\n") {
             QByteArray bytes;
             s_processor.hello(&bytes);
             qDebug() << "BYTES: " << bytes;
@@ -171,7 +147,6 @@ void Session::encode() {
 
             bytesStream << bytes;
             qDebug() << "PAC: " << package.size();
-//            bytesStream.writeBytes(bytes, static_cast<uint>(bytes.size()));
             int result = write(package);
             qDebug() << "RESULT: " << result;
         }
