@@ -4,6 +4,8 @@
 #include "MainWindow.h"
 #include "sessions/session.h"
 #include "sessions/sessions.h"
+#include "streaming/constants.h"
+#include "streaming/CommandProcessor.h"
 
 namespace monster {
 
@@ -51,6 +53,50 @@ void MonsterServer::incomingConnection(qintptr handle) {
     Base::incomingConnection(handle);
     if (hasPendingConnections()) {
         QTcpSocket* socket = nextPendingConnection();
+        connect(socket, &QTcpSocket::readyRead, this, &MonsterServer::onReadyRead);
+        connect(socket, &QTcpSocket::disconnected, this, &MonsterServer::onDisconnect);
+//        connect(socket, SIGNAL(error(QAbstractSocket::SocketError)),
+//                this, SLOT(onDisconnect(QAbstractSocket::SocketError)));
+    }
+}
+
+void MonsterServer::onReadyRead() {
+    uint32_t size;
+    QBuffer buffer;
+    QTcpSocket* socket = static_cast<QTcpSocket*>(sender());
+    QByteArray bytes = socket->readAll();
+    buffer.open(QIODevice::ReadWrite);
+    buffer.write(bytes);
+    buffer.seek(0);
+
+    if (buffer.bytesAvailable() == 0) return;
+    QByteArray package;
+    buffer.read(reinterpret_cast<char*>(&size), sizeof(uint32_t));
+    QString command = buffer.buffer();
+    if (command == "<policy-file-request/>") {
+        QByteArray xml;
+        CommandProcessor::policyRequest(&xml);
+        qDebug() << "LENGTH: " << xml.length();
+        socket->write(xml);
+        socket->flush();
+    } else if (command == LOGGER_ID) {
+        QByteArray bytes;
+        CommandProcessor::hello(&bytes);
+        qDebug() << "BYTES: " << bytes;
+        qDebug() << "LENGHT: " << bytes.size();
+        QDataStream bytesStream(&package, QIODevice::WriteOnly);
+
+        bytesStream << bytes;
+        qDebug() << "PAC: " << package.size();
+        bool result = socket->write(package) == package.size();
+        socket->flush();
+        qDebug() << "RESULT: " << result;
+
+        disconnect(socket, &QTcpSocket::readyRead, this, &MonsterServer::onReadyRead);
+        disconnect(socket, &QTcpSocket::disconnected, this, &MonsterServer::onDisconnect);
+//        disconnect(socket, SIGNAL(error(QAbstractSocket::SocketError)),
+//                this, SLOT(onDisconnect(QAbstractSocket::SocketError)));
+
         SessionPtr session = SessionPtr::create(socket);
         session->init();
         QPointer<QThread> thread = new MonsterThread(session, m_sessions.toWeakRef(), this);
@@ -58,7 +104,18 @@ void MonsterServer::incomingConnection(qintptr handle) {
         m_threads.append(thread);
 //        emit sessionCreated(session);
         thread->start();
+
     }
+    qDebug() << "COMMAND: " << command;
+    buffer.close();
+}
+
+void MonsterServer::onDisconnect() {
+    QTcpSocket* socket = static_cast<QTcpSocket*>(sender());
+    disconnect(socket, &QTcpSocket::readyRead, this, &MonsterServer::onReadyRead);
+    disconnect(socket, &QTcpSocket::disconnected, this, &MonsterServer::onDisconnect);
+//    disconnect(socket, SIGNAL(error(QAbstractSocket::SocketError)),
+//            this, SLOT(onDisconnect(QAbstractSocket::SocketError)));
 }
 
 void reset_main_window(monster::MainWindow *window) {

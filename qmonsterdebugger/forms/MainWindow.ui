@@ -57,7 +57,7 @@
   <customwidget>
    <class>MonsterTabWidget</class>
    <extends>QWidget</extends>
-   <header>MonsterTabWidget.hpp</header>
+   <header>MonsterTabWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -251,6 +251,7 @@ Makefile: qmonsterdebugger.pro C:\Qt\5.8\msvc2015_64\mkspecs\win32-msvc2015\qmak
 		C:\Qt\5.8\msvc2015_64\lib\Qt5Widgets.prl \
 		C:\Qt\5.8\msvc2015_64\lib\Qt5Gui.prl \
 		C:\Qt\5.8\msvc2015_64\lib\Qt5Network.prl \
+		C:\Qt\5.8\msvc2015_64\lib\Qt5Xml.prl \
 		C:\Qt\5.8\msvc2015_64\lib\Qt5Core.prl
 	$(QMAKE) -o Makefile qmonsterdebugger.pro -spec win32-msvc2015 "CONFIG+=debug" "CONFIG+=qml_debug"
 C:\Qt\5.8\msvc2015_64\mkspecs\features\spec_pre.prf:
@@ -431,6 +432,7 @@ C:\Qt\5.8\msvc2015_64\lib\qtmaind.prl:
 C:\Qt\5.8\msvc2015_64\lib\Qt5Widgets.prl:
 C:\Qt\5.8\msvc2015_64\lib\Qt5Gui.prl:
 C:\Qt\5.8\msvc2015_64\lib\Qt5Network.prl:
+C:\Qt\5.8\msvc2015_64\lib\Qt5Xml.prl:
 C:\Qt\5.8\msvc2015_64\lib\Qt5Core.prl:
 qmake: FORCE
 	@$(QMAKE) -o Makefile qmonsterdebugger.pro -spec win32-msvc2015 "CONFIG+=debug" "CONFIG+=qml_debug"

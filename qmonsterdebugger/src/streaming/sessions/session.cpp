@@ -29,15 +29,18 @@ public:
     }
 
     void hello(QByteArray* bytes) {
-        QByteArray bufferID;
-        QByteArray bufferMsg;
         std::stringstream stream;
         stream << "{\"command\":\"" << COMMAND_HELLO << "\"}";
         std::string data = stream.str();
-
-        QDataStream dataStream(bytes, QIODevice::WriteOnly);
-        QByteArray id = QString(ID).toUtf8();
         QByteArray msg = QString(data.c_str()).toUtf8();
+        package(msg, *bytes);
+    }
+
+    void package(QByteArray& msg, QByteArray& bytes) {
+        QByteArray bufferID;
+        QByteArray bufferMsg;
+        QByteArray id = QString(LOGGER_ID).toUtf8();
+        QDataStream dataStream(&bytes, QIODevice::WriteOnly);
 
         QDataStream streamID(&bufferID, QIODevice::WriteOnly);
         QDataStream streamMsg(&bufferMsg, QIODevice::WriteOnly);
@@ -127,30 +130,23 @@ const QTcpSocket* Session::socket() const {
 }
 
 void Session::encode() {
+    QByteArray package;
     if (m_bytes.bytesAvailable() == 0) return;
     if (m_size == 0) {
-        QByteArray package;
-        m_bytes.read(reinterpret_cast<char*>(&m_size), sizeof(uint32_t));
-        QString command = m_bytes.buffer();
-        if (command == "<policy-file-request/>") {
-            QByteArray xml;
-            s_processor.policyRequest(&xml);
-            qDebug() << "LENGTH: " << xml.length();
-            m_socket->write(xml);
-            m_socket->flush();
-        } else if (command == "<hello/>\n") {
-            QByteArray bytes;
-            s_processor.hello(&bytes);
-            qDebug() << "BYTES: " << bytes;
-            qDebug() << "LENGHT: " << bytes.size();
-            QDataStream bytesStream(&package, QIODevice::WriteOnly);
-
-            bytesStream << bytes;
-            qDebug() << "PAC: " << package.size();
-            int result = write(package);
-            qDebug() << "RESULT: " << result;
+        QByteArray s = m_bytes.read(sizeof(uint32_t));
+        QDataStream dataStream(&s, QIODevice::ReadOnly);
+        dataStream >> m_size;
+        package.clear();
+    }
+    if (package.size() < m_size && m_bytes.bytesAvailable() > 0) {
+        qint64 l = m_bytes.bytesAvailable();
+        if (l > m_size - package.size()) {
+            l = m_size - package.size();
         }
-        qDebug() << "COMMAND: " << command;
+        package = m_bytes.read(l);
+    }
+    if (m_size != 0 && package.size() == m_size) {
+        int kkk = 0;
     }
     qDebug() << m_size;
 }

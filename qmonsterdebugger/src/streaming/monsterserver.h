@@ -30,9 +30,12 @@ public:
 
     bool start(quint16 port = /*5800*/5840);
 
-    void onReadyRead();
 signals:
     void sessionCreated(SessionPtr session);
+
+private slots:
+    void onDisconnect();
+    void onReadyRead();
 
 protected:
     virtual void incomingConnection(qintptr handle) override;
