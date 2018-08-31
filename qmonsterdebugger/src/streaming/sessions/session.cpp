@@ -6,8 +6,10 @@
 #include <QJsonDocument>
 #include <QDomDocument>
 #include "streaming/constants.h"
+#include "streaming/MessagePack.h"
 #include <sstream>
 #include <string>
+#include <QJsonObject>
 
 namespace monster {
 
@@ -105,7 +107,7 @@ void Session::onReadyRead() {
     m_bytes.open(QIODevice::ReadWrite);
     m_bytes.write(bytes);
     m_bytes.seek(0);
-    encode();
+    decode();
     m_bytes.close();
 }
 
@@ -129,7 +131,7 @@ const QTcpSocket* Session::socket() const {
     return m_socket;
 }
 
-void Session::encode() {
+void Session::decode() {
     QByteArray package;
     if (m_bytes.bytesAvailable() == 0) return;
     if (m_size == 0) {
@@ -146,9 +148,34 @@ void Session::encode() {
         package = m_bytes.read(l);
     }
     if (m_size != 0 && package.size() == m_size) {
-        int kkk = 0;
+        MessagePack pack = MessagePack::read(package);
+        if (!pack.getID().isEmpty() && pack.getID() == LOGGER_ID) {
+            process(pack);
+        }
+        m_size = 0;
+        package.clear();
+    }
+
+    if (m_size == 0 && m_bytes.bytesAvailable() > 0) {
+        decode();
     }
     qDebug() << m_size;
 }
+
+void Session::process(MessagePack& pack) {
+
+    QJsonObject item;
+    const QJsonDocument& doc = pack.getData();
+    QString strJson(doc.toJson(QJsonDocument::Compact));
+    qDebug() << strJson;
+    if (!doc.isNull()) {
+        item = doc.object();
+        if (item["command"] == COMMAND_INFO) {
+            int kkk = 0;
+        }
+    }
+
+}
+
 
 }

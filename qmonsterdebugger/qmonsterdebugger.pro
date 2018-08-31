@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     panels/StreamView.cpp \
     panels/TraceView.cpp \
     src/streaming/constants.cpp \
-    src/streaming/CommandProcessor.cpp
+    src/streaming/CommandProcessor.cpp \
+    src/streaming/MessagePack.cpp
 
 HEADERS  += MainWindow.h \
     MonsterTabWidget.h \
@@ -44,7 +45,8 @@ HEADERS  += MainWindow.h \
     panels/StreamView.h \
     panels/TraceView.h \
     streaming/constants.h \
-    src/streaming/CommandProcessor.h
+    src/streaming/CommandProcessor.h \
+    src/streaming/MessagePack.h
 
 FORMS    += forms/MainWindow.ui \
     forms/StreamView.ui \

@@ -14,7 +14,9 @@ namespace monster { class Session; }
 using SessionWPtr = QWeakPointer<monster::Session>;
 using SessionPtr = QSharedPointer<monster::Session>;
 using TcpSocketPtr = QPointer<QTcpSocket>;
+
 namespace monster {
+class MessagePack;
 class Session : public QObject {
 Q_OBJECT
 public:
@@ -39,6 +41,8 @@ public:
 private:
     void encode();
 
+    void process(MessagePack& pack);
+
 private slots:
     void onReadyRead();
 
@@ -47,7 +51,7 @@ private slots:
     void onSocketError(QAbstractSocket::SocketError);
 
 private:
-    uint32_t m_size;
+    int32_t m_size;
     QBuffer m_bytes;
     QBuffer m_package;
     TcpSocketPtr m_socket;

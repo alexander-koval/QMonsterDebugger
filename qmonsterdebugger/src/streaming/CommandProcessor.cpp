@@ -1,10 +1,12 @@
 #include "CommandProcessor.h"
 #include <string>
 #include <sstream>
+#include <QBuffer>
 #include <QDataStream>
 #include <QJsonDocument>
 #include <QDomDocument>
 #include "streaming/constants.h"
+#include <iostream>
 
 namespace monster {
 
@@ -28,10 +30,10 @@ void CommandProcessor::hello(QByteArray* bytes) {
     stream << "{\"command\":\"" << COMMAND_HELLO << "\"}";
     std::string data = stream.str();
     QByteArray msg = QString(data.c_str()).toUtf8();
-    package(msg, *bytes);
+    encode(msg, *bytes);
 }
 
-void CommandProcessor::package(QByteArray& msg, QByteArray& bytes) {
+void CommandProcessor::encode(QByteArray& msg, QByteArray& bytes) {
     QByteArray bufferID;
     QByteArray bufferMsg;
     QByteArray id = QString(LOGGER_ID).toUtf8();
@@ -44,6 +46,30 @@ void CommandProcessor::package(QByteArray& msg, QByteArray& bytes) {
     streamMsg << static_cast<quint16>(msg.size());
     streamMsg.writeRawData(msg, static_cast<uint16_t>(msg.size()));
     dataStream << bufferID << bufferMsg;
+}
+
+void CommandProcessor::decode(QString& id, QJsonDocument& data,
+                              QByteArray &bytes) {
+    QDataStream buffer(&bytes, QIODevice::ReadOnly);
+    quint32 packSize;
+    quint16 dataSize;
+
+    buffer >> packSize;
+    buffer >> dataSize;
+    char* bufID = new char[dataSize];
+    buffer.readRawData(bufID, dataSize);
+    id = QString::fromUtf8(bufID);
+    id.truncate(dataSize);
+
+    buffer >> packSize;
+    buffer >> dataSize;
+    char* bufMsg = new char[dataSize];
+    buffer.readRawData(bufMsg, dataSize);
+    data = QJsonDocument::fromJson(
+                QByteArray::fromRawData(bufMsg, dataSize));
+
+    delete[] bufID;
+    delete[] bufMsg;
 }
 
 
