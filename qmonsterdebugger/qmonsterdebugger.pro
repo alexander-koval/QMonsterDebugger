@@ -13,7 +13,7 @@ TARGET = qmonsterdebugger
 TEMPLATE = app
 
 VPATH += src
-INCLUDEPATH += src
+INCLUDEPATH += src src/amf
 SOURCES += main.cpp\
     MainWindow.cpp \
     MonsterTabWidget.cpp \
@@ -27,9 +27,25 @@ SOURCES += main.cpp\
     panels/TraceModel.cpp \
     panels/StreamView.cpp \
     panels/TraceView.cpp \
-    src/streaming/constants.cpp \
-    src/streaming/CommandProcessor.cpp \
-    src/streaming/MessagePack.cpp
+    streaming/constants.cpp \
+    streaming/CommandProcessor.cpp \
+    streaming/MessagePack.cpp \
+    amf/amfpacket.cpp \
+    amf/deserializer.cpp \
+    amf/serializationcontext.cpp \
+    amf/serializer.cpp \
+    amf/types/amfarray.cpp \
+    amf/types/amfbool.cpp \
+    amf/types/amfbytearray.cpp \
+    amf/types/amfdate.cpp \
+    amf/types/amfdictionary.cpp \
+    amf/types/amfdouble.cpp \
+    amf/types/amfinteger.cpp \
+    amf/types/amfobject.cpp \
+    amf/types/amfstring.cpp \
+    amf/types/amfvector.cpp \
+    amf/types/amfxml.cpp \
+    amf/types/amfxmldocument.cpp
 
 HEADERS  += MainWindow.h \
     MonsterTabWidget.h \
@@ -45,8 +61,30 @@ HEADERS  += MainWindow.h \
     panels/StreamView.h \
     panels/TraceView.h \
     streaming/constants.h \
-    src/streaming/CommandProcessor.h \
-    src/streaming/MessagePack.h
+    streaming/CommandProcessor.h \
+    streaming/MessagePack.h \
+    amd/amf.hpp \
+    amf/amfpacket.hpp \
+    amf/deserializer.hpp \
+    amf/serializationcontext.hpp \
+    amf/serializer.hpp \
+    amf/types/amfarray.hpp \
+    amf/types/amfbool.hpp \
+    amf/types/amfbytearray.hpp \
+    amf/types/amfdate.hpp \
+    amf/types/amfdictionary.hpp \
+    amf/types/amfdouble.hpp \
+    amf/types/amfinteger.hpp \
+    amf/types/amfitem.hpp \
+    amf/types/amfnull.hpp \
+    amf/types/amfobject.hpp \
+    amf/types/amfstring.hpp \
+    amf/types/amfundefined.hpp \
+    amf/types/amfvector.hpp \
+    amf/types/amfxml.hpp \
+    amf/types/amfxmldocument.hpp \
+    amf/utils/amfitemptr.hpp \
+    amf/utils/amfobjecttraits.hpp
 
 FORMS    += forms/MainWindow.ui \
     forms/StreamView.ui \

@@ -5,6 +5,8 @@
 #include <QString>
 #include <QJsonDocument>
 #include <QSharedPointer>
+#include "amf/types/amfstring.hpp"
+#include "amf/types/amfobject.hpp"
 
 namespace monster {
 class MessagePack
@@ -14,19 +16,19 @@ public:
 
     MessagePack();
 
-    MessagePack(const QString& id, const QJsonDocument& data);
+    MessagePack(const amf::AmfString& id, const amf::AmfObject& data);
 
-    const QString& getID();
+    const amf::AmfString& getID();
 
-    const QJsonDocument& getData();
+    const amf::AmfObject& getData();
 
     QSharedPointer<QByteArray> getBytes();
 
     void setBytes(QByteArray& bytes);
 
 private:
-    QString m_id;
-    QJsonDocument m_data;
+    amf::AmfString m_id;
+    amf::AmfObject m_data;
 };
 
 }

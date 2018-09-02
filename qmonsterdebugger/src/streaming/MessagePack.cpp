@@ -2,6 +2,7 @@
 #include <QDataStream>
 #include <QIODevice>
 #include "streaming/CommandProcessor.h"
+#include "amf/utils/amfitemptr.hpp"
 
 namespace monster {
 MessagePack MessagePack::read(QByteArray &bytes) {
@@ -14,16 +15,16 @@ MessagePack::MessagePack() : m_id(), m_data() {
 
 }
 
-MessagePack::MessagePack(const QString &id, const QJsonDocument& data)
+MessagePack::MessagePack(const amf::AmfString &id, const amf::AmfObject& data)
     : m_id(id), m_data(data) {
 
 }
 
-const QString& MessagePack::getID() {
+const amf::AmfString& MessagePack::getID() {
     return m_id;
 }
 
-const QJsonDocument& MessagePack::getData() {
+const amf::AmfObject& MessagePack::getData() {
     return m_data;
 }
 
@@ -35,6 +36,8 @@ QSharedPointer<QByteArray> MessagePack::getBytes() {
 }
 
 void MessagePack::setBytes(QByteArray &bytes) {
+    amf::AmfItemPtr item = CommandProcessor::deserialize(bytes);
+    item.as<amf::AmfString>();
     CommandProcessor::decode(m_id, m_data, bytes);
 }
 }

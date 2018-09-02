@@ -38,8 +38,20 @@ public:
 
     const QTcpSocket* socket() const;
 
+    const QString& playerType() const { return m_playerType; }
+
+    const QString& playerVersion() const { return m_playerVersion; }
+
+    const QString& isDebugger() const { return m_isDebugger; }
+
+    const QString& isFlex() const { return m_isFlex; }
+
+    const QString& fileTitle() const { return m_fileTitle; }
+
+    const QString& fileLocation() const { return m_fileLocation; }
+
 private:
-    void encode();
+    void decode();
 
     void process(MessagePack& pack);
 
@@ -55,7 +67,13 @@ private:
     QBuffer m_bytes;
     QBuffer m_package;
     TcpSocketPtr m_socket;
-    quint16     m_blockSize;
+
+    QString m_playerType;
+    QString m_playerVersion;
+    QString m_isDebugger;
+    QString m_isFlex;
+    QString m_fileTitle;
+    QString m_fileLocation;
 };
 }
 #endif // SESSION_H

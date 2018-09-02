@@ -7,8 +7,43 @@
 #include <QDomDocument>
 #include "streaming/constants.h"
 #include <iostream>
+#include "amf/serializer.hpp"
+#include "amf/deserializer.hpp"
+#include "amf/types/amfobject.hpp"
+#include "amf/types/amfstring.hpp"
 
 namespace monster {
+
+amf::v8 serializeMsg(const char *cmd) {
+    amf::Serializer serializer;
+    amf::AmfObject object("", true, false);
+    amf::AmfString command(cmd);
+    object.addDynamicProperty("command", command);
+    serializer << object;
+    return serializer.data();
+}
+
+amf::v8 serializeID(const char* id) {
+    amf::Serializer serializer;
+    amf::AmfString string(id);
+    serializer << string;
+    return serializer.data();
+}
+
+amf::AmfObject deserializeMsg(const QByteArray& bytes) {
+    return CommandProcessor::deserialize(bytes).as<amf::AmfObject>();
+}
+
+amf::AmfString deserializeID(const QByteArray& bytes) {
+    return CommandProcessor::deserialize(bytes).as<amf::AmfString>();
+}
+
+amf::AmfItemPtr CommandProcessor::deserialize(const QByteArray &bytes) {
+    amf::v8 data(bytes.begin(), bytes.end());
+    amf::Deserializer deserializer;
+    amf::v8::const_iterator it = data.cbegin();
+    return deserializer.deserialize(it, data.cend());
+}
 
 void CommandProcessor::policyRequest(QByteArray* bytes) {
     char zero = 0x00;
@@ -26,51 +61,58 @@ void CommandProcessor::policyRequest(QByteArray* bytes) {
 }
 
 void CommandProcessor::hello(QByteArray* bytes) {
-    std::stringstream stream;
-    stream << "{\"command\":\"" << COMMAND_HELLO << "\"}";
-    std::string data = stream.str();
-    QByteArray msg = QString(data.c_str()).toUtf8();
+    amf::v8&& data = serializeMsg(COMMAND_HELLO);
+    QByteArray msg = QByteArray::fromRawData(
+                reinterpret_cast<const char*>(data.data()), data.size());
+    encode(msg, *bytes);
+}
+
+void CommandProcessor::base(QByteArray* bytes) {
+    amf::v8&& data = serializeMsg(COMMAND_HELLO);
+    QByteArray msg = QByteArray::fromRawData(
+                reinterpret_cast<const char*>(data.data()), data.size());
     encode(msg, *bytes);
 }
 
 void CommandProcessor::encode(QByteArray& msg, QByteArray& bytes) {
     QByteArray bufferID;
     QByteArray bufferMsg;
-    QByteArray id = QString(LOGGER_ID).toUtf8();
+    amf::v8&& v8 = serializeID(LOGGER_ID);
+    QByteArray id = QByteArray::fromRawData(
+                reinterpret_cast<const char*>(v8.data()), v8.size());
     QDataStream dataStream(&bytes, QIODevice::WriteOnly);
 
     QDataStream streamID(&bufferID, QIODevice::WriteOnly);
     QDataStream streamMsg(&bufferMsg, QIODevice::WriteOnly);
-    streamID << static_cast<quint16>(id.size());
+//    streamID << static_cast<quint16>(id.size());
     streamID.writeRawData(id, static_cast<uint16_t>(id.size()));
-    streamMsg << static_cast<quint16>(msg.size());
+//    streamMsg << static_cast<quint16>(msg.size());
     streamMsg.writeRawData(msg, static_cast<uint16_t>(msg.size()));
     dataStream << bufferID << bufferMsg;
 }
 
-void CommandProcessor::decode(QString& id, QJsonDocument& data,
+void CommandProcessor::decode(amf::AmfString& id, amf::AmfObject& data,
                               QByteArray &bytes) {
     QDataStream buffer(&bytes, QIODevice::ReadOnly);
     quint32 packSize;
-    quint16 dataSize;
 
     buffer >> packSize;
-    buffer >> dataSize;
-    char* bufID = new char[dataSize];
-    buffer.readRawData(bufID, dataSize);
-    id = QString::fromUtf8(bufID);
-    id.truncate(dataSize);
+    char* bufID = new char[packSize];
+    buffer.readRawData(bufID, packSize);
+    id = deserializeID(QByteArray::fromRawData(bufID, packSize));
 
     buffer >> packSize;
-    buffer >> dataSize;
-    char* bufMsg = new char[dataSize];
-    buffer.readRawData(bufMsg, dataSize);
-    data = QJsonDocument::fromJson(
-                QByteArray::fromRawData(bufMsg, dataSize));
+    char* bufMsg = new char[packSize];
+    buffer.readRawData(bufMsg, packSize);
+    data = deserializeMsg(QByteArray::fromRawData(bufMsg, packSize));
 
     delete[] bufID;
     delete[] bufMsg;
 }
 
+amf::v8 CommandProcessor::serialize(const char *command)
+{
+
+}
 
 }
