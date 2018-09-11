@@ -107,6 +107,7 @@ void CommandProcessor::decode(QString& id, QMap<std::string, QVariant>& data,
     char* bufMsg = new char[packSize];
     buffer.readRawData(bufMsg, packSize);
     amf::AmfObject amf_obj = deserializeMsg(QByteArray::fromRawData(bufMsg, packSize));
+    amf_obj.externalizer()
     data = QMap<std::string, QVariant>(amf_obj.dynamicProperties);
 
     delete[] bufID;

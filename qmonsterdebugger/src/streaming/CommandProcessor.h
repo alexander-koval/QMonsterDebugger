@@ -2,8 +2,10 @@
 #define COMMANDPROCESSOR_H
 
 #include "amf/utils/amfitemptr.hpp"
+#include <QMap>
 
 class QString;
+class QVariant;
 class QByteArray;
 class QJsonDocument;
 
@@ -24,7 +26,7 @@ public:
 
     static void encode(QByteArray& msg, QByteArray& bytes);
 
-    static void decode(amf::AmfString& id, amf::AmfObject& data,
+    static void decode(QString& id, QMap<std::string, QVariant>& data,
                        QByteArray& bytes);
 
     static amf::v8 serialize(const char* command);

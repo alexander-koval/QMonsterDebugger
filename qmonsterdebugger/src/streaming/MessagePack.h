@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QString>
+#include <QMap>
+#include <QVariant>
 #include <QJsonDocument>
 #include <QSharedPointer>
 #include "amf/types/amfstring.hpp"
@@ -16,19 +18,19 @@ public:
 
     MessagePack();
 
-    MessagePack(const amf::AmfString& id, const amf::AmfObject& data);
+    MessagePack(const QString& id, const QPair<std::string, QVariant>& data);
 
-    const amf::AmfString& getID();
+    const QString& getID();
 
-    const amf::AmfObject& getData();
+    const QPair<std::string, QVariant>& getData();
 
-    QSharedPointer<QByteArray> getBytes();
+    QSharedPointer<QByteArray> getBytes() const;
 
     void setBytes(QByteArray& bytes);
 
 private:
-    amf::AmfString m_id;
-    amf::AmfObject m_data;
+    QString m_id;
+    QPair<std::string, QVariant> m_data;
 };
 
 }

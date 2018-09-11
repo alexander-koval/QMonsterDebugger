@@ -174,27 +174,29 @@ void Session::decode() {
 void Session::process(MessagePack& pack) {
 
     QJsonObject item;
-    const QJsonDocument& doc = pack.getData();
-    QString strJson(doc.toJson(QJsonDocument::Compact));
-    qDebug() << strJson;
-    if (!doc.isNull()) {
-        item = doc.object();
-        if (item["command"] == COMMAND_INFO) {
-            m_playerType = item["playerType"].toString();
-            m_playerVersion = item["playerVersion"].toString();
-            m_isDebugger = item["isDebugger"].toString();
-            m_isFlex = item["isFlex"].toString();
-            m_fileLocation = item["fileLocation"].toString();
-            m_fileTitle = item["tileTitle"].toString();
+    const QMap<std::string, amf::AmfItemPtr>& params = pack.getData();
 
-            QByteArray bytes;
-            QByteArray package;
-            CommandProcessor::base(&bytes);
-            QDataStream bytesStream(&package, QIODevice::WriteOnly);
-            bytesStream << bytes;
-            write(package);
-        }
-    }
+//    const QJsonDocument& doc = pack.getData();
+//    QString strJson(doc.toJson(QJsonDocument::Compact));
+//    qDebug() << strJson;
+//    if (!doc.isNull()) {
+//        item = doc.object();
+//        if (item["command"] == COMMAND_INFO) {
+//            m_playerType = item["playerType"].toString();
+//            m_playerVersion = item["playerVersion"].toString();
+//            m_isDebugger = item["isDebugger"].toString();
+//            m_isFlex = item["isFlex"].toString();
+//            m_fileLocation = item["fileLocation"].toString();
+//            m_fileTitle = item["tileTitle"].toString();
+
+//            QByteArray bytes;
+//            QByteArray package;
+//            CommandProcessor::base(&bytes);
+//            QDataStream bytesStream(&package, QIODevice::WriteOnly);
+//            bytesStream << bytes;
+//            write(package);
+//        }
+//    }
 
 }
 
