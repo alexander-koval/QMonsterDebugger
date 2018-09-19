@@ -18,18 +18,17 @@ SOURCES += main.cpp\
     MainWindow.cpp \
     MonsterTabWidget.cpp \
     DebuggerInfo.cpp \
-    streaming/sessions/sessions.cpp \
-    streaming/sessions/session.cpp \
-    streaming/monsterserver.cpp \
-    streaming/socket/socketapplication.cpp \
-    streaming/applicationstreamer.cpp \
+    stream/sessions/sessions.cpp \
+    stream/sessions/session.cpp \
+    stream/monsterserver.cpp \
+    stream/socket/socketapplication.cpp \
     panels/TraceItem.cpp \
     panels/TraceModel.cpp \
     panels/StreamView.cpp \
     panels/TraceView.cpp \
-    streaming/constants.cpp \
-    streaming/CommandProcessor.cpp \
-    streaming/MessagePack.cpp \
+    stream/constants.cpp \
+    stream/CommandProcessor.cpp \
+    stream/MessagePack.cpp \
     amf/amfpacket.cpp \
     amf/deserializer.cpp \
     amf/serializationcontext.cpp \
@@ -50,20 +49,19 @@ SOURCES += main.cpp\
 HEADERS  += MainWindow.h \
     MonsterTabWidget.h \
     DebuggerInfo.h \
-    streaming/sessions/sessions.h \
-    streaming/sessions/session.h \
-    streaming/monsterserver.h \
-    streaming/debuggable.h \
-    streaming/socket/socketapplication.h \
-    streaming/applicationstreamer.h \
+    stream/sessions/sessions.h \
+    stream/sessions/session.h \
+    stream/monsterserver.h \
+    stream/debuggable.h \
+    stream/socket/socketapplication.h \
     panels/TraceItem.h \
     panels/TraceModel.h \
     panels/StreamView.h \
     panels/TraceView.h \
-    streaming/constants.h \
-    streaming/CommandProcessor.h \
-    streaming/MessagePack.h \
-    amd/amf.hpp \
+    stream/constants.h \
+    stream/CommandProcessor.h \
+    stream/MessagePack.h \
+    amf/amf.hpp \
     amf/amfpacket.hpp \
     amf/deserializer.hpp \
     amf/serializationcontext.hpp \
@@ -84,7 +82,8 @@ HEADERS  += MainWindow.h \
     amf/types/amfxml.hpp \
     amf/types/amfxmldocument.hpp \
     amf/utils/amfitemptr.hpp \
-    amf/utils/amfobjecttraits.hpp
+    amf/utils/amfobjecttraits.hpp \
+    src/stream/StreamFwd.h
 
 FORMS    += forms/MainWindow.ui \
     forms/StreamView.ui \

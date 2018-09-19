@@ -5,9 +5,9 @@
 #include <QTime>
 #include <QJsonDocument>
 #include <QDomDocument>
-#include "streaming/constants.h"
-#include "streaming/MessagePack.h"
-#include "streaming/CommandProcessor.h"
+#include "stream/constants.h"
+#include "stream/MessagePack.h"
+#include "stream/CommandProcessor.h"
 #include <sstream>
 #include <string>
 #include <QJsonObject>
@@ -174,7 +174,7 @@ void Session::decode() {
 void Session::process(MessagePack& pack) {
 
     QJsonObject item;
-    const QMap<std::string, amf::AmfItemPtr>& params = pack.getData();
+//    const QMap<std::string, amf::AmfItemPtr>& params = pack.getData();
 
 //    const QJsonDocument& doc = pack.getData();
 //    QString strJson(doc.toJson(QJsonDocument::Compact));

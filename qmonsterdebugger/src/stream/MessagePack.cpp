@@ -1,7 +1,7 @@
 #include "MessagePack.h"
 #include <QDataStream>
 #include <QIODevice>
-#include "streaming/CommandProcessor.h"
+#include "stream/CommandProcessor.h"
 #include "amf/utils/amfitemptr.hpp"
 #include "amf/serializer.hpp"
 #include "QMap"
@@ -63,8 +63,8 @@ QSharedPointer<QByteArray> MessagePack::getBytes() const{
 }
 
 void MessagePack::setBytes(QByteArray &bytes) {
-    amf::AmfItemPtr item = CommandProcessor::deserialize(bytes);
-    item.as<amf::AmfString>();
-    CommandProcessor::decode(m_id, m_data, bytes);
+//    amf::AmfItemPtr item = CommandProcessor::deserialize(bytes);
+//    item.as<amf::AmfString>();
+//    CommandProcessor::decode(m_id, m_data, bytes);
 }
 }

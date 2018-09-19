@@ -1,7 +1,7 @@
 #include "MainWindow.h"
 #include <QApplication>
 #include <QScopedPointer>
-#include "streaming/monsterserver.h"
+#include "stream/monsterserver.h"
 
 using monster::MainWindow;
 using monster::MonsterServer;

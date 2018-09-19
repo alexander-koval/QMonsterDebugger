@@ -4,8 +4,8 @@
 #include "MainWindow.h"
 #include "sessions/session.h"
 #include "sessions/sessions.h"
-#include "streaming/constants.h"
-#include "streaming/CommandProcessor.h"
+#include "stream/constants.h"
+#include "stream/CommandProcessor.h"
 
 namespace monster {
 

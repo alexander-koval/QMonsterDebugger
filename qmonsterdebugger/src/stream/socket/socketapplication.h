@@ -1,7 +1,7 @@
 #ifndef SOCKETAPPLICATION_H
 #define SOCKETAPPLICATION_H
 
-#include "streaming/debuggable.h"
+#include "stream/debuggable.h"
 #include <qglobal.h>
 #include <string>
 

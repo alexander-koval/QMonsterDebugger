@@ -31,7 +31,7 @@ public:
 
     static amf::v8 serialize(const char* command);
 
-    static amf::AmfItemPtr deserialize(const QByteArray& bytes);
+    static QVariant deserialize(const QByteArray& bytes);
 };
 
 }
