@@ -24,7 +24,7 @@ public:
 	bool operator==(const AmfItem& other) const;
 	v8 serialize(SerializationContext& ctx) const;
 	static PacketHeader deserialize(v8::const_iterator& it, v8::const_iterator end, SerializationContext& ctx);
-
+    u8 marker() const override { return Amf0Marker::AVMPLUS_OBJECT; }
 	template<typename T>
 	T& getValue() {
 		return value.as<T>();
@@ -52,6 +52,8 @@ public:
 		return value.as<T>();
 	}
 
+    u8 marker() const override { return Amf0Marker::AVMPLUS_OBJECT; }
+
 	std::string target;
 	std::string response;
 
@@ -66,6 +68,7 @@ public:
 	bool operator==(const AmfItem& other) const;
 	v8 serialize(SerializationContext& ctx) const;
 	static AmfPacket deserialize(v8::const_iterator& it, v8::const_iterator end, SerializationContext& ctx);
+    u8 marker() const override { return Amf0Marker::AVMPLUS_OBJECT; }
 
 	std::vector<PacketHeader> headers;
 	std::vector<PacketMessage> messages;

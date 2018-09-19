@@ -13,6 +13,7 @@ public:
 	AmfInteger() : value(0) { }
 	AmfInteger(int v) : value(v) { }
 	operator int() const { return value; }
+    u8 marker() const override { return AMF_INTEGER; }
 
 	bool operator==(const AmfItem& other) const;
 	std::vector<u8> serialize(SerializationContext&) const;

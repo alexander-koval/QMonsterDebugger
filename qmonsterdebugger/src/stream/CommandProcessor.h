@@ -26,7 +26,7 @@ public:
 
     static void encode(QByteArray& msg, QByteArray& bytes);
 
-    static void decode(QString& id, QMap<std::string, QVariant>& data,
+    static void decode(QString& id, QMap<QString, QVariant>& data,
                        QByteArray& bytes);
 
     static amf::v8 serialize(const char* command);

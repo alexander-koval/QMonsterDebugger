@@ -14,7 +14,7 @@ class AmfXmlDocument : public AmfItem {
 public:
 	AmfXmlDocument() { }
 	AmfXmlDocument(std::string value) : value(value) { }
-
+    u8 marker() const override { return AMF_XMLDOC; }
 	bool operator==(const AmfItem& other) const;
 	std::vector<u8> serialize(SerializationContext& ctx) const;
 	static AmfXmlDocument deserialize(v8::const_iterator& it, v8::const_iterator end, SerializationContext& ctx);

@@ -19,6 +19,8 @@ public:
 		return std::vector<u8>{ value ? AMF_TRUE : AMF_FALSE };
 	}
 
+    u8 marker() const override { return value ? AMF_TRUE : AMF_FALSE; }
+
 	static AmfBool deserialize(v8::const_iterator& it, v8::const_iterator end, SerializationContext&);
 
 	bool value;

@@ -32,7 +32,7 @@ MessagePack::MessagePack() : m_id(), m_data() {
 
 }
 
-MessagePack::MessagePack(const QString &id, const QPair<std::string, QVariant>& data)
+MessagePack::MessagePack(const QString &id, const QMap<QString, QVariant>& data)
     : m_id(id), m_data(data) {
 
 }
@@ -41,7 +41,7 @@ const QString& MessagePack::getID() {
     return m_id;
 }
 
-const QPair<std::string, QVariant>& MessagePack::getData() {
+const QMap<QString, QVariant>& MessagePack::getData() {
     return m_data;
 }
 
@@ -49,10 +49,14 @@ QSharedPointer<QByteArray> MessagePack::getBytes() const{
     QSharedPointer<QByteArray> bytes(new QByteArray);
     amf::Serializer serializer;
     amf::AmfObject object("", true, false);
-    QVariant::Type type = m_data.second.type();
-    if (type == QVariant::Type::String) {
-        const QString& value = m_data.second.toString();
-        object.addDynamicProperty(m_data.first, toAMF<amf::AmfString, const QString>(value));
+    foreach(const QString& key, m_data.keys()) {
+        QVariant item = m_data.value(key, QVariant());
+        QVariant::Type type = item.type();
+        if (type == QVariant::Type::String) {
+            const QString& value = item.toString();
+            object.addDynamicProperty(key.toStdString(),
+                                      toAMF<amf::AmfString, const QString>(value));
+        }
     }
     serializer << object;
     const amf::v8& buffer = serializer.data();
@@ -65,6 +69,6 @@ QSharedPointer<QByteArray> MessagePack::getBytes() const{
 void MessagePack::setBytes(QByteArray &bytes) {
 //    amf::AmfItemPtr item = CommandProcessor::deserialize(bytes);
 //    item.as<amf::AmfString>();
-//    CommandProcessor::decode(m_id, m_data, bytes);
+    CommandProcessor::decode(m_id, m_data, bytes);
 }
 }

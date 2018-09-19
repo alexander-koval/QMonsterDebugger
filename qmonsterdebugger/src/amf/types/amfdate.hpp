@@ -23,6 +23,7 @@ public:
 	AmfDate(std::tm* date) : value(mktime(date) * MSEC_PER_SEC) { }
 	AmfDate(std::chrono::system_clock::time_point date);
 
+    u8 marker() const override { return AMF_DATE; }
 	bool operator==(const AmfItem& other) const;
 	std::vector<u8> serialize(SerializationContext& ctx) const;
 	static AmfDate deserialize(v8::const_iterator& it, v8::const_iterator end, SerializationContext& ctx);

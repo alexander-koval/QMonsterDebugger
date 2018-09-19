@@ -6,6 +6,7 @@
 #include <QJsonDocument>
 #include <QDomDocument>
 #include <QMap>
+#include <QHash>
 #include <QList>
 #include <QVariant>
 #include <QVector>
@@ -33,6 +34,103 @@
 
 namespace monster {
 
+class AMFConverter {
+public:
+    static QVariant convert(amf::u8 type, amf::AmfItemPtr item) {
+        using namespace amf;
+        switch (type) {
+        case AMF_UNDEFINED: return QVariant(QVariant::Invalid);
+        case AMF_NULL: return QVariant(QVariant::Invalid);
+        case AMF_FALSE: return QVariant(item.as<AmfBool>().value);
+        case AMF_INTEGER: return QVariant(item.as<AmfInteger>().value);
+        case AMF_DOUBLE: return QVariant(item.as<AmfDouble>().value);
+        case AMF_STRING: return QVariant(QString::fromStdString(item.as<AmfString>().value));
+        case AMF_XMLDOC: return QVariant(QString::fromStdString(item.as<AmfXmlDocument>().value)); // TODO a.koval It's just a string
+        case AMF_DATE: return QVariant(item.as<AmfDate>().value); // TODO a.koval It's just a long long
+        case AMF_ARRAY: {
+            QList<QVariant> items;
+            std::vector<AmfItemPtr> dense = item.as<AmfArray>().dense;
+            std::for_each(dense.begin(), dense.end(), [&items](AmfItemPtr& item) {
+                QVariant variant = convert(item->marker(), item);
+                items.push_back(variant);
+            });
+            return QVariant(items);
+        }
+        case AMF_OBJECT: {
+            QMap<QString, QVariant> properties;
+            std::map<std::string, AmfItemPtr>& dynamic = item.as<AmfObject>().dynamicProperties;
+            std::for_each(dynamic.begin(), dynamic.end(), [&properties](std::pair<const std::string, AmfItemPtr>& pair) {
+                AmfItemPtr& item = pair.second;
+                QVariant variant = convert(item->marker(), item);
+                properties.insert(QString::fromStdString(pair.first), variant);
+            });
+            std::map<std::string, AmfItemPtr>& sealed = item.as<AmfObject>().sealedProperties;
+            std::for_each(sealed.begin(), sealed.end(), [&properties](std::pair<const std::string, AmfItemPtr>& pair) {
+                AmfItemPtr& item = pair.second;
+                QVariant variant = convert(item->marker(), item);
+                properties.insert(QString::fromStdString(pair.first), variant);
+            });
+            return QVariant(properties);
+        }
+        case AMF_XML: {
+           return QVariant(QString::fromStdString(item.as<AmfXml>().value));
+        }
+        case AMF_BYTEARRAY: {
+            std::vector<u8> buffer = item.as<AmfByteArray>().value;
+            QByteArray bytes = QByteArray::fromRawData(
+                        reinterpret_cast<char*>(buffer.data()), buffer.size());
+            return QVariant(bytes);
+        }
+        case AMF_VECTOR_INT: {
+            QList<QVariant> items;
+            std::vector<int> values = item.as<AmfVector<int>>().values;
+            std::for_each(values.begin(), values.end(), [&items](int value) {
+                items.push_back(value);
+            });
+            return QVariant(items);
+        }
+        case AMF_VECTOR_UINT: {
+            QList<QVariant> items;
+            std::vector<uint> values = item.as<AmfVector<uint>>().values;
+            std::for_each(values.begin(), values.end(), [&items](uint value) {
+                items.push_back(value);
+            });
+            return QVariant(items);
+        }
+        case AMF_VECTOR_DOUBLE: {
+            QList<QVariant> items;
+            std::vector<double> values = item.as<AmfVector<double>>().values;
+            std::for_each(values.begin(), values.end(), [&items](double value) {
+                items.push_back(value);
+            });
+            return QVariant(items);
+        }
+        case AMF_VECTOR_OBJECT: {
+            QList<QVariant> items;
+            std::vector<AmfItemPtr> values = item.as<AmfVector<AmfItem>>().values;
+            std::for_each(values.begin(), values.end(), [&items](AmfItemPtr& item) {
+                QVariant variant = convert(item->marker(), item);
+                items.push_back(variant);
+            });
+            return QVariant(items);
+        }
+        case AMF_DICTIONARY: {
+            QHash<QString, QVariant> hash;
+            std::unordered_map<AmfItemPtr, AmfItemPtr, AmfDictionaryHash>& values =
+                    item.as<AmfDictionary>().values;
+            std::for_each(values.begin(), values.end(), [&hash](std::pair<const AmfItemPtr, AmfItemPtr>& pair) {
+                const AmfItemPtr& key = pair.first;
+                AmfItemPtr& item = pair.second;
+                hash.insert(QString::fromStdString(key.as<AmfString>().value),
+                            convert(item->marker(), item));
+            });
+            return QVariant(hash);
+        }
+        }
+        return QVariant();
+    }
+};
+
 amf::v8 serializeMsg(const char *cmd) {
     amf::Serializer serializer;
     amf::AmfObject object("", true, false);
@@ -50,11 +148,11 @@ amf::v8 serializeID(const char* id) {
 }
 
 QVariant deserializeMsg(const QByteArray& bytes) {
-//    return CommandProcessor::deserialize(bytes).as<amf::AmfObject>();
+    return CommandProcessor::deserialize(bytes);
 }
 
 QVariant deserializeID(const QByteArray& bytes) {
-//    return CommandProcessor::deserialize(bytes).as<amf::AmfString>();
+    return CommandProcessor::deserialize(bytes);
 }
 
 QVariant CommandProcessor::deserialize(const QByteArray &bytes) {
@@ -62,75 +160,8 @@ QVariant CommandProcessor::deserialize(const QByteArray &bytes) {
     v8 data(bytes.begin(), bytes.end());
     Deserializer deserializer;
     v8::const_iterator it = data.cbegin();
-    if (it == data.cend())
-        throw std::out_of_range("CommandProcessor::deserialize end of input");
-    u8 type = *it;
     AmfItemPtr item = deserializer.deserialize(it, data.cend());
-    switch (type) {
-    case AMF_UNDEFINED: return QVariant(QVariant::Invalid);
-    case AMF_NULL: return QVariant(QVariant::Invalid);
-    case AMF_FALSE: return QVariant(item.as<AmfBool>().value);
-    case AMF_INTEGER: return QVariant(item.as<AmfInteger>().value);
-    case AMF_DOUBLE: return QVariant(item.as<AmfDouble>().value);
-    case AMF_STRING: return QVariant(QString::fromStdString(item.as<AmfString>().value));
-    case AMF_XMLDOC: return QVariant(QString::fromStdString(item.as<AmfXmlDocument>().value)); // TODO a.koval It's just a string
-    case AMF_DATE: return QVariant(item.as<AmfDate>().value); // TODO a.koval It's just a long long
-    case AMF_ARRAY: {
-//        QVector<AmfItemPtr> vector = QVector<AmfItemPtr>::fromStdVector(item.as<AmfArray>().dense);
-//        return QVariant(QList<AmfItemPtr>::fromVector(vector)); // TODO a.koval It's vector of AmfItemPtr
-    }
-//    case AMF_OBJECT: return QVariant(item.as<AmfObject>().dynamicProperties);
-//    case AMF_XML: return QVariant(item.as<AmfXml>().value);
-//    case AMF_BYTEARRAY: return QVariant(item.as<AmfByteArray>().value);
-//    case AMF_VECTOR_INT: return QVariant(item.as<AmfVector<int>>().values);
-//    case AMF_VECTOR_UINT: return QVariant(item.as<AmfVector<uint>>().values);
-//    case AMF_VECTOR_DOUBLE: return QVariant(item.as<AmfVector<double>>().values);
-//    case AMF_VECTOR_OBJECT: return QVariant(item.as<AmfVector<AmfObject>>().values);
-//    case AMF_DICTIONARY: return QVariant(item.as<AmfDictionary>().values);
-//    default: return QVariant(Qvariant::Invalid);
-    }
-//    switch (type) {
-//        case AMF_UNDEFINED: {
-//            QVariant(QVariant::Invalid);
-//            return item.as<AmfUndefined*>();
-//        }
-//        case AMF_NULL:
-//            return AmfItemPtr(AmfNull::deserialize(it, end, ctx));
-//        case AMF_FALSE:
-//        case AMF_TRUE:
-//            return AmfItemPtr(AmfBool::deserialize(it, end, ctx));
-//        case AMF_INTEGER:
-//            return AmfItemPtr(AmfInteger::deserialize(it, end, ctx));
-//        case AMF_DOUBLE:
-//            return AmfItemPtr(AmfDouble::deserialize(it, end, ctx));
-//        case AMF_STRING:
-//            return AmfItemPtr(AmfString::deserialize(it, end, ctx));
-//        case AMF_XMLDOC:
-//            return AmfItemPtr(AmfXmlDocument::deserialize(it, end, ctx));
-//        case AMF_DATE:
-//            return AmfItemPtr(AmfDate::deserialize(it, end, ctx));
-//        case AMF_ARRAY:
-//            return AmfArray::deserializePtr(it, end, ctx);
-//        case AMF_OBJECT:
-//            return AmfObject::deserializePtr(it, end, ctx);
-//        case AMF_XML:
-//            return AmfItemPtr(AmfXml::deserialize(it, end, ctx));
-//        case AMF_BYTEARRAY:
-//            return AmfItemPtr(AmfByteArray::deserialize(it, end, ctx));
-//        case AMF_VECTOR_INT:
-//            return AmfItemPtr(AmfVector<int>::deserialize(it, end, ctx));
-//        case AMF_VECTOR_UINT:
-//            return AmfItemPtr(AmfVector<unsigned int>::deserialize(it, end, ctx));
-//        case AMF_VECTOR_DOUBLE:
-//            return AmfItemPtr(AmfVector<double>::deserialize(it, end, ctx));
-//        case AMF_VECTOR_OBJECT:
-//            return AmfVector<AmfItem>::deserializePtr(it, end, ctx);
-//        case AMF_DICTIONARY:
-//            return AmfDictionary::deserializePtr(it, end, ctx);
-//        default:
-//            throw std::invalid_argument("Deserializer::deserialize: Invalid type byte");
-//    }
-//    return item;
+    return AMFConverter::convert(item->marker(), item);
 }
 
 void CommandProcessor::policyRequest(QByteArray* bytes) {
@@ -179,7 +210,7 @@ void CommandProcessor::encode(QByteArray& msg, QByteArray& bytes) {
     dataStream << bufferID << bufferMsg;
 }
 
-void CommandProcessor::decode(QString& id, QMap<std::string, QVariant>& data,
+void CommandProcessor::decode(QString& id, QMap<QString, QVariant>& data,
                               QByteArray &bytes) {
     QDataStream buffer(&bytes, QIODevice::ReadOnly);
     quint32 packSize;
@@ -187,14 +218,14 @@ void CommandProcessor::decode(QString& id, QMap<std::string, QVariant>& data,
     buffer >> packSize;
     char* bufID = new char[packSize];
     buffer.readRawData(bufID, packSize);
-    amf::AmfString amf_str = deserializeID(QByteArray::fromRawData(bufID, packSize));
-    id = QString::fromStdString(amf_str.value);
+    QVariant header = deserialize(QByteArray::fromRawData(bufID, packSize));
+    id = header.toString();
 
     buffer >> packSize;
     char* bufMsg = new char[packSize];
     buffer.readRawData(bufMsg, packSize);
-    amf::AmfObject amf_obj = deserializeMsg(QByteArray::fromRawData(bufMsg, packSize));
-//    data = QMap<std::string, QVariant>(amf_obj.dynamicProperties);
+    QVariant body = deserialize(QByteArray::fromRawData(bufMsg, packSize));
+    data = body.toMap();
 
     delete[] bufID;
     delete[] bufMsg;

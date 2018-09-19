@@ -65,6 +65,8 @@ public:
 		return associative.at(key).as<T>();
 	}
 
+    u8 marker() const override { return AMF_ARRAY; }
+
 	bool operator==(const AmfItem& other) const;
 	std::vector<u8> serialize(SerializationContext& ctx) const;
 	static AmfItemPtr deserializePtr(v8::const_iterator& it, v8::const_iterator end, SerializationContext& ctx);

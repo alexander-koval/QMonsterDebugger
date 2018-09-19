@@ -53,6 +53,8 @@ public:
 		return traits;
 	}
 
+    u8 marker() const override { return AMF_OBJECT; }
+
 	std::map<std::string, AmfItemPtr> sealedProperties;
 	std::map<std::string, AmfItemPtr> dynamicProperties;
 

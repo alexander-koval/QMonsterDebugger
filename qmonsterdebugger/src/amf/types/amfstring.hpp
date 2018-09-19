@@ -16,6 +16,7 @@ public:
 	AmfString(const char* v) : value(v == nullptr ? "" : v) { }
 	AmfString(std::string v) : value(v) { }
 	operator std::string() const { return value; }
+    u8 marker() const override { return AMF_STRING; }
 
 	bool operator==(const AmfItem& other) const;
 	std::vector<u8> serialize(SerializationContext& ctx) const;

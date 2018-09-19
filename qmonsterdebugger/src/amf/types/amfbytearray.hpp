@@ -25,6 +25,8 @@ public:
 		value = std::vector<u8>(begin, end);
 	}
 
+    u8 marker() const override { return AMF_BYTEARRAY; }
+
 	bool operator==(const AmfItem& other) const;
 	std::vector<u8> serialize(SerializationContext& ctx) const;
 	static AmfByteArray deserialize(v8::const_iterator& it, v8::const_iterator end, SerializationContext& ctx);

@@ -56,6 +56,8 @@ public:
 		return values.at(index);
 	}
 
+    u8 marker() const override { return VectorProperties<T>::marker; }
+
 	std::vector<u8> serialize(SerializationContext& ctx) const;
 	static AmfVector<T> deserialize(v8::const_iterator& it, v8::const_iterator end, SerializationContext& ctx);
 
@@ -79,6 +81,8 @@ public:
 		ret.values = values;
 		return ret;
 	}
+
+    u8 marker() const override { return AMF_VECTOR_OBJECT; }
 
 	std::vector<AmfItemPtr> values;
 	std::string type;
@@ -107,6 +111,8 @@ public:
 	T& at(int index) {
 		return values.at(index).template as<T>();
 	}
+
+    u8 marker() const override { return AMF_VECTOR_OBJECT; }
 
 	static AmfVector<T> deserialize(v8::const_iterator& it, v8::const_iterator end, SerializationContext& ctx) {
 		return AmfVector<AmfItem>::deserialize(it, end, ctx).as<T>();

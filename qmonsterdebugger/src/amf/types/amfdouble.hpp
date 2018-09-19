@@ -14,6 +14,8 @@ public:
 	AmfDouble(double v) : value(v) { }
 	operator double() const { return value; }
 
+    u8 marker() const override { return AMF_DOUBLE; }
+
 	bool operator==(const AmfItem& other) const;
 	std::vector<u8> serialize(SerializationContext&) const;
 	static AmfDouble deserialize(v8::const_iterator& it, v8::const_iterator end, SerializationContext&);

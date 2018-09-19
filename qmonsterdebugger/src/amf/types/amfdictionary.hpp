@@ -39,6 +39,8 @@ public:
 		values.clear();
 	}
 
+    u8 marker() const override { return AMF_DICTIONARY; }
+
 	std::vector<u8> serialize(SerializationContext & ctx) const;
 	static AmfItemPtr deserializePtr(v8::const_iterator& it, v8::const_iterator end, SerializationContext& ctx);
 	static AmfDictionary deserialize(v8::const_iterator& it, v8::const_iterator end, SerializationContext& ctx);

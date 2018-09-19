@@ -18,11 +18,11 @@ public:
 
     MessagePack();
 
-    MessagePack(const QString& id, const QPair<std::string, QVariant>& data);
+    MessagePack(const QString& id, const QMap<QString, QVariant>& data);
 
     const QString& getID();
 
-    const QPair<std::string, QVariant>& getData();
+    const QMap<QString, QVariant>& getData();
 
     QSharedPointer<QByteArray> getBytes() const;
 
@@ -30,7 +30,7 @@ public:
 
 private:
     QString m_id;
-    QPair<std::string, QVariant> m_data;
+    QMap<QString, QVariant> m_data;
 };
 
 }
