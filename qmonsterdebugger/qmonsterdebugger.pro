@@ -44,7 +44,8 @@ SOURCES += main.cpp\
     amf/types/amfstring.cpp \
     amf/types/amfvector.cpp \
     amf/types/amfxml.cpp \
-    amf/types/amfxmldocument.cpp
+    amf/types/amfxmldocument.cpp \
+    utils/AMFConverter.cpp
 
 HEADERS  += MainWindow.h \
     MonsterTabWidget.h \
@@ -83,7 +84,8 @@ HEADERS  += MainWindow.h \
     amf/types/amfxmldocument.hpp \
     amf/utils/amfitemptr.hpp \
     amf/utils/amfobjecttraits.hpp \
-    src/stream/StreamFwd.h
+    stream/StreamFwd.h \
+    utils/AMFConverter.h
 
 FORMS    += forms/MainWindow.ui \
     forms/StreamView.ui \
