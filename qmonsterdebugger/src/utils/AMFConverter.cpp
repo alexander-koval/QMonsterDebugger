@@ -18,7 +18,7 @@
 
 namespace monster {
 
-QList<QVariant> fromAmfArr(amf::AmfItemPtr item) {
+QList<QVariant> fromAmfArr(amf::AmfItemPtr& item) {
     using namespace amf;
     QList<QVariant> items;
     std::vector<AmfItemPtr> dense = item.as<AmfArray>().dense;
@@ -29,7 +29,17 @@ QList<QVariant> fromAmfArr(amf::AmfItemPtr item) {
     return items;
 }
 
-QMap<QString, QVariant> fromAmfObj(amf::AmfItemPtr item) {
+amf::AmfItemPtr toAmfArr(QList<QVariant>& values) {
+    using namespace amf;
+    AmfArray* items = new AmfArray();
+    foreach(QVariant value, values) {
+        AmfItemPtr item = AMFConverter::convert(value.type(), value);
+        items->dense.push_back(item);
+    }
+    return AmfItemPtr(items);
+}
+
+QMap<QString, QVariant> fromAmfObj(amf::AmfItemPtr& item) {
     using namespace amf;
     QMap<QString, QVariant> properties;
     std::map<std::string, AmfItemPtr>& dynamic = item.as<AmfObject>().dynamicProperties;
@@ -47,12 +57,29 @@ QMap<QString, QVariant> fromAmfObj(amf::AmfItemPtr item) {
     return properties;
 }
 
-QByteArray fromAmfBytes(amf::AmfItemPtr item) {
+amf::AmfItemPtr toAmfObj(QMap<QString, QVariant>& values) {
+    using namespace amf;
+    QVariant value;
+    AmfObject* object = new AmfObject();
+    foreach(QString key, values.keys()) {
+        value = values.value(key, QVariant());
+        AmfItemPtr item = AMFConverter::convert(value.type(), value);
+        object->dynamicProperties.insert(std::make_pair(key.toStdString(), item));
+    }
+    return AmfItemPtr(object);
+}
+
+QByteArray fromAmfBytes(amf::AmfItemPtr& item) {
     using namespace amf;
     std::vector<u8> buffer = item.as<AmfByteArray>().value;
     QByteArray bytes = QByteArray::fromRawData(
                 reinterpret_cast<char*>(buffer.data()), buffer.size());
     return bytes;
+}
+
+amf::AmfItemPtr toAmfBytes(QByteArray& values) {
+    using namespace amf;
+    return AmfItemPtr(new AmfByteArray(values.begin(), values.end()));
 }
 
 QList<QVariant> fromAmfVecI(amf::AmfItemPtr item) {
@@ -65,6 +92,15 @@ QList<QVariant> fromAmfVecI(amf::AmfItemPtr item) {
     return items;
 }
 
+amf::AmfItemPtr toAmfVecI(QList<int>& values) {
+    using namespace amf;
+    std::vector<int> items;
+    foreach(int value, values) {
+        items.push_back(value);
+    }
+    return AmfItemPtr(new AmfVector<int>(items));
+}
+
 QList<QVariant> fromAmfVec(amf::AmfItemPtr item) {
     using namespace amf;
     QList<QVariant> items;
@@ -73,6 +109,16 @@ QList<QVariant> fromAmfVec(amf::AmfItemPtr item) {
         items.push_back(AMFConverter::convert(value->marker(), value));
     });
     return items;
+}
+
+amf::AmfItemPtr toAmfVec(QList<QVariant>& values) {
+    using namespace amf;
+    std::vector<AmfObject> items;
+    foreach(QVariant value, values) {
+        AmfItemPtr item = AMFConverter::convert(value.type(), value);
+        items.push_back(item.as<AmfObject>());
+    }
+    return AmfItemPtr(new AmfVector<AmfObject>(items, ""));
 }
 
 QList<QVariant> fromAmfVecU(amf::AmfItemPtr item) {
@@ -85,6 +131,15 @@ QList<QVariant> fromAmfVecU(amf::AmfItemPtr item) {
     return items;
 }
 
+amf::AmfItemPtr toAmfVecU(QList<uint>& values) {
+    using namespace amf;
+    std::vector<uint> items;
+    foreach(uint value, values) {
+        items.push_back(value);
+    }
+    return AmfItemPtr(new AmfVector<uint>(items));
+}
+
 QList<QVariant> fromAmfVecD(amf::AmfItemPtr item) {
     using namespace amf;
     QList<QVariant> items;
@@ -93,6 +148,15 @@ QList<QVariant> fromAmfVecD(amf::AmfItemPtr item) {
         items.push_back(value);
     });
     return items;
+}
+
+amf::AmfItemPtr toAmfVecD(QList<double>& values) {
+    using namespace amf;
+    std::vector<double> items;
+    foreach(double value, values) {
+        items.push_back(value);
+    }
+    return AmfItemPtr(new AmfVector<double>(items));
 }
 
 QHash<QString, QVariant> fromAmfDict(amf::AmfItemPtr item) {
@@ -109,12 +173,25 @@ QHash<QString, QVariant> fromAmfDict(amf::AmfItemPtr item) {
     return hash;
 }
 
+amf::AmfItemPtr toAmfDict(QHash<QString, QVariant>& values) {
+    using namespace amf;
+    AmfDictionary items = new AmfDictionary(false);
+    foreach(QString key, values.keys()) {
+        QVariant value = values.value(key);
+        items.insert(AmfString(key.toStdString()),
+                     AMFConverter::convert(value.type(), value)
+                     .as<AmfObject>());
+    }
+    return AmfItemPtr(items);
+}
+
 QVariant AMFConverter::convert(amf::u8 type, amf::AmfItemPtr item) {
     using namespace amf;
     switch (type) {
     case AMF_UNDEFINED: return QVariant(QVariant::Invalid);
     case AMF_NULL: return QVariant(QVariant::Invalid);
     case AMF_FALSE: return QVariant(item.as<AmfBool>().value);
+    case AMF_TRUE: return QVariant(item.as<AmfBool>().value);
     case AMF_INTEGER: return QVariant(item.as<AmfInteger>().value);
     case AMF_DOUBLE: return QVariant(item.as<AmfDouble>().value);
     case AMF_STRING: return QVariant(QString::fromStdString(item.as<AmfString>().value));
@@ -133,9 +210,16 @@ QVariant AMFConverter::convert(amf::u8 type, amf::AmfItemPtr item) {
     return QVariant();
 }
 
-amf::AmfItemPtr AMFConverter::convert(amf::u8 type, QVariant &variant) {
+amf::AmfItemPtr AMFConverter::convert(QVariant::Type type, QVariant &value) {
     using namespace amf;
-    return AmfItemPtr();
+    switch (type) {
+    case QVariant::Invalid: return AmfItemPtr(new AmfNull());
+    case QVariant::Bool: return AmfItemPtr(new AmfBool(value.toBool()));
+    case QVariant::Int: return AmfItemPtr(new AmfInteger(value.toInt()));
+    case QVariant::Double: return AmfItemPtr(new AmfDouble(value.toDouble()));
+    case QVariant::String: return AmfItemPtr(new AmfString(value.toString().toStdString()));
+    default: return AmfItemPtr(new AmfUndefined());
+    }
 }
 
 }
