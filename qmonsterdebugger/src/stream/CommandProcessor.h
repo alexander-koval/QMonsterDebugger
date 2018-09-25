@@ -2,6 +2,7 @@
 #define COMMANDPROCESSOR_H
 
 #include "amf/utils/amfitemptr.hpp"
+#include "stream/MessagePack.h"
 #include <QMap>
 
 class QString;
@@ -26,12 +27,15 @@ public:
 
     static void encode(QByteArray& msg, QByteArray& bytes);
 
-    static void decode(QString& id, QMap<QString, QVariant>& data,
-                       QByteArray& bytes);
+    static QSharedPointer<QByteArray> encode(const MessagePack& pack);
 
-    static amf::v8 serialize(const char* command);
+    static MessagePack decode(QByteArray& bytes);
 
-    static QVariant deserialize(const QByteArray& bytes);
+    static amf::v8 serialize(const char* cmd);
+
+    static amf::v8 serialize(const amf::AmfItemPtr& item);
+
+    static amf::AmfItemPtr deserialize(const QByteArray& bytes);
 };
 
 }

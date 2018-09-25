@@ -42,9 +42,9 @@ public:
 
     const QString& playerVersion() const { return m_playerVersion; }
 
-    const QString& isDebugger() const { return m_isDebugger; }
+    bool isDebugger() const { return m_isDebugger; }
 
-    const QString& isFlex() const { return m_isFlex; }
+    bool isFlex() const { return m_isFlex; }
 
     const QString& fileTitle() const { return m_fileTitle; }
 
@@ -70,8 +70,8 @@ private:
 
     QString m_playerType;
     QString m_playerVersion;
-    QString m_isDebugger;
-    QString m_isFlex;
+    bool m_isDebugger;
+    bool m_isFlex;
     QString m_fileTitle;
     QString m_fileLocation;
 };

@@ -20,37 +20,28 @@
 
 namespace monster {
 
-amf::v8 serializeMsg(const char *cmd) {
-    amf::Serializer serializer;
-    amf::AmfObject object("", true, false);
-    amf::AmfString command(cmd);
-    object.addDynamicProperty("command", command);
-    serializer << object;
+amf::v8 CommandProcessor::serialize(const char* cmd) {
+    using namespace amf;
+    AmfObject* object = new AmfObject("", true, false);
+    AmfString command(cmd);
+    object->addDynamicProperty("command", command);
+    return serialize(AmfItemPtr(object));
+}
+
+amf::v8 CommandProcessor::serialize(const amf::AmfItemPtr &item) {
+    using namespace amf;
+    Serializer serializer;
+    serializer << *item.get();
     return serializer.data();
 }
 
-amf::v8 serializeID(const char* id) {
-    amf::Serializer serializer;
-    amf::AmfString string(id);
-    serializer << string;
-    return serializer.data();
-}
-
-QVariant deserializeMsg(const QByteArray& bytes) {
-    return CommandProcessor::deserialize(bytes);
-}
-
-QVariant deserializeID(const QByteArray& bytes) {
-    return CommandProcessor::deserialize(bytes);
-}
-
-QVariant CommandProcessor::deserialize(const QByteArray &bytes) {
+amf::AmfItemPtr CommandProcessor::deserialize(const QByteArray &bytes) {
     using namespace amf;
     v8 data(bytes.begin(), bytes.end());
     Deserializer deserializer;
     v8::const_iterator it = data.cbegin();
     AmfItemPtr item = deserializer.deserialize(it, data.cend());
-    return AMFConverter::convert(item->marker(), item);
+    return item;
 }
 
 void CommandProcessor::policyRequest(QByteArray* bytes) {
@@ -69,23 +60,36 @@ void CommandProcessor::policyRequest(QByteArray* bytes) {
 }
 
 void CommandProcessor::hello(QByteArray* bytes) {
-    amf::v8&& data = serializeMsg(COMMAND_HELLO);
+    amf::v8 data = serialize(COMMAND_HELLO);
     QByteArray msg = QByteArray::fromRawData(
                 reinterpret_cast<const char*>(data.data()), data.size());
     encode(msg, *bytes);
 }
 
 void CommandProcessor::base(QByteArray* bytes) {
-    amf::v8&& data = serializeMsg(COMMAND_HELLO);
+    amf::v8 data = serialize(COMMAND_HELLO);
     QByteArray msg = QByteArray::fromRawData(
                 reinterpret_cast<const char*>(data.data()), data.size());
     encode(msg, *bytes);
 }
 
+QSharedPointer<QByteArray> CommandProcessor::encode(const MessagePack &pack) {
+    QSharedPointer<QByteArray> bytes(new QByteArray);
+    amf::Serializer serializer;
+    const amf::AmfObject& object = pack.getData().as<amf::AmfObject>();
+    serializer << object;
+    const amf::v8& buffer = serializer.data();
+    QByteArray msg = QByteArray::fromRawData(
+                reinterpret_cast<const char*>(buffer.data()), buffer.size());
+    CommandProcessor::encode(msg, *bytes);
+    return bytes;
+}
+
 void CommandProcessor::encode(QByteArray& msg, QByteArray& bytes) {
+    using namespace amf;
     QByteArray bufferID;
     QByteArray bufferMsg;
-    amf::v8&& v8 = serializeID(LOGGER_ID);
+    v8 v8 = serialize(AmfItemPtr(new AmfString(LOGGER_ID)));
     QByteArray id = QByteArray::fromRawData(
                 reinterpret_cast<const char*>(v8.data()), v8.size());
     QDataStream dataStream(&bytes, QIODevice::WriteOnly);
@@ -99,30 +103,26 @@ void CommandProcessor::encode(QByteArray& msg, QByteArray& bytes) {
     dataStream << bufferID << bufferMsg;
 }
 
-void CommandProcessor::decode(QString& id, QMap<QString, QVariant>& data,
-                              QByteArray &bytes) {
+MessagePack CommandProcessor::decode(QByteArray &bytes) {
     QDataStream buffer(&bytes, QIODevice::ReadOnly);
     quint32 packSize;
 
     buffer >> packSize;
     char* bufID = new char[packSize];
     buffer.readRawData(bufID, packSize);
-    QVariant header = deserialize(QByteArray::fromRawData(bufID, packSize));
-    id = header.toString();
+    amf::AmfItemPtr header = deserialize(QByteArray::fromRawData(bufID, packSize));
+
 
     buffer >> packSize;
     char* bufMsg = new char[packSize];
     buffer.readRawData(bufMsg, packSize);
-    QVariant body = deserialize(QByteArray::fromRawData(bufMsg, packSize));
-    data = body.toMap();
+    amf::AmfItemPtr body = deserialize(QByteArray::fromRawData(bufMsg, packSize));
 
     delete[] bufID;
     delete[] bufMsg;
-}
 
-amf::v8 CommandProcessor::serialize(const char *command)
-{
-    return amf::v8();
+    MessagePack pack(header, body);
+    return pack;
 }
 
 }

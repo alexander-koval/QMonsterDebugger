@@ -18,19 +18,30 @@ public:
 
     MessagePack();
 
-    MessagePack(const QString& id, const QMap<QString, QVariant>& data);
+    MessagePack(amf::AmfItemPtr id, amf::AmfItemPtr data);
 
-    const QString& getID();
+    amf::AmfItemPtr getID() { return m_id; }
 
-    const QMap<QString, QVariant>& getData();
+    amf::AmfItemPtr getData() { return m_data; }
+
+    const amf::AmfItemPtr& getID() const { return m_id; }
+
+    const amf::AmfItemPtr& getData() const { return m_data; }
 
     QSharedPointer<QByteArray> getBytes() const;
 
-    void setBytes(QByteArray& bytes);
+//    template< typename T >
+//    T unpack( amf::AmfItemPtr item, const T& defVal = T() ) {
+//        item.as<amf::AmfObject>().
+//        if( var.isValid() && var.canConvert< T >() ) {
+//            return var.value< T >();
+//        }
+//        return defVal;
+//    }
 
 private:
-    QString m_id;
-    QMap<QString, QVariant> m_data;
+    amf::AmfItemPtr m_id;
+    amf::AmfItemPtr m_data;
 };
 
 }

@@ -11,57 +11,24 @@
 #include <sstream>
 #include <string>
 #include <QJsonObject>
+#include "amf/amf.hpp"
+#include "amf/types/amfobject.hpp"
+#include "amf/types/amfstring.hpp"
+#include "amf/types/amfbool.hpp"
+#include "amf/types/amfbytearray.hpp"
+#include "amf/types/amfdate.hpp"
+#include "amf/types/amfdictionary.hpp"
+#include "amf/types/amfdouble.hpp"
+#include "amf/types/amfinteger.hpp"
+#include "amf/types/amfitem.hpp"
+#include "amf/types/amfnull.hpp"
+#include "amf/types/amfundefined.hpp"
+#include "amf/types/amfvector.hpp"
+#include "amf/types/amfxml.hpp"
+#include "amf/types/amfxmldocument.hpp"
+#include "amf/types/amfarray.hpp"
 
 namespace monster {
-
-//class CommandProcessor {
-//public:
-//    void policyRequest(QByteArray* bytes) {
-//        char zero = 0x00;
-//        QDataStream streamXML(bytes, QIODevice::WriteOnly);
-//        QString crossdomain("<?xml version=\"1.0\"?>"
-//                            "<!DOCTYPE cross-domain-policy SYSTEM \"http://www.adobe.com/xml/dtds/cross-domain-policy.dtd\">"
-//                            "<cross-domain-policy xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"http://www.adobe.com/xml/schemas/PolicyFile.xsd\">"
-//                            "<site-control permitted-cross-domain-policies=\"master-only\"/>"
-//                            "<allow-access-from domain=\"*\" to-ports=\"*\" secure=\"false\"/>"
-//                            "<allow-http-request-headers-from domain=\"*\" headers=\"*\" secure=\"false\"/>"
-//                            "</cross-domain-policy>");
-//        (*bytes) = crossdomain.toUtf8();
-//        streamXML.writeRawData(bytes->data(), bytes->size());
-//        streamXML.writeRawData(&zero, 1);
-//    }
-
-//    void hello(QByteArray* bytes) {
-//        std::stringstream stream;
-//        stream << "{\"command\":\"" << COMMAND_HELLO << "\"}";
-//        std::string data = stream.str();
-//        QByteArray msg = QString(data.c_str()).toUtf8();
-//        package(msg, *bytes);
-//    }
-
-//    void base(QByteArray* bytes) {
-//        std::stringstream stream;
-//        stream << "{\"command|\":\"" << COMMAND_BASE << "\"}";
-//        std::string data = stream.str();
-//        QByteArray msg = QString(data.c_str()).toUtf8();
-//        package(msg, *bytes);
-//    }
-
-//    void package(QByteArray& msg, QByteArray& bytes) {
-//        QByteArray bufferID;
-//        QByteArray bufferMsg;
-//        QByteArray id = QString(LOGGER_ID).toUtf8();
-//        QDataStream dataStream(&bytes, QIODevice::WriteOnly);
-
-//        QDataStream streamID(&bufferID, QIODevice::WriteOnly);
-//        QDataStream streamMsg(&bufferMsg, QIODevice::WriteOnly);
-//        streamID << static_cast<quint16>(id.size());
-//        streamID.writeRawData(id, static_cast<uint16_t>(id.size()));
-//        streamMsg << static_cast<quint16>(msg.size());
-//        streamMsg.writeRawData(msg, static_cast<uint16_t>(msg.size()));
-//        dataStream << bufferID << bufferMsg;
-//    }
-//};
 
 Session::Session(TcpSocketPtr socket)
     : QObject(), m_size(), m_bytes(), m_package(), m_socket(socket),
@@ -158,7 +125,8 @@ void Session::decode() {
     }
     if (m_size != 0 && package.size() == m_size) {
         MessagePack pack = MessagePack::read(package);
-        if (!pack.getID().isEmpty() && pack.getID() == LOGGER_ID) {
+        const std::string& id = pack.getID().as<amf::AmfString>().value;
+        if (!id.empty() && id == LOGGER_ID) {
             process(pack);
         }
         m_size = 0;
@@ -172,32 +140,23 @@ void Session::decode() {
 }
 
 void Session::process(MessagePack& pack) {
+    amf::AmfObject& item = pack.getData().as<amf::AmfObject>();
+    const amf::AmfString& cmd = item.getDynamicProperty<amf::AmfString>("command");
+    if (cmd.value == COMMAND_INFO) {
+        m_playerType = QString::fromStdString(item.getDynamicProperty<amf::AmfString>("playerType").value);
+        m_playerVersion = QString::fromStdString(item.getDynamicProperty<amf::AmfString>("playerVersion").value);
+        m_isDebugger = item.getDynamicProperty<amf::AmfBool>("isDebugger").value;
+        m_isFlex = item.getDynamicProperty<amf::AmfBool>("isFlex").value;
+        m_fileLocation = QString::fromStdString(item.getDynamicProperty<amf::AmfString>("fileLocation").value);;
+        m_fileTitle = QString::fromStdString(item.getDynamicProperty<amf::AmfString>("fileTitle").value);;
 
-    QJsonObject item;
-//    const QMap<std::string, amf::AmfItemPtr>& params = pack.getData();
-
-//    const QJsonDocument& doc = pack.getData();
-//    QString strJson(doc.toJson(QJsonDocument::Compact));
-//    qDebug() << strJson;
-//    if (!doc.isNull()) {
-//        item = doc.object();
-//        if (item["command"] == COMMAND_INFO) {
-//            m_playerType = item["playerType"].toString();
-//            m_playerVersion = item["playerVersion"].toString();
-//            m_isDebugger = item["isDebugger"].toString();
-//            m_isFlex = item["isFlex"].toString();
-//            m_fileLocation = item["fileLocation"].toString();
-//            m_fileTitle = item["tileTitle"].toString();
-
-//            QByteArray bytes;
-//            QByteArray package;
-//            CommandProcessor::base(&bytes);
-//            QDataStream bytesStream(&package, QIODevice::WriteOnly);
-//            bytesStream << bytes;
-//            write(package);
-//        }
-//    }
-
+        QByteArray bytes;
+        QByteArray package;
+        CommandProcessor::base(&bytes);
+        QDataStream bytesStream(&package, QIODevice::WriteOnly);
+        bytesStream << bytes;
+        write(package);
+    }
 }
 
 
