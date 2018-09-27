@@ -13,8 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_mainView(std::make_unique<Ui::MainWindow>()),
     m_traceView(std::make_unique<TraceView>(this)),
     m_streamView(std::make_unique<StreamView>(this)),
-    m_server(nullptr)
-{
+    m_server(nullptr) {
     m_mainView->setupUi(this);
 
     MonsterTabWidget* tabBar = m_mainView->tabBar;

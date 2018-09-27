@@ -7,8 +7,7 @@ namespace monster {
 
 TraceModel::TraceModel(QObject* parent /*= nullptr*/)
     : QAbstractTableModel(parent)
-    , m_items() {
-
+    , m_items(), m_roles() {
 }
 
 Qt::ItemFlags TraceModel::flags(const QModelIndex &index) const {
@@ -113,6 +112,10 @@ bool TraceModel::removeRows(int row, int count, const QModelIndex&) {
     }
     endRemoveRows();
     return true;
+}
+
+QHash<int, QByteArray> TraceModel::roleNames() const {
+
 }
 
 }

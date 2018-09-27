@@ -67,7 +67,7 @@ void CommandProcessor::hello(QByteArray* bytes) {
 }
 
 void CommandProcessor::base(QByteArray* bytes) {
-    amf::v8 data = serialize(COMMAND_HELLO);
+    amf::v8 data = serialize(COMMAND_BASE);
     QByteArray msg = QByteArray::fromRawData(
                 reinterpret_cast<const char*>(data.data()), data.size());
     encode(msg, *bytes);

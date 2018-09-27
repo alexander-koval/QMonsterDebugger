@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network
+QT       += core gui network qml quick
 CONFIG += c++14
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += xml widgets
@@ -105,3 +105,9 @@ UI_DIR = $PWD/../bin/$$DESTINATION_PATH/.ui
 #MAKEFILE = $PWD/../../bin/$$DESTINATION_PATH/.makefile
 
 LIBS += -L$$PWD/../bin/$$DESTINATION_PATH
+
+DISTFILES += \
+    resources/qml/MainView.qml
+
+RESOURCES += \
+    resources/qmonsterdebugger.qrc

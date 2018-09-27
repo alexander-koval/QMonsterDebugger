@@ -102,7 +102,7 @@ void MonsterServer::onReadyRead() {
         QPointer<QThread> thread = new MonsterThread(session, m_sessions.toWeakRef(), this);
         connect(thread, &QThread::finished, thread.data(), &QObject::deleteLater);
         m_threads.append(thread);
-//        emit sessionCreated(session);
+        emit sessionCreated(session);
         thread->start();
 
     }

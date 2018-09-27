@@ -8,7 +8,7 @@ namespace monster {
 struct TraceItem
 {
 public:
-    enum Names {Line, Time, Target, Message, Label, Person, Memory, Count};
+    enum Names {Line = Qt::UserRole + 1, Time, Target, Message, Label, Person, Memory, Count};
     explicit TraceItem();
 
     quint64 line;
