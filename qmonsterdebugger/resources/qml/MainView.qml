@@ -1,7 +1,7 @@
 import QtQuick 2.8
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
-//import QtQuick.Controls 2.1 as QuickControls
+import QtQuick.Layouts 1.3
 
 ApplicationWindow {
     visible: true
@@ -34,12 +34,20 @@ ApplicationWindow {
         }
     }
 
+//    TabView {
+//           anchors.fill: parent
+//           Repeater {
+//               model: ["Foo", "Bar", "Baz"]
+//               Tab {
+//                   title: modelData
+//               }
+//           }
+//       }
     TabView {
-        width: parent.width
-        height: parent.height
+        anchors.fill: parent
         Tab {
             title: "Red"
-            TracePanel { }
+            TracePanel { id: tracePanel; anchors.fill: parent }
         }
         Tab {
             title: "Blue"

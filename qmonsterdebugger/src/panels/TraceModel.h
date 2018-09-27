@@ -33,7 +33,7 @@ public:
 
     bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
-    QHash<int, QByteArray> roleNames() const override;
+    QHash<int, QByteArray> roleNames() const override { return m_roles; }
 
 private:
     QList<TraceItem> m_items;

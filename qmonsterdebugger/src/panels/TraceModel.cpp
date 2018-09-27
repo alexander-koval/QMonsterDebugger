@@ -8,6 +8,12 @@ namespace monster {
 TraceModel::TraceModel(QObject* parent /*= nullptr*/)
     : QAbstractTableModel(parent)
     , m_items(), m_roles() {
+    m_roles[TraceItem::Line] = "Line";
+    m_roles[TraceItem::Time] = "Time";
+    m_roles[TraceItem::Target] = "Target";
+    m_roles[TraceItem::Message] = "Message";
+    m_roles[TraceItem::Label] = "Label";
+    m_roles[TraceItem::Memory] = "Memory";
 }
 
 Qt::ItemFlags TraceModel::flags(const QModelIndex &index) const {
@@ -19,39 +25,39 @@ Qt::ItemFlags TraceModel::flags(const QModelIndex &index) const {
 }
 
 QVariant TraceModel::data(const QModelIndex &index, int role) const {
-    if (role != Qt::DisplayRole)
-            return QVariant();
-    if (index.isValid() && index.row() >= 0 &&
-            index.row() < m_items.count() &&
-            index.column() >= 0 && index.column() < TraceItem::Count)  {
-        const TraceItem& item = m_items.at(index.row());
-            switch (index.column()) {
-            case TraceItem::Line: return item.line;
-            case TraceItem::Time: return item.time;
-            case TraceItem::Target: return item.target;
-            case TraceItem::Message: return item.message;
-            case TraceItem::Label: return item.label;
-            case TraceItem::Person: return item.person;
-            case TraceItem::Memory: return item.memory;
-            default: Q_ASSERT(false);
+    if (role > Qt::UserRole) {
+        if (index.isValid() && index.row() >= 0 &&
+                index.row() < m_items.count() &&
+                index.column() >= 0 && index.column() < TraceItem::Count)  {
+            const TraceItem& item = m_items.at(index.row());
+                switch (role) {
+                case TraceItem::Line: return item.line;
+                case TraceItem::Time: return item.time;
+                case TraceItem::Target: return item.target;
+                case TraceItem::Message: return item.message;
+                case TraceItem::Label: return item.label;
+                case TraceItem::Person: return item.person;
+                case TraceItem::Memory: return item.memory;
+                default: Q_ASSERT(false);
+            }
         }
     }
     return QVariant();
 }
 
 QVariant TraceModel::headerData(int section, Qt::Orientation orientation, int role) const {
-    if (role != Qt::DisplayRole)
-            return QVariant();
-    if (orientation == Qt::Horizontal) {
-        switch (section) {
-        case TraceItem::Line: return tr("#");
-        case TraceItem::Time: return tr("Time");
-        case TraceItem::Target: return tr("Target");
-        case TraceItem::Message: return tr("Message");
-        case TraceItem::Label: return tr("Label");
-        case TraceItem::Person: return tr("Person");
-        case TraceItem::Memory: return tr("Memory");
-        default: Q_ASSERT(false);
+    if (role > Qt::UserRole) {
+        if (orientation == Qt::Horizontal) {
+            switch (role) {
+            case TraceItem::Line: return tr("#");
+            case TraceItem::Time: return tr("Time");
+            case TraceItem::Target: return tr("Target");
+            case TraceItem::Message: return tr("Message");
+            case TraceItem::Label: return tr("Label");
+            case TraceItem::Person: return tr("Person");
+            case TraceItem::Memory: return tr("Memory");
+            default: Q_ASSERT(false);
+            }
         }
     }
     return section + 1;
@@ -66,11 +72,11 @@ int TraceModel::columnCount(const QModelIndex &index) const {
 }
 
 bool TraceModel::setData(const QModelIndex &index, const QVariant &value, int role) {
-    if (index.isValid() && role == Qt::DisplayRole &&
+    if (index.isValid() && role > Qt::UserRole &&
             index.row() >= 0 && index.row() < m_items.count() &&
             index.column() >= 0 && index.column() < TraceItem::Count) {
         TraceItem& item = m_items[index.row()];
-        switch (index.column()) {
+        switch (role) {
         case TraceItem::Line: {
             bool ok;
             quint64 line = value.toULongLong(&ok);
@@ -112,10 +118,6 @@ bool TraceModel::removeRows(int row, int count, const QModelIndex&) {
     }
     endRemoveRows();
     return true;
-}
-
-QHash<int, QByteArray> TraceModel::roleNames() const {
-
 }
 
 }

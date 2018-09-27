@@ -19,6 +19,10 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);    
     QQmlApplicationEngine engine;
     TraceModel* traceModel = new TraceModel(nullptr);
+    traceModel->insertRow(traceModel->rowCount());
+    traceModel->insertColumn(traceModel->columnCount());
+    traceModel->setData(traceModel->index(0, 0), 392, TraceItem::Line);
+
 
     engine.rootContext()->setContextProperty("traceModel", traceModel);
     engine.load(QUrl("qrc:/qml/MainView.qml"));
