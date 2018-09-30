@@ -10,6 +10,19 @@ ApplicationWindow {
     minimumWidth: 800
     minimumHeight: 600
 
+    Component {
+        id: trace
+        TracePanel { anchors.fill: parent }
+    }
+
+    Connections {
+        target: mainMediator
+
+        onSessionCreated: {
+            tabView.addTab(title, trace)
+        }
+    }
+
     menuBar: MenuBar {
         Menu {
             title: qsTr("&Edit")
@@ -43,19 +56,39 @@ ApplicationWindow {
 //               }
 //           }
 //       }
+
+//    TabBar {
+//        width: parent.width
+//        TabButton {
+//            text: "First"
+//            width: implicitWidth
+//        }
+//        TabButton {
+//            text: "Second"
+//            width: implicitWidth
+//        }
+//        TabButton {
+//            text: "Third"
+//            width: implicitWidth
+//        }
+//    }
+
     TabView {
+        id: tabView
         anchors.fill: parent
+//        Tab {
+//            title: "Red"
+//            TracePanel { id: tracePanel; anchors.fill: parent }
+//        }
+//        Tab {
+//            title: "Blue"
+//            Rectangle { color: "blue" }
+//        }
         Tab {
-            title: "Red"
-            TracePanel { id: tracePanel; anchors.fill: parent }
-        }
-        Tab {
-            title: "Blue"
-            Rectangle { color: "blue" }
-        }
-        Tab {
-            title: "Green"
+            title: "Home"
             Rectangle { color: "green" }
         }
+
+
     }
 }

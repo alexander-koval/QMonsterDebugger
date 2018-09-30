@@ -31,7 +31,7 @@
 namespace monster {
 
 Session::Session(TcpSocketPtr socket)
-    : QObject(), m_size(), m_bytes(), m_package(), m_socket(socket),
+    : QObject(), /*m_size(), m_bytes(), m_package(),*/ m_socket(socket),
       m_playerType(), m_playerVersion(), m_isDebugger(), m_isFlex(),
       m_fileTitle(), m_fileLocation() {
 
@@ -78,13 +78,15 @@ QString Session::address() const {
 }
 
 void Session::onReadyRead() {
-    qDebug("READY_READ");
+    qDebug() << "READY READ ";
+    QBuffer buffer;
     QByteArray bytes = m_socket->readAll();
-    m_bytes.open(QIODevice::ReadWrite);
-    m_bytes.write(bytes);
-    m_bytes.seek(0);
-    decode();
-    m_bytes.close();
+    qDebug() << "BUFFER: " << bytes.size();
+    buffer.open(QIODevice::ReadWrite);
+    buffer.write(bytes);
+    buffer.seek(0);
+    decode(buffer, 0);
+    buffer.close();
 }
 
 void Session::onDisconnected() {
@@ -107,42 +109,46 @@ const QTcpSocket* Session::socket() const {
     return m_socket;
 }
 
-void Session::decode() {
+void Session::decode(QBuffer& bytes, int32_t size) {
     QByteArray package;
-    if (m_bytes.bytesAvailable() == 0) return;
-    if (m_size == 0) {
-        QByteArray s = m_bytes.read(sizeof(uint32_t));
+    if (bytes.bytesAvailable() == 0) return;
+    if (size == 0) {
+        QByteArray s = bytes.read(sizeof(uint32_t));
         QDataStream dataStream(&s, QIODevice::ReadOnly);
-        dataStream >> m_size;
+        dataStream >> size;
         package.clear();
     }
-    if (package.size() < m_size && m_bytes.bytesAvailable() > 0) {
-        qint64 l = m_bytes.bytesAvailable();
-        if (l > m_size - package.size()) {
-            l = m_size - package.size();
+
+    if (package.size() < size && bytes.bytesAvailable() > 0) {
+        qint64 l = bytes.bytesAvailable();
+        if (l > size - package.size()) {
+            l = size - package.size();
         }
-        package = m_bytes.read(l);
+        package = bytes.read(l);
     }
-    if (m_size != 0 && package.size() == m_size) {
+    if (size != 0 && package.size() == size) {
         MessagePack pack = MessagePack::read(package);
         const std::string& id = pack.getID().as<amf::AmfString>().value;
         if (!id.empty() && id == LOGGER_ID) {
             process(pack);
         }
-        m_size = 0;
+        size = 0;
         package.clear();
     }
 
-    if (m_size == 0 && m_bytes.bytesAvailable() > 0) {
-        decode();
+    if (size == 0 && bytes.bytesAvailable() > 0) {
+        decode(bytes, size);
     }
-    qDebug() << m_size;
+    qDebug() << size << " " << package.size();
 }
 
 void Session::process(MessagePack& pack) {
     amf::AmfObject& item = pack.getData().as<amf::AmfObject>();
     const amf::AmfString& cmd = item.getDynamicProperty<amf::AmfString>("command");
-    if (cmd.value == COMMAND_INFO) {
+    qDebug() << "VALUE: " << cmd.value.c_str();
+    if (cmd.value != COMMAND_INFO) {
+        emit inboundMessage(pack);
+    } else {
         m_playerType = QString::fromStdString(item.getDynamicProperty<amf::AmfString>("playerType").value);
         m_playerVersion = QString::fromStdString(item.getDynamicProperty<amf::AmfString>("playerVersion").value);
         m_isDebugger = item.getDynamicProperty<amf::AmfBool>("isDebugger").value;
@@ -156,6 +162,8 @@ void Session::process(MessagePack& pack) {
         QDataStream bytesStream(&package, QIODevice::WriteOnly);
         bytesStream << bytes;
         write(package);
+
+        emit initialized();
     }
 }
 

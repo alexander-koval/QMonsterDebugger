@@ -9,8 +9,6 @@
 
 namespace monster {
 
-MainWindow* g_window = nullptr;
-
 MonsterThread::MonsterThread(SessionPtr session, SessionsWPtr sessions, QObject *parent)
     : QThread(parent),
       m_session(session),
@@ -99,10 +97,12 @@ void MonsterServer::onReadyRead() {
 
         SessionPtr session = SessionPtr::create(socket);
         session->init();
+        this->connect(session.data(), &Session::initialized, this, [=]() {
+            emit sessionCreated(session);
+        });
         QPointer<QThread> thread = new MonsterThread(session, m_sessions.toWeakRef(), this);
         connect(thread, &QThread::finished, thread.data(), &QObject::deleteLater);
         m_threads.append(thread);
-        emit sessionCreated(session);
         thread->start();
 
     }
@@ -116,14 +116,6 @@ void MonsterServer::onDisconnect() {
     disconnect(socket, &QTcpSocket::disconnected, this, &MonsterServer::onDisconnect);
 //    disconnect(socket, SIGNAL(error(QAbstractSocket::SocketError)),
 //            this, SLOT(onDisconnect(QAbstractSocket::SocketError)));
-}
-
-void reset_main_window(monster::MainWindow *window) {
-    monster::g_window = window;
-}
-
-MainWindow& get_main_window() {
-    return *monster::g_window;
 }
 
 }

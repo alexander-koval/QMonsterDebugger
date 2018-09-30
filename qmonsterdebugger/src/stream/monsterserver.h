@@ -56,9 +56,5 @@ private:
     SessionsWPtr m_sessions;
 };
 
-void reset_main_window(MainWindow* window);
-
-MainWindow& get_main_window();
-
 }
 #endif // SOCKETSERVER_H

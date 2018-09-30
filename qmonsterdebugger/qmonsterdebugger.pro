@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network qml quick
+QT       += core gui network widgets qml quick quickwidgets
 CONFIG += c++14
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += xml widgets
@@ -45,7 +45,8 @@ SOURCES += main.cpp\
     amf/types/amfvector.cpp \
     amf/types/amfxml.cpp \
     amf/types/amfxmldocument.cpp \
-    utils/AMFConverter.cpp
+    utils/AMFConverter.cpp \
+    src/controllers/MainMediator.cpp
 
 HEADERS  += MainWindow.h \
     MonsterTabWidget.h \
@@ -85,7 +86,8 @@ HEADERS  += MainWindow.h \
     amf/utils/amfitemptr.hpp \
     amf/utils/amfobjecttraits.hpp \
     stream/StreamFwd.h \
-    utils/AMFConverter.h
+    utils/AMFConverter.h \
+    src/controllers/MainMediator.h
 
 FORMS    += forms/MainWindow.ui \
     forms/StreamView.ui \

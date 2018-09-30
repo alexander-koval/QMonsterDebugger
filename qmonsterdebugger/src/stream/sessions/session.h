@@ -50,8 +50,13 @@ public:
 
     const QString& fileLocation() const { return m_fileLocation; }
 
+signals:
+    void initialized();
+
+    void inboundMessage(MessagePack& pack);
+
 private:
-    void decode();
+    void decode(QBuffer& bytes, int32_t size);
 
     void process(MessagePack& pack);
 
@@ -63,9 +68,9 @@ private slots:
     void onSocketError(QAbstractSocket::SocketError);
 
 private:
-    int32_t m_size;
-    QBuffer m_bytes;
-    QBuffer m_package;
+//    int32_t m_size;
+//    QBuffer m_bytes;
+//    QByteArray m_package;
     TcpSocketPtr m_socket;
 
     QString m_playerType;
