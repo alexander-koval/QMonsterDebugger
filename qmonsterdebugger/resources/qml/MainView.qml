@@ -2,6 +2,7 @@ import QtQuick 2.8
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
+import DeMonsters.Debug 1.0
 
 ApplicationWindow {
     visible: true
@@ -12,15 +13,15 @@ ApplicationWindow {
 
     Component {
         id: trace
-        TracePanel { anchors.fill: parent }
+        TracePanel { id: tracePanel; anchors.fill: parent }
     }
 
     Connections {
         target: mainMediator
 
-        onSessionCreated: {
-            tabView.addTab(title, trace)
-        }
+//        onSessionCreated: {
+//            tabView.addTab(title, trace)
+//        }
     }
 
     menuBar: MenuBar {
@@ -76,14 +77,13 @@ ApplicationWindow {
     TabView {
         id: tabView
         anchors.fill: parent
-//        Tab {
-//            title: "Red"
-//            TracePanel { id: tracePanel; anchors.fill: parent }
-//        }
-//        Tab {
-//            title: "Blue"
-//            Rectangle { color: "blue" }
-//        }
+        Repeater {
+            model: connectionModel
+            delegate: Tab {
+                title: name
+            }
+        }
+
         Tab {
             title: "Home"
             Rectangle { color: "green" }

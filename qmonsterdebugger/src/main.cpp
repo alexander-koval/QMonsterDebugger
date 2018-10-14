@@ -7,6 +7,8 @@
 #include "stream/monsterserver.h"
 #include "panels/TraceModel.h"
 #include "controllers/MainMediator.h"
+#include "models/ConnectionModel.h"
+#include "Repo.h"
 
 using monster::MainWindow;
 using monster::MonsterServer;
@@ -51,9 +53,17 @@ int main(int argc, char *argv[])
 {
     using namespace monster;
     QGuiApplication app(argc, argv);    
-    QQmlApplicationEngine engine;
 
-    MonsterBootstrap bootstrap(&engine);
+    qmlRegisterType<TraceModel>("DeMonsters.Debug", 1, 0, "TraceModel");
+    qmlRegisterType<ConnectionItem>("DeMonsters.Debug", 1, 0, "ConnectionItem");
+
+    QQmlApplicationEngine* engine = new QQmlApplicationEngine();
+    ConnectionModel* connectionModel = new ConnectionModel();
+
+    Repo::engine(engine);
+    Repo::connectionModel(connectionModel);
+
+    MonsterBootstrap bootstrap(engine);
     bootstrap();
 
     TraceModel* traceModel = new TraceModel(nullptr);
@@ -61,9 +71,10 @@ int main(int argc, char *argv[])
     traceModel->insertColumn(traceModel->columnCount());
     traceModel->setData(traceModel->index(0, 0), 392, TraceItem::Line);
 
-    engine.rootContext()->setContextProperty("traceModel", traceModel);
+    engine->rootContext()->setContextProperty("traceModel", traceModel);
+    engine->rootContext()->setContextProperty("connectionModel", connectionModel);
 
-    engine.load(QUrl("qrc:/qml/MainView.qml"));
+    engine->load(QUrl("qrc:/qml/MainView.qml"));
 
     return app.exec();
 }

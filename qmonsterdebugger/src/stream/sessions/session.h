@@ -20,7 +20,10 @@ class MessagePack;
 class Session : public QObject {
 Q_OBJECT
 public:
+    enum Roles { Title = Qt::UserRole + 1, Socket, Trace, Monitor };
     using Base = QObject;
+
+    explicit Session();
 
     explicit Session(TcpSocketPtr socket);
 
@@ -37,6 +40,8 @@ public:
     qintptr socketDescriptor() const;
 
     const QTcpSocket* socket() const;
+
+    void socket(TcpSocketPtr socket);
 
     const QString& playerType() const { return m_playerType; }
 

@@ -30,8 +30,15 @@
 
 namespace monster {
 
+Session::Session()
+    : QObject(), m_socket(),
+      m_playerType(), m_playerVersion(), m_isDebugger(), m_isFlex(),
+      m_fileTitle(), m_fileLocation() {
+
+}
+
 Session::Session(TcpSocketPtr socket)
-    : QObject(), /*m_size(), m_bytes(), m_package(),*/ m_socket(socket),
+    : QObject(), m_socket(socket),
       m_playerType(), m_playerVersion(), m_isDebugger(), m_isFlex(),
       m_fileTitle(), m_fileLocation() {
 
@@ -109,6 +116,12 @@ const QTcpSocket* Session::socket() const {
     return m_socket;
 }
 
+void Session::socket(TcpSocketPtr socket) {
+    if (socket) {
+        m_socket = socket;
+    }
+}
+
 void Session::decode(QBuffer& bytes, int32_t size) {
     QByteArray package;
     if (bytes.bytesAvailable() == 0) return;
@@ -145,7 +158,6 @@ void Session::decode(QBuffer& bytes, int32_t size) {
 void Session::process(MessagePack& pack) {
     amf::AmfObject& item = pack.getData().as<amf::AmfObject>();
     const amf::AmfString& cmd = item.getDynamicProperty<amf::AmfString>("command");
-    qDebug() << "VALUE: " << cmd.value.c_str();
     if (cmd.value != COMMAND_INFO) {
         emit inboundMessage(pack);
     } else {

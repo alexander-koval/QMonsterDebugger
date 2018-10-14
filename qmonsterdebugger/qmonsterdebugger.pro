@@ -46,7 +46,9 @@ SOURCES += main.cpp\
     amf/types/amfxml.cpp \
     amf/types/amfxmldocument.cpp \
     utils/AMFConverter.cpp \
-    src/controllers/MainMediator.cpp
+    src/controllers/MainMediator.cpp \
+    src/models/ConnectionModel.cpp \
+    src/Repo.cpp
 
 HEADERS  += MainWindow.h \
     MonsterTabWidget.h \
@@ -87,7 +89,9 @@ HEADERS  += MainWindow.h \
     amf/utils/amfobjecttraits.hpp \
     stream/StreamFwd.h \
     utils/AMFConverter.h \
-    src/controllers/MainMediator.h
+    src/controllers/MainMediator.h \
+    src/models/ConnectionModel.h \
+    src/Repo.h
 
 FORMS    += forms/MainWindow.ui \
     forms/StreamView.ui \
