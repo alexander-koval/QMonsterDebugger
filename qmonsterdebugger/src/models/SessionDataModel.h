@@ -8,45 +8,19 @@ namespace monster {
 class Session;
 using SessionPtr = QSharedPointer<Session>;
 
-class ConnectionItem : public QObject {
-    Q_OBJECT
-    Q_PROPERTY(QString name READ getName WRITE setName NOTIFY nameChanged)
-public:
-    enum Roles { Name = Qt::UserRole + 1 };
+struct SessionData {
+    enum Roles { Name = Qt::UserRole + 1, Trace };
 
-    explicit ConnectionItem() : QObject(), _name() {}
-
-    explicit ConnectionItem(const ConnectionItem& other) : QObject () {
-        _name = other._name;
-        emit nameChanged(_name);
-    }
-
-    void operator= (const ConnectionItem& other) {
-        _name = other._name;
-        emit nameChanged(_name);
-    }
-
-    const QString& getName() const { return _name; }
-
-    void setName(const QString& name) {
-        _name = name;
-        emit nameChanged(_name);
-    }
-
-signals:
-    void nameChanged(QString& name);
-
-private:
-    QString _name;
+    QString name;
 };
 
-class ConnectionModel : public QAbstractListModel
+class SessionDataModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
     using Base = QAbstractListModel;
 
-    explicit ConnectionModel();
+    explicit SessionDataModel();
 
     QVariant data(const QModelIndex& index, int role) const override;
 
@@ -66,7 +40,7 @@ public:
     QHash<int,QByteArray> roleNames() const override { return m_roles; }
 
 private:
-    QList<ConnectionItem> m_items;
+    QList<SessionData> m_clients;
     QHash<int, QByteArray> m_roles;
 };
 

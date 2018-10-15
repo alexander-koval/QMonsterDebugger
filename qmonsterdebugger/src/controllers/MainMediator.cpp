@@ -2,11 +2,11 @@
 #include <QQuickWidget>
 #include <QQmlEngine>
 #include <QQmlComponent>
-#include <stream/sessions/session.h>
+#include <stream/sessions/Session.h>
 #include "stream/MessagePack.h"
 #include "stream/constants.h"
 #include "panels/TraceModel.h"
-#include "models/ConnectionModel.h"
+#include "models/SessionDataModel.h"
 #include "Repo.h"
 
 namespace monster {
@@ -29,11 +29,11 @@ void MainMediator::onSessionCreated(MainMediator::SessionPtr session) {
     connect(session.data(), &Session::inboundMessage,
            this, &MainMediator::onInboundMessage);
 
-    ConnectionModel* connectionModel = Repo::connectionModel();
-    int count = connectionModel->rowCount();
-    connectionModel->insertRow(count);
-    QModelIndex index = connectionModel->index(count);
-    connectionModel->setData(index, session->fileTitle(), ConnectionItem::Name);
+    SessionDataModel* clientModel = Repo::connectionModel();
+    int count = clientModel->rowCount();
+    clientModel->insertRow(count);
+    QModelIndex index = clientModel->index(count);
+    clientModel->setData(index, session->fileTitle(), SessionData::Name);
 
     TraceModelPtr model = QSharedPointer<TraceModel>::create();
     model->insertRow(model->rowCount());
@@ -50,10 +50,6 @@ void MainMediator::onInboundMessage(MessagePack &message) {
         int kkk = 0;
     }
     qDebug() << "MESSAGE: " << cmd.value.c_str();
-}
-
-QObject* MainMediator::model(int index) {
-    return m_traceModels.at(index).get();
 }
 
 }

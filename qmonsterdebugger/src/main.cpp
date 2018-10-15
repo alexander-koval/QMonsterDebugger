@@ -4,10 +4,10 @@
 #include <QQmlContext>
 #include <QQuickWidget>
 #include <QScopedPointer>
-#include "stream/monsterserver.h"
+#include "stream/MonsterServer.h"
 #include "panels/TraceModel.h"
 #include "controllers/MainMediator.h"
-#include "models/ConnectionModel.h"
+#include "models/SessionDataModel.h"
 #include "Repo.h"
 
 using monster::MainWindow;
@@ -55,10 +55,9 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);    
 
     qmlRegisterType<TraceModel>("DeMonsters.Debug", 1, 0, "TraceModel");
-    qmlRegisterType<ConnectionItem>("DeMonsters.Debug", 1, 0, "ConnectionItem");
 
     QQmlApplicationEngine* engine = new QQmlApplicationEngine();
-    ConnectionModel* connectionModel = new ConnectionModel();
+    SessionDataModel* connectionModel = new SessionDataModel();
 
     Repo::engine(engine);
     Repo::connectionModel(connectionModel);

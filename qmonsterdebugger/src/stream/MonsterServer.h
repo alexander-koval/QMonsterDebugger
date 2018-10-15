@@ -8,7 +8,7 @@
 #include <QSharedPointer>
 #include <QScopedPointer>
 #include <map>
-#include "stream/sessions/session.h"
+#include "stream/sessions/Session.h"
 
 namespace monster {
 

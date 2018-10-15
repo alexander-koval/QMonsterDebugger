@@ -1,7 +1,7 @@
-#include "sessions.h"
+#include "Sessions.h"
 #include <QReadLocker>
 #include <QWriteLocker>
-#include "session.h"
+#include "Session.h"
 
 namespace monster {
 

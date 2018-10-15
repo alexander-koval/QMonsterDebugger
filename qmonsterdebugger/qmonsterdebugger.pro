@@ -17,11 +17,9 @@ INCLUDEPATH += src src/amf
 SOURCES += main.cpp\
     MainWindow.cpp \
     MonsterTabWidget.cpp \
-    DebuggerInfo.cpp \
-    stream/sessions/sessions.cpp \
-    stream/sessions/session.cpp \
-    stream/monsterserver.cpp \
-    stream/socket/socketapplication.cpp \
+    stream/sessions/Sessions.cpp \
+    stream/sessions/Session.cpp \
+    stream/MonsterServer.cpp \
     panels/TraceItem.cpp \
     panels/TraceModel.cpp \
     panels/StreamView.cpp \
@@ -47,17 +45,14 @@ SOURCES += main.cpp\
     amf/types/amfxmldocument.cpp \
     utils/AMFConverter.cpp \
     src/controllers/MainMediator.cpp \
-    src/models/ConnectionModel.cpp \
-    src/Repo.cpp
+    src/Repo.cpp \
+    src/models/SessionDataModel.cpp
 
 HEADERS  += MainWindow.h \
     MonsterTabWidget.h \
-    DebuggerInfo.h \
-    stream/sessions/sessions.h \
-    stream/sessions/session.h \
-    stream/monsterserver.h \
-    stream/debuggable.h \
-    stream/socket/socketapplication.h \
+    stream/sessions/Sessions.h \
+    stream/sessions/Session.h \
+    stream/MonsterServer.h \
     panels/TraceItem.h \
     panels/TraceModel.h \
     panels/StreamView.h \
@@ -90,8 +85,8 @@ HEADERS  += MainWindow.h \
     stream/StreamFwd.h \
     utils/AMFConverter.h \
     src/controllers/MainMediator.h \
-    src/models/ConnectionModel.h \
-    src/Repo.h
+    src/Repo.h \
+    src/models/SessionDataModel.h
 
 FORMS    += forms/MainWindow.ui \
     forms/StreamView.ui \

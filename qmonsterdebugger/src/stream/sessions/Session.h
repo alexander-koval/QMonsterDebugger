@@ -17,6 +17,8 @@ using TcpSocketPtr = QPointer<QTcpSocket>;
 
 namespace monster {
 class MessagePack;
+class SessionModelData;
+using SessionModelDataPtr = QSharedPointer<SessionModelData>;
 class Session : public QObject {
 Q_OBJECT
 public:
@@ -77,7 +79,6 @@ private:
 //    QBuffer m_bytes;
 //    QByteArray m_package;
     TcpSocketPtr m_socket;
-
     QString m_playerType;
     QString m_playerVersion;
     bool m_isDebugger;

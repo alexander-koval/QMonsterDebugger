@@ -1,9 +1,9 @@
-#include "monsterserver.h"
+#include "MonsterServer.h"
 #include <QPointer>
 #include <QMessageBox>
 #include "MainWindow.h"
-#include "sessions/session.h"
-#include "sessions/sessions.h"
+#include "sessions/Session.h"
+#include "sessions/Sessions.h"
 #include "stream/constants.h"
 #include "stream/CommandProcessor.h"
 

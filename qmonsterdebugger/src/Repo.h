@@ -5,7 +5,7 @@
 
 namespace monster {
 
-class ConnectionModel;
+class SessionDataModel;
 
 class Repo
 {
@@ -14,13 +14,13 @@ public:
 
     static void engine(QQmlApplicationEngine* engine);
 
-    static ConnectionModel* connectionModel();
+    static SessionDataModel* connectionModel();
 
-    static void connectionModel(ConnectionModel* model);
+    static void connectionModel(SessionDataModel* model);
 
 private:
     static QQmlApplicationEngine* _engine;
-    static ConnectionModel* _connectionModel;
+    static SessionDataModel* _connectionModel;
 };
 
 }

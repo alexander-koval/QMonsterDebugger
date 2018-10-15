@@ -2,8 +2,8 @@
 #include "ui_MainWindow.h"
 #include "panels/TraceView.h"
 #include "panels/StreamView.h"
-#include "stream/sessions/session.h"
-#include "stream/monsterserver.h"
+#include "stream/sessions/Session.h"
+#include "stream/MonsterServer.h"
 #include <QResizeEvent>
 #include <QAction>
 

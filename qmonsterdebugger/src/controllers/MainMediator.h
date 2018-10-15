@@ -23,8 +23,6 @@ public:
 
     void init(QObject* mainView);
 
-    Q_INVOKABLE QObject* model(int index);
-
 signals:
     void sessionCreated(QString title);
 

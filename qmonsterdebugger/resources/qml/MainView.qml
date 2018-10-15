@@ -81,6 +81,7 @@ ApplicationWindow {
             model: connectionModel
             delegate: Tab {
                 title: name
+                sourceComponent: TracePanel { model: traceModel }
             }
         }
 
