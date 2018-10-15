@@ -57,10 +57,10 @@ int main(int argc, char *argv[])
     qmlRegisterType<TraceModel>("DeMonsters.Debug", 1, 0, "TraceModel");
 
     QGuiApplication app(argc, argv);    
-    Core core;
+    Core::start();
 
     QQmlApplicationEngine engine;
-    engine.rootContext()->setContextProperty("sessions", Core::sessionDataModel().data());
+    engine.rootContext()->setContextProperty("sessions", Core::sessions().data());
     engine.load(QUrl("qrc:/qml/MainView.qml"));
 
 //    qmlRegisterType<TraceModel>("DeMonsters.Debug", 1, 0, "TraceModel");

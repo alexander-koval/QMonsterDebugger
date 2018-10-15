@@ -14,9 +14,13 @@ class Core : public QObject {
 public:
     explicit Core();
 
+    static void start();
+
+    static Core& core();
+
     static MonsterServerPtr server();
 
-    static SessionDataModelPtr sessionDataModel();
+    static SessionDataModelPtr sessions();
 
 public slots:
     void onSessionCreated(SessionPtr session);

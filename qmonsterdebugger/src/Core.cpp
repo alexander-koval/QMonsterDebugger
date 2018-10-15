@@ -7,17 +7,22 @@
 
 namespace monster {
 
+static Core* _core;
 static MonsterServerPtr _server;
 static SessionDataModelPtr _sessions;
 
 Core::Core()
     : QObject() {
+}
+
+void Core::start() {
+    _core = new Core();
     _server = MonsterServerPtr::create();
     _sessions = SessionDataModelPtr::create();
 
     if (_server->start()) {
         connect(_server.data(), &MonsterServer::sessionCreated,
-                this, &Core::onSessionCreated, Qt::DirectConnection);
+                _core, &Core::onSessionCreated, Qt::DirectConnection);
     } else {
         qCritical() << "Unable to start server";
     }
@@ -41,12 +46,15 @@ void Core::onInboundMessage(MessagePack &message) {
     qDebug() << "MESSAGE: " << cmd.value.c_str();
 }
 
+Core& Core::core() {
+    return *_core;
+}
 
 MonsterServerPtr Core::server() {
     return _server;
 }
 
-SessionDataModelPtr Core::sessionDataModel() {
+SessionDataModelPtr Core::sessions() {
     return _sessions;
 }
 
