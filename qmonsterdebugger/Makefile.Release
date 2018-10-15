@@ -75,7 +75,8 @@ SOURCES       = src\main.cpp \
 		src\utils\AMFConverter.cpp \
 		src\controllers\MainMediator.cpp \
 		src\Repo.cpp \
-		src\models\SessionDataModel.cpp bin\windows\msvc2015\x64\release\.qrc\qrc_qmonsterdebugger.cpp \
+		src\models\SessionDataModel.cpp \
+		src\Core.cpp bin\windows\msvc2015\x64\release\.qrc\qrc_qmonsterdebugger.cpp \
 		bin\windows\msvc2015\x64\release\.moc\moc_MainWindow.cpp \
 		bin\windows\msvc2015\x64\release\.moc\moc_MonsterTabWidget.cpp \
 		bin\windows\msvc2015\x64\release\.moc\moc_Sessions.cpp \
@@ -85,7 +86,8 @@ SOURCES       = src\main.cpp \
 		bin\windows\msvc2015\x64\release\.moc\moc_StreamView.cpp \
 		bin\windows\msvc2015\x64\release\.moc\moc_TraceView.cpp \
 		bin\windows\msvc2015\x64\release\.moc\moc_MainMediator.cpp \
-		bin\windows\msvc2015\x64\release\.moc\moc_SessionDataModel.cpp
+		bin\windows\msvc2015\x64\release\.moc\moc_SessionDataModel.cpp \
+		bin\windows\msvc2015\x64\release\.moc\moc_Core.cpp
 OBJECTS       = bin\windows\msvc2015\x64\release\.obj\main.obj \
 		bin\windows\msvc2015\x64\release\.obj\MainWindow.obj \
 		bin\windows\msvc2015\x64\release\.obj\MonsterTabWidget.obj \
@@ -119,6 +121,7 @@ OBJECTS       = bin\windows\msvc2015\x64\release\.obj\main.obj \
 		bin\windows\msvc2015\x64\release\.obj\MainMediator.obj \
 		bin\windows\msvc2015\x64\release\.obj\Repo.obj \
 		bin\windows\msvc2015\x64\release\.obj\SessionDataModel.obj \
+		bin\windows\msvc2015\x64\release\.obj\Core.obj \
 		bin\windows\msvc2015\x64\release\.obj\qrc_qmonsterdebugger.obj \
 		bin\windows\msvc2015\x64\release\.obj\moc_MainWindow.obj \
 		bin\windows\msvc2015\x64\release\.obj\moc_MonsterTabWidget.obj \
@@ -129,7 +132,8 @@ OBJECTS       = bin\windows\msvc2015\x64\release\.obj\main.obj \
 		bin\windows\msvc2015\x64\release\.obj\moc_StreamView.obj \
 		bin\windows\msvc2015\x64\release\.obj\moc_TraceView.obj \
 		bin\windows\msvc2015\x64\release\.obj\moc_MainMediator.obj \
-		bin\windows\msvc2015\x64\release\.obj\moc_SessionDataModel.obj
+		bin\windows\msvc2015\x64\release\.obj\moc_SessionDataModel.obj \
+		bin\windows\msvc2015\x64\release\.obj\moc_Core.obj
 
 DIST          = D:/Workspace/CPP/QMonsterDebugger/qmonsterdebugger/config/qmake-destination-path.pri \
 		resources/qml/MainView.qml src\MainWindow.h \
@@ -170,7 +174,9 @@ DIST          = D:/Workspace/CPP/QMonsterDebugger/qmonsterdebugger/config/qmake-
 		src\utils\AMFConverter.h \
 		src\controllers\MainMediator.h \
 		src\Repo.h \
-		src\models\SessionDataModel.h src\main.cpp \
+		src\models\SessionDataModel.h \
+		src\models\ModelsFwd.h \
+		src\Core.h src\main.cpp \
 		src\MainWindow.cpp \
 		src\MonsterTabWidget.cpp \
 		src\stream\sessions\Sessions.cpp \
@@ -202,7 +208,8 @@ DIST          = D:/Workspace/CPP/QMonsterDebugger/qmonsterdebugger/config/qmake-
 		src\utils\AMFConverter.cpp \
 		src\controllers\MainMediator.cpp \
 		src\Repo.cpp \
-		src\models\SessionDataModel.cpp
+		src\models\SessionDataModel.cpp \
+		src\Core.cpp
 QMAKE_TARGET  = qmonsterdebugger
 DESTDIR        = bin\windows\msvc2015\x64\release\ #avoid trailing-slash linebreak
 TARGET         = qmonsterdebugger.exe
@@ -488,11 +495,11 @@ qmake: FORCE
 qmake_all: FORCE
 
 dist:
-	$(ZIP) qmonsterdebugger.zip $(SOURCES) $(DIST) qmonsterdebugger.pro C:\Qt\5.8\msvc2015_64\mkspecs\features\spec_pre.prf C:\Qt\5.8\msvc2015_64\mkspecs\common\angle.conf C:\Qt\5.8\msvc2015_64\mkspecs\common\msvc-base.conf C:\Qt\5.8\msvc2015_64\mkspecs\common\msvc-desktop.conf C:\Qt\5.8\msvc2015_64\mkspecs\qconfig.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dcore.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dcore_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dextras.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dextras_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dinput.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dinput_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dlogic.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dlogic_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dquick.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dquick_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dquickextras.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dquickextras_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dquickinput.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dquickinput_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dquickrender.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dquickrender_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3drender.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3drender_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_accessibility_support_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_axbase.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_axbase_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_axcontainer.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_axcontainer_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_axserver.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_axserver_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_bluetooth.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_bluetooth_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_bootstrap_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_charts.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_charts_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_clucene_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_concurrent.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_concurrent_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_core.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_core_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_datavisualization.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_datavisualization_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_dbus.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_dbus_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_designer.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_designer_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_designercomponents_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_devicediscovery_support_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_egl_support_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_eventdispatcher_support_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_fb_support_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_fontdatabase_support_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_gamepad.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_gamepad_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_gui.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_gui_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_help.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_help_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_location.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_location_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_multimedia.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_multimedia_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_multimediawidgets.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_multimediawidgets_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_network.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_network_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_networkauth.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_networkauth_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_nfc.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_nfc_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_opengl.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_opengl_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_openglextensions.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_openglextensions_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_packetprotocol_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_platformcompositor_support_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_positioning.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_positioning_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_printsupport.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_printsupport_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_purchasing.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_purchasing_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_qml.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_qml_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_qmldebug_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_qmldevtools_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_qmltest.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_qmltest_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_quick.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_quick_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_quickcontrols2.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_quickcontrols2_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_quickparticles_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_quicktemplates2_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_quickwidgets.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_quickwidgets_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_script.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_script_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_scripttools.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_scripttools_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_scxml.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_scxml_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_sensors.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_sensors_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_serialbus.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_serialbus_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_serialport.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_serialport_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_sql.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_sql_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_svg.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_svg_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_testlib.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_testlib_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_texttospeech.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_texttospeech_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_theme_support_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_uiplugin.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_uitools.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_uitools_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_webchannel.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_webchannel_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_webengine.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_webengine_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_webenginecore.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_webenginecore_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_webenginecoreheaders_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_webenginewidgets.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_webenginewidgets_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_websockets.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_websockets_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_webview.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_webview_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_widgets.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_widgets_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_winextras.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_winextras_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_xml.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_xml_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_xmlpatterns.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_xmlpatterns_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_zlib_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\features\qt_functions.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\qt_config.prf C:\Qt\5.8\msvc2015_64\mkspecs\win32-msvc2015\qmake.conf C:\Qt\5.8\msvc2015_64\mkspecs\features\spec_post.prf .qmake.stash C:\Qt\5.8\msvc2015_64\mkspecs\features\exclusive_builds.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\toolchain.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\default_pre.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\win32\default_pre.prf config\qmake-target-platform.pri config\qmake-destination-path.pri C:\Qt\5.8\msvc2015_64\mkspecs\features\resolve_config.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\exclusive_builds_post.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\default_post.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\build_pass.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\qml_debug.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\win32\rtti.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\precompile_header.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\warn_on.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\qt.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\resources.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\moc.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\win32\opengl.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\uic.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\qmake_use.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\file_copies.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\win32\windows.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\testcase_targets.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\exceptions.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\yacc.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\lex.prf qmonsterdebugger.pro resources\qmonsterdebugger.qrc C:\Qt\5.8\msvc2015_64\lib\qtmain.prl C:\Qt\5.8\msvc2015_64\lib\Qt5QuickWidgets.prl C:\Qt\5.8\msvc2015_64\lib\Qt5Widgets.prl C:\Qt\5.8\msvc2015_64\lib\Qt5Quick.prl C:\Qt\5.8\msvc2015_64\lib\Qt5Gui.prl C:\Qt\5.8\msvc2015_64\lib\Qt5Qml.prl C:\Qt\5.8\msvc2015_64\lib\Qt5Network.prl C:\Qt\5.8\msvc2015_64\lib\Qt5Xml.prl C:\Qt\5.8\msvc2015_64\lib\Qt5Core.prl   resources\qmonsterdebugger.qrc C:\Qt\5.8\msvc2015_64\mkspecs\features\data\dummy.cpp src\MainWindow.h src\MonsterTabWidget.h src\stream\sessions\Sessions.h src\stream\sessions\Session.h src\stream\MonsterServer.h src\panels\TraceItem.h src\panels\TraceModel.h src\panels\StreamView.h src\panels\TraceView.h src\stream\constants.h src\stream\CommandProcessor.h src\stream\MessagePack.h src\amf\amf.hpp src\amf\amfpacket.hpp src\amf\deserializer.hpp src\amf\serializationcontext.hpp src\amf\serializer.hpp src\amf\types\amfarray.hpp src\amf\types\amfbool.hpp src\amf\types\amfbytearray.hpp src\amf\types\amfdate.hpp src\amf\types\amfdictionary.hpp src\amf\types\amfdouble.hpp src\amf\types\amfinteger.hpp src\amf\types\amfitem.hpp src\amf\types\amfnull.hpp src\amf\types\amfobject.hpp src\amf\types\amfstring.hpp src\amf\types\amfundefined.hpp src\amf\types\amfvector.hpp src\amf\types\amfxml.hpp src\amf\types\amfxmldocument.hpp src\amf\utils\amfitemptr.hpp src\amf\utils\amfobjecttraits.hpp src\stream\StreamFwd.h src\utils\AMFConverter.h src\controllers\MainMediator.h src\Repo.h src\models\SessionDataModel.h src\main.cpp src\MainWindow.cpp src\MonsterTabWidget.cpp src\stream\sessions\Sessions.cpp src\stream\sessions\Session.cpp src\stream\MonsterServer.cpp src\panels\TraceItem.cpp src\panels\TraceModel.cpp src\panels\StreamView.cpp src\panels\TraceView.cpp src\stream\constants.cpp src\stream\CommandProcessor.cpp src\stream\MessagePack.cpp src\amf\amfpacket.cpp src\amf\deserializer.cpp src\amf\serializationcontext.cpp src\amf\serializer.cpp src\amf\types\amfarray.cpp src\amf\types\amfbool.cpp src\amf\types\amfbytearray.cpp src\amf\types\amfdate.cpp src\amf\types\amfdictionary.cpp src\amf\types\amfdouble.cpp src\amf\types\amfinteger.cpp src\amf\types\amfobject.cpp src\amf\types\amfstring.cpp src\amf\types\amfvector.cpp src\amf\types\amfxml.cpp src\amf\types\amfxmldocument.cpp src\utils\AMFConverter.cpp src\controllers\MainMediator.cpp src\Repo.cpp src\models\SessionDataModel.cpp forms\MainWindow.ui forms\StreamView.ui forms\TraceView.ui    
+	$(ZIP) qmonsterdebugger.zip $(SOURCES) $(DIST) qmonsterdebugger.pro C:\Qt\5.8\msvc2015_64\mkspecs\features\spec_pre.prf C:\Qt\5.8\msvc2015_64\mkspecs\common\angle.conf C:\Qt\5.8\msvc2015_64\mkspecs\common\msvc-base.conf C:\Qt\5.8\msvc2015_64\mkspecs\common\msvc-desktop.conf C:\Qt\5.8\msvc2015_64\mkspecs\qconfig.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dcore.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dcore_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dextras.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dextras_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dinput.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dinput_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dlogic.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dlogic_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dquick.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dquick_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dquickextras.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dquickextras_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dquickinput.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dquickinput_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dquickrender.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3dquickrender_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3drender.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_3drender_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_accessibility_support_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_axbase.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_axbase_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_axcontainer.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_axcontainer_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_axserver.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_axserver_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_bluetooth.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_bluetooth_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_bootstrap_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_charts.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_charts_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_clucene_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_concurrent.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_concurrent_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_core.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_core_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_datavisualization.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_datavisualization_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_dbus.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_dbus_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_designer.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_designer_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_designercomponents_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_devicediscovery_support_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_egl_support_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_eventdispatcher_support_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_fb_support_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_fontdatabase_support_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_gamepad.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_gamepad_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_gui.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_gui_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_help.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_help_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_location.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_location_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_multimedia.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_multimedia_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_multimediawidgets.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_multimediawidgets_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_network.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_network_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_networkauth.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_networkauth_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_nfc.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_nfc_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_opengl.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_opengl_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_openglextensions.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_openglextensions_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_packetprotocol_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_platformcompositor_support_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_positioning.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_positioning_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_printsupport.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_printsupport_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_purchasing.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_purchasing_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_qml.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_qml_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_qmldebug_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_qmldevtools_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_qmltest.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_qmltest_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_quick.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_quick_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_quickcontrols2.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_quickcontrols2_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_quickparticles_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_quicktemplates2_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_quickwidgets.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_quickwidgets_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_script.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_script_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_scripttools.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_scripttools_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_scxml.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_scxml_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_sensors.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_sensors_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_serialbus.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_serialbus_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_serialport.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_serialport_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_sql.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_sql_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_svg.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_svg_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_testlib.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_testlib_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_texttospeech.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_texttospeech_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_theme_support_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_uiplugin.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_uitools.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_uitools_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_webchannel.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_webchannel_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_webengine.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_webengine_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_webenginecore.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_webenginecore_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_webenginecoreheaders_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_webenginewidgets.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_webenginewidgets_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_websockets.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_websockets_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_webview.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_webview_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_widgets.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_widgets_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_winextras.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_winextras_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_xml.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_xml_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_xmlpatterns.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_xmlpatterns_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\modules\qt_lib_zlib_private.pri C:\Qt\5.8\msvc2015_64\mkspecs\features\qt_functions.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\qt_config.prf C:\Qt\5.8\msvc2015_64\mkspecs\win32-msvc2015\qmake.conf C:\Qt\5.8\msvc2015_64\mkspecs\features\spec_post.prf .qmake.stash C:\Qt\5.8\msvc2015_64\mkspecs\features\exclusive_builds.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\toolchain.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\default_pre.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\win32\default_pre.prf config\qmake-target-platform.pri config\qmake-destination-path.pri C:\Qt\5.8\msvc2015_64\mkspecs\features\resolve_config.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\exclusive_builds_post.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\default_post.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\build_pass.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\qml_debug.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\win32\rtti.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\precompile_header.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\warn_on.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\qt.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\resources.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\moc.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\win32\opengl.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\uic.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\qmake_use.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\file_copies.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\win32\windows.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\testcase_targets.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\exceptions.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\yacc.prf C:\Qt\5.8\msvc2015_64\mkspecs\features\lex.prf qmonsterdebugger.pro resources\qmonsterdebugger.qrc C:\Qt\5.8\msvc2015_64\lib\qtmain.prl C:\Qt\5.8\msvc2015_64\lib\Qt5QuickWidgets.prl C:\Qt\5.8\msvc2015_64\lib\Qt5Widgets.prl C:\Qt\5.8\msvc2015_64\lib\Qt5Quick.prl C:\Qt\5.8\msvc2015_64\lib\Qt5Gui.prl C:\Qt\5.8\msvc2015_64\lib\Qt5Qml.prl C:\Qt\5.8\msvc2015_64\lib\Qt5Network.prl C:\Qt\5.8\msvc2015_64\lib\Qt5Xml.prl C:\Qt\5.8\msvc2015_64\lib\Qt5Core.prl   resources\qmonsterdebugger.qrc C:\Qt\5.8\msvc2015_64\mkspecs\features\data\dummy.cpp src\MainWindow.h src\MonsterTabWidget.h src\stream\sessions\Sessions.h src\stream\sessions\Session.h src\stream\MonsterServer.h src\panels\TraceItem.h src\panels\TraceModel.h src\panels\StreamView.h src\panels\TraceView.h src\stream\constants.h src\stream\CommandProcessor.h src\stream\MessagePack.h src\amf\amf.hpp src\amf\amfpacket.hpp src\amf\deserializer.hpp src\amf\serializationcontext.hpp src\amf\serializer.hpp src\amf\types\amfarray.hpp src\amf\types\amfbool.hpp src\amf\types\amfbytearray.hpp src\amf\types\amfdate.hpp src\amf\types\amfdictionary.hpp src\amf\types\amfdouble.hpp src\amf\types\amfinteger.hpp src\amf\types\amfitem.hpp src\amf\types\amfnull.hpp src\amf\types\amfobject.hpp src\amf\types\amfstring.hpp src\amf\types\amfundefined.hpp src\amf\types\amfvector.hpp src\amf\types\amfxml.hpp src\amf\types\amfxmldocument.hpp src\amf\utils\amfitemptr.hpp src\amf\utils\amfobjecttraits.hpp src\stream\StreamFwd.h src\utils\AMFConverter.h src\controllers\MainMediator.h src\Repo.h src\models\SessionDataModel.h src\models\ModelsFwd.h src\Core.h src\main.cpp src\MainWindow.cpp src\MonsterTabWidget.cpp src\stream\sessions\Sessions.cpp src\stream\sessions\Session.cpp src\stream\MonsterServer.cpp src\panels\TraceItem.cpp src\panels\TraceModel.cpp src\panels\StreamView.cpp src\panels\TraceView.cpp src\stream\constants.cpp src\stream\CommandProcessor.cpp src\stream\MessagePack.cpp src\amf\amfpacket.cpp src\amf\deserializer.cpp src\amf\serializationcontext.cpp src\amf\serializer.cpp src\amf\types\amfarray.cpp src\amf\types\amfbool.cpp src\amf\types\amfbytearray.cpp src\amf\types\amfdate.cpp src\amf\types\amfdictionary.cpp src\amf\types\amfdouble.cpp src\amf\types\amfinteger.cpp src\amf\types\amfobject.cpp src\amf\types\amfstring.cpp src\amf\types\amfvector.cpp src\amf\types\amfxml.cpp src\amf\types\amfxmldocument.cpp src\utils\AMFConverter.cpp src\controllers\MainMediator.cpp src\Repo.cpp src\models\SessionDataModel.cpp src\Core.cpp forms\MainWindow.ui forms\StreamView.ui forms\TraceView.ui    
 
 clean: compiler_clean 
-	-$(DEL_FILE) bin\windows\msvc2015\x64\release\.obj\main.obj bin\windows\msvc2015\x64\release\.obj\MainWindow.obj bin\windows\msvc2015\x64\release\.obj\MonsterTabWidget.obj bin\windows\msvc2015\x64\release\.obj\Sessions.obj bin\windows\msvc2015\x64\release\.obj\Session.obj bin\windows\msvc2015\x64\release\.obj\MonsterServer.obj bin\windows\msvc2015\x64\release\.obj\TraceItem.obj bin\windows\msvc2015\x64\release\.obj\TraceModel.obj bin\windows\msvc2015\x64\release\.obj\StreamView.obj bin\windows\msvc2015\x64\release\.obj\TraceView.obj bin\windows\msvc2015\x64\release\.obj\constants.obj bin\windows\msvc2015\x64\release\.obj\CommandProcessor.obj bin\windows\msvc2015\x64\release\.obj\MessagePack.obj bin\windows\msvc2015\x64\release\.obj\amfpacket.obj bin\windows\msvc2015\x64\release\.obj\deserializer.obj bin\windows\msvc2015\x64\release\.obj\serializationcontext.obj bin\windows\msvc2015\x64\release\.obj\serializer.obj bin\windows\msvc2015\x64\release\.obj\amfarray.obj bin\windows\msvc2015\x64\release\.obj\amfbool.obj bin\windows\msvc2015\x64\release\.obj\amfbytearray.obj bin\windows\msvc2015\x64\release\.obj\amfdate.obj bin\windows\msvc2015\x64\release\.obj\amfdictionary.obj bin\windows\msvc2015\x64\release\.obj\amfdouble.obj bin\windows\msvc2015\x64\release\.obj\amfinteger.obj bin\windows\msvc2015\x64\release\.obj\amfobject.obj bin\windows\msvc2015\x64\release\.obj\amfstring.obj bin\windows\msvc2015\x64\release\.obj\amfvector.obj bin\windows\msvc2015\x64\release\.obj\amfxml.obj bin\windows\msvc2015\x64\release\.obj\amfxmldocument.obj bin\windows\msvc2015\x64\release\.obj\AMFConverter.obj bin\windows\msvc2015\x64\release\.obj\MainMediator.obj bin\windows\msvc2015\x64\release\.obj\Repo.obj bin\windows\msvc2015\x64\release\.obj\SessionDataModel.obj bin\windows\msvc2015\x64\release\.obj\qrc_qmonsterdebugger.obj bin\windows\msvc2015\x64\release\.obj\moc_MainWindow.obj bin\windows\msvc2015\x64\release\.obj\moc_MonsterTabWidget.obj bin\windows\msvc2015\x64\release\.obj\moc_Sessions.obj
-	-$(DEL_FILE) bin\windows\msvc2015\x64\release\.obj\moc_Session.obj bin\windows\msvc2015\x64\release\.obj\moc_MonsterServer.obj bin\windows\msvc2015\x64\release\.obj\moc_TraceModel.obj bin\windows\msvc2015\x64\release\.obj\moc_StreamView.obj bin\windows\msvc2015\x64\release\.obj\moc_TraceView.obj bin\windows\msvc2015\x64\release\.obj\moc_MainMediator.obj bin\windows\msvc2015\x64\release\.obj\moc_SessionDataModel.obj
+	-$(DEL_FILE) bin\windows\msvc2015\x64\release\.obj\main.obj bin\windows\msvc2015\x64\release\.obj\MainWindow.obj bin\windows\msvc2015\x64\release\.obj\MonsterTabWidget.obj bin\windows\msvc2015\x64\release\.obj\Sessions.obj bin\windows\msvc2015\x64\release\.obj\Session.obj bin\windows\msvc2015\x64\release\.obj\MonsterServer.obj bin\windows\msvc2015\x64\release\.obj\TraceItem.obj bin\windows\msvc2015\x64\release\.obj\TraceModel.obj bin\windows\msvc2015\x64\release\.obj\StreamView.obj bin\windows\msvc2015\x64\release\.obj\TraceView.obj bin\windows\msvc2015\x64\release\.obj\constants.obj bin\windows\msvc2015\x64\release\.obj\CommandProcessor.obj bin\windows\msvc2015\x64\release\.obj\MessagePack.obj bin\windows\msvc2015\x64\release\.obj\amfpacket.obj bin\windows\msvc2015\x64\release\.obj\deserializer.obj bin\windows\msvc2015\x64\release\.obj\serializationcontext.obj bin\windows\msvc2015\x64\release\.obj\serializer.obj bin\windows\msvc2015\x64\release\.obj\amfarray.obj bin\windows\msvc2015\x64\release\.obj\amfbool.obj bin\windows\msvc2015\x64\release\.obj\amfbytearray.obj bin\windows\msvc2015\x64\release\.obj\amfdate.obj bin\windows\msvc2015\x64\release\.obj\amfdictionary.obj bin\windows\msvc2015\x64\release\.obj\amfdouble.obj bin\windows\msvc2015\x64\release\.obj\amfinteger.obj bin\windows\msvc2015\x64\release\.obj\amfobject.obj bin\windows\msvc2015\x64\release\.obj\amfstring.obj bin\windows\msvc2015\x64\release\.obj\amfvector.obj bin\windows\msvc2015\x64\release\.obj\amfxml.obj bin\windows\msvc2015\x64\release\.obj\amfxmldocument.obj bin\windows\msvc2015\x64\release\.obj\AMFConverter.obj bin\windows\msvc2015\x64\release\.obj\MainMediator.obj bin\windows\msvc2015\x64\release\.obj\Repo.obj bin\windows\msvc2015\x64\release\.obj\SessionDataModel.obj bin\windows\msvc2015\x64\release\.obj\Core.obj bin\windows\msvc2015\x64\release\.obj\qrc_qmonsterdebugger.obj bin\windows\msvc2015\x64\release\.obj\moc_MainWindow.obj bin\windows\msvc2015\x64\release\.obj\moc_MonsterTabWidget.obj
+	-$(DEL_FILE) bin\windows\msvc2015\x64\release\.obj\moc_Sessions.obj bin\windows\msvc2015\x64\release\.obj\moc_Session.obj bin\windows\msvc2015\x64\release\.obj\moc_MonsterServer.obj bin\windows\msvc2015\x64\release\.obj\moc_TraceModel.obj bin\windows\msvc2015\x64\release\.obj\moc_StreamView.obj bin\windows\msvc2015\x64\release\.obj\moc_TraceView.obj bin\windows\msvc2015\x64\release\.obj\moc_MainMediator.obj bin\windows\msvc2015\x64\release\.obj\moc_SessionDataModel.obj bin\windows\msvc2015\x64\release\.obj\moc_Core.obj
 	-$(DEL_FILE) bin\windows\msvc2015\x64\release\qmonsterdebugger.exp
 
 distclean: clean 
@@ -526,9 +533,9 @@ compiler_moc_predefs_clean:
 bin\windows\msvc2015\x64\release\.moc\moc_predefs.h: C:\Qt\5.8\msvc2015_64\mkspecs\features\data\dummy.cpp
 	cl -BxC:\Qt\5.8\msvc2015_64\bin\qmake.exe -nologo -Zc:wchar_t -FS -Zc:strictStrings -Zc:throwingNew -O2 -MD -GR -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E -Za C:\Qt\5.8\msvc2015_64\mkspecs\features\data\dummy.cpp 2>NUL >bin\windows\msvc2015\x64\release\.moc\moc_predefs.h
 
-compiler_moc_header_make_all: bin\windows\msvc2015\x64\release\.moc\moc_MainWindow.cpp bin\windows\msvc2015\x64\release\.moc\moc_MonsterTabWidget.cpp bin\windows\msvc2015\x64\release\.moc\moc_Sessions.cpp bin\windows\msvc2015\x64\release\.moc\moc_Session.cpp bin\windows\msvc2015\x64\release\.moc\moc_MonsterServer.cpp bin\windows\msvc2015\x64\release\.moc\moc_TraceModel.cpp bin\windows\msvc2015\x64\release\.moc\moc_StreamView.cpp bin\windows\msvc2015\x64\release\.moc\moc_TraceView.cpp bin\windows\msvc2015\x64\release\.moc\moc_MainMediator.cpp bin\windows\msvc2015\x64\release\.moc\moc_SessionDataModel.cpp
+compiler_moc_header_make_all: bin\windows\msvc2015\x64\release\.moc\moc_MainWindow.cpp bin\windows\msvc2015\x64\release\.moc\moc_MonsterTabWidget.cpp bin\windows\msvc2015\x64\release\.moc\moc_Sessions.cpp bin\windows\msvc2015\x64\release\.moc\moc_Session.cpp bin\windows\msvc2015\x64\release\.moc\moc_MonsterServer.cpp bin\windows\msvc2015\x64\release\.moc\moc_TraceModel.cpp bin\windows\msvc2015\x64\release\.moc\moc_StreamView.cpp bin\windows\msvc2015\x64\release\.moc\moc_TraceView.cpp bin\windows\msvc2015\x64\release\.moc\moc_MainMediator.cpp bin\windows\msvc2015\x64\release\.moc\moc_SessionDataModel.cpp bin\windows\msvc2015\x64\release\.moc\moc_Core.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) bin\windows\msvc2015\x64\release\.moc\moc_MainWindow.cpp bin\windows\msvc2015\x64\release\.moc\moc_MonsterTabWidget.cpp bin\windows\msvc2015\x64\release\.moc\moc_Sessions.cpp bin\windows\msvc2015\x64\release\.moc\moc_Session.cpp bin\windows\msvc2015\x64\release\.moc\moc_MonsterServer.cpp bin\windows\msvc2015\x64\release\.moc\moc_TraceModel.cpp bin\windows\msvc2015\x64\release\.moc\moc_StreamView.cpp bin\windows\msvc2015\x64\release\.moc\moc_TraceView.cpp bin\windows\msvc2015\x64\release\.moc\moc_MainMediator.cpp bin\windows\msvc2015\x64\release\.moc\moc_SessionDataModel.cpp
+	-$(DEL_FILE) bin\windows\msvc2015\x64\release\.moc\moc_MainWindow.cpp bin\windows\msvc2015\x64\release\.moc\moc_MonsterTabWidget.cpp bin\windows\msvc2015\x64\release\.moc\moc_Sessions.cpp bin\windows\msvc2015\x64\release\.moc\moc_Session.cpp bin\windows\msvc2015\x64\release\.moc\moc_MonsterServer.cpp bin\windows\msvc2015\x64\release\.moc\moc_TraceModel.cpp bin\windows\msvc2015\x64\release\.moc\moc_StreamView.cpp bin\windows\msvc2015\x64\release\.moc\moc_TraceView.cpp bin\windows\msvc2015\x64\release\.moc\moc_MainMediator.cpp bin\windows\msvc2015\x64\release\.moc\moc_SessionDataModel.cpp bin\windows\msvc2015\x64\release\.moc\moc_Core.cpp
 bin\windows\msvc2015\x64\release\.moc\moc_MainWindow.cpp: C:\Qt\5.8\msvc2015_64\include\QtWidgets\QMainWindow \
 		C:\Qt\5.8\msvc2015_64\include\QtWidgets\qmainwindow.h \
 		C:\Qt\5.8\msvc2015_64\include\QtWidgets\qtwidgetsglobal.h \
@@ -986,6 +993,7 @@ bin\windows\msvc2015\x64\release\.moc\moc_MonsterServer.cpp: C:\Qt\5.8\msvc2015_
 		C:\Qt\5.8\msvc2015_64\include\QtCore\qpointer.h \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QSharedPointer \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QScopedPointer \
+		src\stream\StreamFwd.h \
 		src\stream\sessions\Session.h \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QObject \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QByteArray \
@@ -1345,6 +1353,10 @@ bin\windows\msvc2015\x64\release\.moc\moc_MainMediator.cpp: C:\Qt\5.8\msvc2015_6
 		C:\Qt\5.8\msvc2015_64\include\QtCore\qlocale.h \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\qset.h \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\qcontiguouscache.h \
+		src\stream\StreamFwd.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\QPointer \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qpointer.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\QScopedPointer \
 		src\controllers\MainMediator.h \
 		bin\windows\msvc2015\x64\release\.moc\moc_predefs.h \
 		C:\Qt\5.8\msvc2015_64\bin\moc.exe
@@ -1414,10 +1426,113 @@ bin\windows\msvc2015\x64\release\.moc\moc_SessionDataModel.cpp: C:\Qt\5.8\msvc20
 		C:\Qt\5.8\msvc2015_64\include\QtCore\qsharedpointer.h \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\qsharedpointer_impl.h \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QSharedPointer \
+		src\stream\StreamFwd.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\QPointer \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qpointer.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\QScopedPointer \
 		src\models\SessionDataModel.h \
 		bin\windows\msvc2015\x64\release\.moc\moc_predefs.h \
 		C:\Qt\5.8\msvc2015_64\bin\moc.exe
 	C:\Qt\5.8\msvc2015_64\bin\moc.exe $(DEFINES) --compiler-flavor=msvc --include $PWD/../bin/windows/msvc2015/x64/release/.moc/moc_predefs.h -IC:/Qt/5.8/msvc2015_64/mkspecs/win32-msvc2015 -ID:/Workspace/CPP/QMonsterDebugger/qmonsterdebugger -ID:/Workspace/CPP/QMonsterDebugger/qmonsterdebugger/src -ID:/Workspace/CPP/QMonsterDebugger/qmonsterdebugger/src/amf -IC:/Qt/5.8/msvc2015_64/include -IC:/Qt/5.8/msvc2015_64/include/QtQuickWidgets -IC:/Qt/5.8/msvc2015_64/include/QtWidgets -IC:/Qt/5.8/msvc2015_64/include/QtQuick -IC:/Qt/5.8/msvc2015_64/include/QtGui -IC:/Qt/5.8/msvc2015_64/include/QtANGLE -IC:/Qt/5.8/msvc2015_64/include/QtQml -IC:/Qt/5.8/msvc2015_64/include/QtNetwork -IC:/Qt/5.8/msvc2015_64/include/QtXml -IC:/Qt/5.8/msvc2015_64/include/QtCore -I"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE" -I"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.10240.0\ucrt" -I"C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\include\um" -I"C:\Program Files (x86)\Windows Kits\8.1\include\\shared" -I"C:\Program Files (x86)\Windows Kits\8.1\include\\um" -I"C:\Program Files (x86)\Windows Kits\8.1\include\\winrt" src\models\SessionDataModel.h -o bin\windows\msvc2015\x64\release\.moc\moc_SessionDataModel.cpp
+
+bin\windows\msvc2015\x64\release\.moc\moc_Core.cpp: C:\Qt\5.8\msvc2015_64\include\QtGui\QGuiApplication \
+		C:\Qt\5.8\msvc2015_64\include\QtGui\qguiapplication.h \
+		C:\Qt\5.8\msvc2015_64\include\QtGui\qtguiglobal.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qglobal.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qconfig-bootstrapped.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qconfig.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qtcore-config.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qsystemdetection.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qprocessordetection.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qcompilerdetection.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qtypeinfo.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qsysinfo.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qlogging.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qflags.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qtypetraits.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qatomic.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qbasicatomic.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qatomic_bootstrap.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qgenericatomic.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qatomic_cxx11.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qatomic_msvc.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qglobalstatic.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qmutex.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qnumeric.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qversiontagging.h \
+		C:\Qt\5.8\msvc2015_64\include\QtGui\qtgui-config.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qcoreapplication.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qstring.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qchar.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qbytearray.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qrefcount.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qnamespace.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qarraydata.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qstringbuilder.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qobject.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qobjectdefs.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qobjectdefs_impl.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qlist.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qalgorithms.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qiterator.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qhashfunctions.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qpair.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qbytearraylist.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qstringlist.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qregexp.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qstringmatcher.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qcoreevent.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qscopedpointer.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qmetatype.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qvarlengtharray.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qcontainerfwd.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qobject_impl.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qeventloop.h \
+		C:\Qt\5.8\msvc2015_64\include\QtGui\qwindowdefs.h \
+		C:\Qt\5.8\msvc2015_64\include\QtGui\qwindowdefs_win.h \
+		C:\Qt\5.8\msvc2015_64\include\QtGui\qinputmethod.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qlocale.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qvariant.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qmap.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qdebug.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qhash.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qtextstream.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qiodevice.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qvector.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qpoint.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qset.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qcontiguouscache.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qsharedpointer.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qshareddata.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qsharedpointer_impl.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qsize.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\QQmlApplicationEngine \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qqmlapplicationengine.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qqmlengine.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qurl.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qurlquery.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qjsengine.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qjsvalue.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qtqmlglobal.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qtqml-config.h \
+		C:\Qt\5.8\msvc2015_64\include\QtNetwork\qtnetworkglobal.h \
+		C:\Qt\5.8\msvc2015_64\include\QtNetwork\qtnetwork-config.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qqml.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qqmlprivate.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qqmlparserstatus.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qqmlpropertyvaluesource.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qqmllist.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qmetaobject.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qqmlerror.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qqmldebug.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\QQmlContext \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qqmlcontext.h \
+		src\models\ModelsFwd.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\QSharedPointer \
+		src\Core.h \
+		bin\windows\msvc2015\x64\release\.moc\moc_predefs.h \
+		C:\Qt\5.8\msvc2015_64\bin\moc.exe
+	C:\Qt\5.8\msvc2015_64\bin\moc.exe $(DEFINES) --compiler-flavor=msvc --include $PWD/../bin/windows/msvc2015/x64/release/.moc/moc_predefs.h -IC:/Qt/5.8/msvc2015_64/mkspecs/win32-msvc2015 -ID:/Workspace/CPP/QMonsterDebugger/qmonsterdebugger -ID:/Workspace/CPP/QMonsterDebugger/qmonsterdebugger/src -ID:/Workspace/CPP/QMonsterDebugger/qmonsterdebugger/src/amf -IC:/Qt/5.8/msvc2015_64/include -IC:/Qt/5.8/msvc2015_64/include/QtQuickWidgets -IC:/Qt/5.8/msvc2015_64/include/QtWidgets -IC:/Qt/5.8/msvc2015_64/include/QtQuick -IC:/Qt/5.8/msvc2015_64/include/QtGui -IC:/Qt/5.8/msvc2015_64/include/QtANGLE -IC:/Qt/5.8/msvc2015_64/include/QtQml -IC:/Qt/5.8/msvc2015_64/include/QtNetwork -IC:/Qt/5.8/msvc2015_64/include/QtXml -IC:/Qt/5.8/msvc2015_64/include/QtCore -I"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE" -I"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\ATLMFC\INCLUDE" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.10240.0\ucrt" -I"C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\include\um" -I"C:\Program Files (x86)\Windows Kits\8.1\include\\shared" -I"C:\Program Files (x86)\Windows Kits\8.1\include\\um" -I"C:\Program Files (x86)\Windows Kits\8.1\include\\winrt" src\Core.h -o bin\windows\msvc2015\x64\release\.moc\moc_Core.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -1745,6 +1860,7 @@ bin\windows\msvc2015\x64\release\.obj\main.obj: src\main.cpp src/MainWindow.h \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QPointer \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\qpointer.h \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QSharedPointer \
+		src/stream/StreamFwd.h \
 		src/stream/sessions/Session.h \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QByteArray \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QBuffer \
@@ -1760,6 +1876,10 @@ bin\windows\msvc2015\x64\release\.obj\main.obj: src\main.cpp src/MainWindow.h \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QVector \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QAbstractTableModel \
 		src/models/SessionDataModel.h \
+		src/stream/sessions/Sessions.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\QMap \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\QReadWriteLock \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qreadwritelock.h \
 		src/Repo.h
 
 bin\windows\msvc2015\x64\release\.obj\MainWindow.obj: src\MainWindow.cpp src/MainWindow.h \
@@ -1893,6 +2013,7 @@ bin\windows\msvc2015\x64\release\.obj\MainWindow.obj: src\MainWindow.cpp src/Mai
 		C:\Qt\5.8\msvc2015_64\include\QtCore\qthread.h \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QSharedPointer \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QScopedPointer \
+		src/stream/StreamFwd.h \
 		C:\Qt\5.8\msvc2015_64\include\QtGui\QResizeEvent \
 		C:\Qt\5.8\msvc2015_64\include\QtWidgets\QAction \
 		C:\Qt\5.8\msvc2015_64\include\QtWidgets\qaction.h \
@@ -2302,6 +2423,7 @@ bin\windows\msvc2015\x64\release\.obj\MonsterServer.obj: src\stream\MonsterServe
 		C:\Qt\5.8\msvc2015_64\include\QtCore\qpointer.h \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QSharedPointer \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QScopedPointer \
+		src/stream/StreamFwd.h \
 		src/stream/sessions/Session.h \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QObject \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QByteArray \
@@ -3239,6 +3361,10 @@ bin\windows\msvc2015\x64\release\.obj\MainMediator.obj: src\controllers\MainMedi
 		C:\Qt\5.8\msvc2015_64\include\QtCore\qlocale.h \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\qset.h \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\qcontiguouscache.h \
+		src/stream/StreamFwd.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\QPointer \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qpointer.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\QScopedPointer \
 		C:\Qt\5.8\msvc2015_64\include\QtQuickWidgets\QQuickWidget \
 		C:\Qt\5.8\msvc2015_64\include\QtQuickWidgets\qquickwidget.h \
 		C:\Qt\5.8\msvc2015_64\include\QtWidgets\qwidget.h \
@@ -3333,8 +3459,6 @@ bin\windows\msvc2015\x64\release\.obj\MainMediator.obj: src\controllers\MainMedi
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QByteArray \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QBuffer \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\qbuffer.h \
-		C:\Qt\5.8\msvc2015_64\include\QtCore\QPointer \
-		C:\Qt\5.8\msvc2015_64\include\QtCore\qpointer.h \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QWeakPointer \
 		C:\Qt\5.8\msvc2015_64\include\QtNetwork\QAbstractSocket \
 		C:\Qt\5.8\msvc2015_64\include\QtNetwork\qabstractsocket.h \
@@ -3444,7 +3568,11 @@ bin\windows\msvc2015\x64\release\.obj\Repo.obj: src\Repo.cpp src/Repo.h \
 		src/models/SessionDataModel.h \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QAbstractListModel \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\qabstractitemmodel.h \
-		C:\Qt\5.8\msvc2015_64\include\QtCore\QSharedPointer
+		C:\Qt\5.8\msvc2015_64\include\QtCore\QSharedPointer \
+		src/stream/StreamFwd.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\QPointer \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qpointer.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\QScopedPointer
 
 bin\windows\msvc2015\x64\release\.obj\SessionDataModel.obj: src\models\SessionDataModel.cpp src/models/SessionDataModel.h \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QAbstractListModel \
@@ -3511,18 +3639,121 @@ bin\windows\msvc2015\x64\release\.obj\SessionDataModel.obj: src\models\SessionDa
 		C:\Qt\5.8\msvc2015_64\include\QtCore\qsharedpointer.h \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\qsharedpointer_impl.h \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QSharedPointer \
+		src/stream/StreamFwd.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\QPointer \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qpointer.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\QScopedPointer \
 		src/stream/sessions/Session.h \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QObject \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QByteArray \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QBuffer \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\qbuffer.h \
-		C:\Qt\5.8\msvc2015_64\include\QtCore\QPointer \
-		C:\Qt\5.8\msvc2015_64\include\QtCore\qpointer.h \
 		C:\Qt\5.8\msvc2015_64\include\QtCore\QWeakPointer \
 		C:\Qt\5.8\msvc2015_64\include\QtNetwork\QAbstractSocket \
 		C:\Qt\5.8\msvc2015_64\include\QtNetwork\qabstractsocket.h \
 		C:\Qt\5.8\msvc2015_64\include\QtNetwork\qtnetworkglobal.h \
 		C:\Qt\5.8\msvc2015_64\include\QtNetwork\qtnetwork-config.h
+
+bin\windows\msvc2015\x64\release\.obj\Core.obj: src\Core.cpp src/Core.h \
+		C:\Qt\5.8\msvc2015_64\include\QtGui\QGuiApplication \
+		C:\Qt\5.8\msvc2015_64\include\QtGui\qguiapplication.h \
+		C:\Qt\5.8\msvc2015_64\include\QtGui\qtguiglobal.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qglobal.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qconfig-bootstrapped.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qconfig.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qtcore-config.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qsystemdetection.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qprocessordetection.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qcompilerdetection.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qtypeinfo.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qsysinfo.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qlogging.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qflags.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qtypetraits.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qatomic.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qbasicatomic.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qatomic_bootstrap.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qgenericatomic.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qatomic_cxx11.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qatomic_msvc.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qglobalstatic.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qmutex.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qnumeric.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qversiontagging.h \
+		C:\Qt\5.8\msvc2015_64\include\QtGui\qtgui-config.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qcoreapplication.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qstring.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qchar.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qbytearray.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qrefcount.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qnamespace.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qarraydata.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qstringbuilder.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qobject.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qobjectdefs.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qobjectdefs_impl.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qlist.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qalgorithms.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qiterator.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qhashfunctions.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qpair.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qbytearraylist.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qstringlist.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qregexp.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qstringmatcher.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qcoreevent.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qscopedpointer.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qmetatype.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qvarlengtharray.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qcontainerfwd.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qobject_impl.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qeventloop.h \
+		C:\Qt\5.8\msvc2015_64\include\QtGui\qwindowdefs.h \
+		C:\Qt\5.8\msvc2015_64\include\QtGui\qwindowdefs_win.h \
+		C:\Qt\5.8\msvc2015_64\include\QtGui\qinputmethod.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qlocale.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qvariant.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qmap.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qdebug.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qhash.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qtextstream.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qiodevice.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qvector.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qpoint.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qset.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qcontiguouscache.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qsharedpointer.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qshareddata.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qsharedpointer_impl.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qsize.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\QQmlApplicationEngine \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qqmlapplicationengine.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qqmlengine.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qurl.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qurlquery.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qjsengine.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qjsvalue.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qtqmlglobal.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qtqml-config.h \
+		C:\Qt\5.8\msvc2015_64\include\QtNetwork\qtnetworkglobal.h \
+		C:\Qt\5.8\msvc2015_64\include\QtNetwork\qtnetwork-config.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qqml.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qqmlprivate.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qqmlparserstatus.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qqmlpropertyvaluesource.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qqmllist.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qmetaobject.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qqmlerror.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qqmldebug.h \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\QQmlContext \
+		C:\Qt\5.8\msvc2015_64\include\QtQml\qqmlcontext.h \
+		src/models/ModelsFwd.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\QSharedPointer \
+		src/panels/TraceModel.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\QAbstractListModel \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qabstractitemmodel.h \
+		src/panels/TraceItem.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\QString
 
 bin\windows\msvc2015\x64\release\.obj\qrc_qmonsterdebugger.obj: bin\windows\msvc2015\x64\release\.qrc\qrc_qmonsterdebugger.cpp 
 
@@ -3545,6 +3776,8 @@ bin\windows\msvc2015\x64\release\.obj\moc_TraceView.obj: bin\windows\msvc2015\x6
 bin\windows\msvc2015\x64\release\.obj\moc_MainMediator.obj: bin\windows\msvc2015\x64\release\.moc\moc_MainMediator.cpp 
 
 bin\windows\msvc2015\x64\release\.obj\moc_SessionDataModel.obj: bin\windows\msvc2015\x64\release\.moc\moc_SessionDataModel.cpp 
+
+bin\windows\msvc2015\x64\release\.obj\moc_Core.obj: bin\windows\msvc2015\x64\release\.moc\moc_Core.cpp 
 
 ####### Install
 

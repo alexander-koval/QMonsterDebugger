@@ -8,72 +8,79 @@
 #include "panels/TraceModel.h"
 #include "controllers/MainMediator.h"
 #include "models/SessionDataModel.h"
+#include "stream/sessions/Sessions.h"
+#include "Core.h"
 #include "Repo.h"
 
 using monster::MainWindow;
 using monster::MonsterServer;
 
-class MonsterBootstrap : public QObject {
-//Q_OBJECT
-public:
-    MonsterBootstrap(QQmlApplicationEngine* engine)
-        : QObject(), m_mediator(), m_engine(engine), m_server() {
-        connect(engine, &QQmlApplicationEngine::objectCreated,
-                this, &MonsterBootstrap::onObjectCreated);
-    }
+//class MonsterBootstrap : public QObject {
+////Q_OBJECT
+//public:
+//    MonsterBootstrap(QQmlApplicationEngine* engine)
+//        : QObject(), m_mediator(), m_engine(engine), m_server() {
+//        connect(engine, &QQmlApplicationEngine::objectCreated,
+//                this, &MonsterBootstrap::onObjectCreated);
+//    }
 
-    void operator()() {
-        using monster::MainMediator;
-        m_engine->rootContext()->setContextProperty("mainMediator", &m_mediator);
-        m_server = QSharedPointer<MonsterServer>::create();
-        if (m_server->start()) {
-            m_mediator.connect(m_server.data(), &MonsterServer::sessionCreated,
-                                  &m_mediator, &MainMediator::onSessionCreated,
-                                  Qt::DirectConnection);
-        } else {
-            qCritical() << "Unable to start the server";
-        }
-    }
+//    void operator()() {
+//        using monster::MainMediator;
+//        m_engine->rootContext()->setContextProperty("mainMediator", &m_mediator);
+//        m_server = QSharedPointer<MonsterServer>::create();
+//        if (m_server->start()) {
+//            m_mediator.connect(m_server.data(), &MonsterServer::sessionCreated,
+//                                  &m_mediator, &MainMediator::onSessionCreated,
+//                                  Qt::DirectConnection);
+//        } else {
+//            qCritical() << "Unable to start the server";
+//        }
+//    }
 
-public slots:
-    void onObjectCreated(QObject* object, const QUrl& url) {
-        m_mediator.init(object);
-        disconnect(m_engine, &QQmlApplicationEngine::objectCreated,
-                this, &MonsterBootstrap::onObjectCreated);
-    }
+//public slots:
+//    void onObjectCreated(QObject* object, const QUrl& url) {
+//        m_mediator.init(object);
+//        disconnect(m_engine, &QQmlApplicationEngine::objectCreated,
+//                this, &MonsterBootstrap::onObjectCreated);
+//    }
 
-private:
-    monster::MainMediator m_mediator;
-    QQmlApplicationEngine* m_engine;
-    QSharedPointer<MonsterServer> m_server;
-};
+//private:
+//    monster::MainMediator m_mediator;
+//    QQmlApplicationEngine* m_engine;
+//    QSharedPointer<MonsterServer> m_server;
+//};
 
 
 int main(int argc, char *argv[])
 {
     using namespace monster;
-    QGuiApplication app(argc, argv);    
-
     qmlRegisterType<TraceModel>("DeMonsters.Debug", 1, 0, "TraceModel");
 
-    QQmlApplicationEngine* engine = new QQmlApplicationEngine();
-    SessionDataModel* connectionModel = new SessionDataModel();
+    QGuiApplication app(argc, argv);    
+    Core core;
 
-    Repo::engine(engine);
-    Repo::connectionModel(connectionModel);
+    QQmlApplicationEngine engine;
+    engine.rootContext()->setContextProperty("sessions", Core::sessionDataModel().data());
+    engine.load(QUrl("qrc:/qml/MainView.qml"));
 
-    MonsterBootstrap bootstrap(engine);
-    bootstrap();
+//    qmlRegisterType<TraceModel>("DeMonsters.Debug", 1, 0, "TraceModel");
 
-    TraceModel* traceModel = new TraceModel(nullptr);
-    traceModel->insertRow(traceModel->rowCount());
-    traceModel->insertColumn(traceModel->columnCount());
-    traceModel->setData(traceModel->index(0, 0), 392, TraceItem::Line);
+//    QQmlApplicationEngine* engine = new QQmlApplicationEngine();
+//    SessionDataModel* connectionModel = new SessionDataModel();
 
-    engine->rootContext()->setContextProperty("traceModel", traceModel);
-    engine->rootContext()->setContextProperty("connectionModel", connectionModel);
+//    Repo::engine(engine);
+//    Repo::connectionModel(connectionModel);
 
-    engine->load(QUrl("qrc:/qml/MainView.qml"));
+//    MonsterBootstrap bootstrap(engine);
+//    bootstrap();
+
+//    TraceModel* traceModel = new TraceModel(nullptr);
+//    traceModel->insertRow(traceModel->rowCount());
+//    traceModel->insertColumn(traceModel->columnCount());
+//    traceModel->setData(traceModel->index(0, 0), 392, TraceItem::Line);
+
+//    engine->rootContext()->setContextProperty("traceModel", traceModel);
+//    engine->rootContext()->setContextProperty("connectionModel", connectionModel);
 
     return app.exec();
 }

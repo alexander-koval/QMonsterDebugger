@@ -3,12 +3,11 @@
 
 #include <QAbstractListModel>
 #include <QSharedPointer>
+#include "stream/StreamFwd.h"
 
 namespace monster {
-class Session;
-using SessionPtr = QSharedPointer<Session>;
-
-struct SessionData {
+class SessionData {
+public:
     enum Roles { Name = Qt::UserRole + 1, Trace };
 
     QString name;

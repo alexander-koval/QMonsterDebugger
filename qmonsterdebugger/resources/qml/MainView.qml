@@ -17,7 +17,7 @@ ApplicationWindow {
     }
 
     Connections {
-        target: mainMediator
+//        target: mainMediator
 
 //        onSessionCreated: {
 //            tabView.addTab(title, trace)
@@ -78,7 +78,7 @@ ApplicationWindow {
         id: tabView
         anchors.fill: parent
         Repeater {
-            model: connectionModel
+            model: sessions
             delegate: Tab {
                 title: name
                 sourceComponent: TracePanel { model: traceModel }

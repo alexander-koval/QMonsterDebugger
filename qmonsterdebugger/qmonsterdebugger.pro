@@ -46,7 +46,8 @@ SOURCES += main.cpp\
     utils/AMFConverter.cpp \
     src/controllers/MainMediator.cpp \
     src/Repo.cpp \
-    src/models/SessionDataModel.cpp
+    src/models/SessionDataModel.cpp \
+    src/Core.cpp
 
 HEADERS  += MainWindow.h \
     MonsterTabWidget.h \
@@ -86,7 +87,9 @@ HEADERS  += MainWindow.h \
     utils/AMFConverter.h \
     src/controllers/MainMediator.h \
     src/Repo.h \
-    src/models/SessionDataModel.h
+    src/models/SessionDataModel.h \
+    src/models/ModelsFwd.h \
+    src/Core.h
 
 FORMS    += forms/MainWindow.ui \
     forms/StreamView.ui \

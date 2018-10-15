@@ -4,20 +4,16 @@
 #include <QSharedPointer>
 #include <QVector>
 #include <QAbstractTableModel>
+#include "stream/StreamFwd.h"
 
 class QQuickWidget;
 
 namespace monster {
-class Session;
 class TraceModel;
-class MonsterServer;
-class MessagePack;
-
 using TraceModelPtr = QSharedPointer<TraceModel>;
 class MainMediator : public QObject
 {
     Q_OBJECT
-    using SessionPtr = QSharedPointer<Session>;
 public:
     MainMediator();
 

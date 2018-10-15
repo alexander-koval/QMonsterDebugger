@@ -8,17 +8,12 @@
 #include <QSharedPointer>
 #include <QScopedPointer>
 #include <map>
+#include "stream/StreamFwd.h"
 #include "stream/sessions/Session.h"
 
 namespace monster {
 
-class Session;
-class Sessions;
 class MainWindow;
-using SessionPtr = QSharedPointer<Session>;
-using SessionsWPtr = QWeakPointer<Sessions>;
-using SessionsPtr = QSharedPointer<Sessions>;
-using TcpSocketPtr = QPointer<QTcpSocket>;
 class MonsterServer : public QTcpServer {
 Q_OBJECT
 public:

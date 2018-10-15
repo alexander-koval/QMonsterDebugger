@@ -7,6 +7,7 @@
 #include "stream/constants.h"
 #include "panels/TraceModel.h"
 #include "models/SessionDataModel.h"
+#include "stream/sessions/Session.h"
 #include "Repo.h"
 
 namespace monster {
@@ -24,7 +25,7 @@ void MainMediator::onShowOptionsDialog() {
 
 }
 
-void MainMediator::onSessionCreated(MainMediator::SessionPtr session) {
+void MainMediator::onSessionCreated(SessionPtr session) {
     m_session = session;
     connect(session.data(), &Session::inboundMessage,
            this, &MainMediator::onInboundMessage);
