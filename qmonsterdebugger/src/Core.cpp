@@ -34,7 +34,9 @@ void Core::onSessionCreated(SessionPtr session) {
     int count = _sessions->rowCount();
     _sessions->insertRow(count);
     QModelIndex index = _sessions->index(count);
-    _sessions->setData(index, session->fileTitle(), SessionData::Name);
+    QVariant variant;
+    variant.setValue(session.data());
+    _sessions->setData(index, variant, SessionProxy::Session);
 }
 
 void Core::onInboundMessage(MessagePack &message) {

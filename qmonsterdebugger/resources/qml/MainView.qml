@@ -80,7 +80,7 @@ ApplicationWindow {
         Repeater {
             model: sessions
             delegate: Tab {
-                title: name
+                title: session.title
                 sourceComponent: TracePanel { model: traceModel }
             }
         }

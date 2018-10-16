@@ -34,7 +34,9 @@ void MainMediator::onSessionCreated(SessionPtr session) {
     int count = clientModel->rowCount();
     clientModel->insertRow(count);
     QModelIndex index = clientModel->index(count);
-    clientModel->setData(index, session->fileTitle(), SessionData::Name);
+    QVariant variant;
+    variant.setValue(session.data());
+    clientModel->setData(index, variant, SessionProxy::Session);
 
     TraceModelPtr model = QSharedPointer<TraceModel>::create();
     model->insertRow(model->rowCount());

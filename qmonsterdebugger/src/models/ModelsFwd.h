@@ -5,10 +5,10 @@
 
 namespace monster {
 
-class SessionData;
+class SessionProxy;
 class SessionDataModel;
 
-using SessionDataPtr = QSharedPointer<SessionData>;
+using SessionDataPtr = QSharedPointer<SessionProxy>;
 using SessionDataModelPtr = QSharedPointer<SessionDataModel>;
 
 }

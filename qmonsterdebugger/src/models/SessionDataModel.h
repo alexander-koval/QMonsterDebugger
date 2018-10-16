@@ -6,11 +6,11 @@
 #include "stream/StreamFwd.h"
 
 namespace monster {
-class SessionData {
+class SessionProxy {
 public:
-    enum Roles { Name = Qt::UserRole + 1, Trace };
+    enum Roles { Session = Qt::UserRole + 1 };
 
-    QString name;
+    class Session* session{};
 };
 
 class SessionDataModel : public QAbstractListModel
@@ -36,11 +36,10 @@ public:
 
     bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
-    QHash<int,QByteArray> roleNames() const override { return m_roles; }
+    QHash<int,QByteArray> roleNames() const override;
 
 private:
-    QList<SessionData> m_clients;
-    QHash<int, QByteArray> m_roles;
+    QList<SessionProxy> m_sessions;
 };
 
 }

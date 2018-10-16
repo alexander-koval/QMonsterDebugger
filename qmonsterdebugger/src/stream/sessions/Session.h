@@ -20,7 +20,13 @@ class MessagePack;
 class SessionModelData;
 using SessionModelDataPtr = QSharedPointer<SessionModelData>;
 class Session : public QObject {
-Q_OBJECT
+    Q_OBJECT
+    Q_PROPERTY(QString address READ address)
+    Q_PROPERTY(const QString& playerType READ playerType)
+    Q_PROPERTY(const QString& playerVersion READ playerVersion)
+    Q_PROPERTY(bool isFlex READ isFlex)
+    Q_PROPERTY(const QString& title READ fileTitle)
+    Q_PROPERTY(const QString& location READ fileLocation)
 public:
     enum Roles { Title = Qt::UserRole + 1, Socket, Trace, Monitor };
     using Base = QObject;
@@ -86,5 +92,6 @@ private:
     QString m_fileTitle;
     QString m_fileLocation;
 };
+//Q_DECLARE_METATYPE(Session*);
 }
 #endif // SESSION_H
