@@ -8,6 +8,7 @@
 #include <QPointer>
 #include <QWeakPointer>
 #include <QAbstractSocket>
+#include "panels/TraceModel.h"
 
 class QTcpSocket;
 namespace monster { class Session; }
@@ -21,12 +22,13 @@ class SessionModelData;
 using SessionModelDataPtr = QSharedPointer<SessionModelData>;
 class Session : public QObject {
     Q_OBJECT
-    Q_PROPERTY(QString address READ address)
-    Q_PROPERTY(const QString& playerType READ playerType)
-    Q_PROPERTY(const QString& playerVersion READ playerVersion)
-    Q_PROPERTY(bool isFlex READ isFlex)
-    Q_PROPERTY(const QString& title READ fileTitle)
-    Q_PROPERTY(const QString& location READ fileLocation)
+    Q_PROPERTY(QString address READ address CONSTANT)
+    Q_PROPERTY(const QString& playerType READ playerType CONSTANT)
+    Q_PROPERTY(const QString& playerVersion READ playerVersion CONSTANT)
+    Q_PROPERTY(bool isFlex READ isFlex CONSTANT)
+    Q_PROPERTY(const QString& title READ fileTitle CONSTANT)
+    Q_PROPERTY(const QString& location READ fileLocation CONSTANT)
+    Q_PROPERTY(QObject* traces READ traces CONSTANT)
 public:
     enum Roles { Title = Qt::UserRole + 1, Socket, Trace, Monitor };
     using Base = QObject;
@@ -63,6 +65,8 @@ public:
 
     const QString& fileLocation() const { return m_fileLocation; }
 
+    QObject* traces() { return m_traces.data(); }
+
 signals:
     void initialized();
 
@@ -91,6 +95,7 @@ private:
     bool m_isFlex;
     QString m_fileTitle;
     QString m_fileLocation;
+    TraceModelPtr m_traces;
 };
 //Q_DECLARE_METATYPE(Session*);
 }

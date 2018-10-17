@@ -81,7 +81,7 @@ ApplicationWindow {
             model: sessions
             delegate: Tab {
                 title: session.title
-                sourceComponent: TracePanel { model: traceModel }
+                sourceComponent: TracePanel { model: session.traces }
             }
         }
 

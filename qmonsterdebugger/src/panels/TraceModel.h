@@ -40,5 +40,7 @@ private:
     QHash<int, QByteArray> m_roles;
 };
 
+using TraceModelPtr = QSharedPointer<TraceModel>;
+
 }
 #endif // TRACEMODEL_H
