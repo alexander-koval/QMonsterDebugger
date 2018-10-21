@@ -47,7 +47,8 @@ SOURCES += main.cpp\
     src/controllers/MainMediator.cpp \
     src/Repo.cpp \
     src/models/SessionDataModel.cpp \
-    src/Core.cpp
+    src/Core.cpp \
+    src/utils/LoggerUtils.cpp
 
 HEADERS  += MainWindow.h \
     MonsterTabWidget.h \
@@ -89,7 +90,8 @@ HEADERS  += MainWindow.h \
     src/Repo.h \
     src/models/SessionDataModel.h \
     src/models/ModelsFwd.h \
-    src/Core.h
+    src/Core.h \
+    src/utils/LoggerUtils.h
 
 FORMS    += forms/MainWindow.ui \
     forms/StreamView.ui \

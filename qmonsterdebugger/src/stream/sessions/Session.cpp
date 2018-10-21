@@ -28,6 +28,8 @@
 #include "amf/types/amfxmldocument.hpp"
 #include "amf/types/amfarray.hpp"
 
+#include "utils/LoggerUtils.h"
+
 namespace monster {
 
 Session::Session()
@@ -202,16 +204,29 @@ void Session::process(MessagePack& pack) {
 //        double mem = item.getDynamicProperty<amf::AmfDouble>("memory").value;
         QString memory = QString::number(mem / 1024) + "kb";
         QString target = QString::fromStdString(item.getDynamicProperty<amf::AmfString>("target").value);
-        QString message = QString::fromStdString(item.getDynamicProperty<amf::AmfXml>("xml").value);
+        QString message = QString::fromStdString(item.getDynamicProperty<amf::AmfString>("xml").value);
+        qDebug() << message;
         message.remove(QRegExp("[\\n\\t\\r]"));
         doc.setContent(message);
-//        doc.childNodes().size();
-
-//        if (doc.childNodes().size() > 1 && doc.childNodes().size() <= 3) {
-//            if (doc.firstChild().attributes().namedItem("type") == )
-//        }
-
-
+        const QDomNode& root = doc.documentElement().firstChild();
+        int nodes_size = root.childNodes().count();
+        qDebug() << "ELEMENT " << root.firstChild().attributes().namedItem("label").nodeValue();
+        const QDomNamedNodeMap& map = doc.firstChild().attributes();
+        if (nodes_size > 1 && nodes_size <= 3) {
+            if (map.namedItem("type").nodeValue() == "String") {
+                QString value = root.firstChild().firstChild()
+                        .attributes().namedItem("label").nodeValue();
+                message = logutils::stripBreaks(logutils::htmlUnescape(value));
+            } else {
+                const QDomNode& label = root.firstChild().attributes().namedItem("label");
+                QString value = label.nodeValue();
+                message = logutils::stripBreaks(logutils::htmlUnescape(value));
+            }
+        } else {
+            const QDomNode& label = root.firstChild().attributes().namedItem("label");
+            QString value = label.nodeValue();
+            message = logutils::stripBreaks(logutils::htmlUnescape(value));
+        }
 
         m_traces->setData(m_traces->index(row, col), row + 1, TraceItem::Line);
         m_traces->setData(m_traces->index(row, ++col), time, TraceItem::Time);
