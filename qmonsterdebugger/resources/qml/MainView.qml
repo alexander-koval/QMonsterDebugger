@@ -11,18 +11,18 @@ ApplicationWindow {
     minimumWidth: 800
     minimumHeight: 600
 
-    Component {
-        id: trace
-        TracePanel { id: tracePanel; anchors.fill: parent }
-    }
+//    Component {
+//        id: trace
+//        TracePanel { id: tracePanel; anchors.fill: parent }
+//    }
 
-    Connections {
+//    Connections {
 //        target: mainMediator
 
 //        onSessionCreated: {
 //            tabView.addTab(title, trace)
 //        }
-    }
+//    }
 
     menuBar: MenuBar {
         Menu {
@@ -48,50 +48,31 @@ ApplicationWindow {
         }
     }
 
-//    TabView {
-//           anchors.fill: parent
-//           Repeater {
-//               model: ["Foo", "Bar", "Baz"]
-//               Tab {
-//                   title: modelData
-//               }
-//           }
-//       }
-
-//    TabBar {
-//        width: parent.width
-//        TabButton {
-//            text: "First"
-//            width: implicitWidth
-//        }
-//        TabButton {
-//            text: "Second"
-//            width: implicitWidth
-//        }
-//        TabButton {
-//            text: "Third"
-//            width: implicitWidth
-//        }
-//    }
-
-    TabView {
-        id: tabView
+    Item {
         anchors.fill: parent
-        Repeater {
-            model: sessions
-            delegate: Tab {
-                title: session.title
-                sourceComponent: TracePanel {
-                    model: session.traces
+
+//        Rectangle {
+//            anchors.fill: parent
+//            color: "lightblue"
+//        }
+
+        TabView {
+            id: tabView
+            anchors.fill: parent
+            Repeater {
+                model: sessions
+                delegate: Tab {
+                    title: session.title
+                    sourceComponent: TracePanel {
+                        model: session.traces
+                    }
                 }
             }
+
+            Tab {
+                title: "Home"
+                Rectangle { color: "green" }
+            }
         }
-
-        Tab {
-            title: "Home"
-            Rectangle { color: "green" }
-        }
-
-
     }
 }
