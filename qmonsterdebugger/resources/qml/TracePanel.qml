@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 
 TableView {
+    id: tableView
     property var sizes: ({})
     TableViewColumn { id: line; role: "Line"; title: "#"; width: 40; movable: false }
     TableViewColumn { id: time; role: "Time"; title: "Time"; width: 100; movable: false }
@@ -12,14 +13,18 @@ TableView {
 
     anchors.fill: parent
 
+    ListModel {
+        id: elements
+    }
+
     itemDelegate: Rectangle {
         id: itemDel
         height: txt.height
         readonly property int modelRow: styleData.row ? styleData.row : 0
+        readonly property int modelCol: styleData.column ? styleData.column : 0
         Text {
             id: txt
             width: parent.width
-//            height: parent ? parent.height : 0
             anchors.centerIn: parent
             renderType: Text.NativeRendering
             color: styleData.textColor
@@ -27,19 +32,18 @@ TableView {
             text: styleData.value
             wrapMode: Text.WordWrap
         }
-        onHeightChanged: {
-//            console.log("ROW NAME" + parent ? parent.height : 0)
-            var rect = sizes[modelRow]
-            rect.height = itemDel.height;
+
+        Component.onCompleted: {
+            if (styleData.role === "Message") {
+                var item = sizes[modelRow]
+                item.height = Qt.binding(function() { return itemDel.height })
+            }
         }
-
-
     }
 
     rowDelegate: Rectangle {
         id: rowDel
-        height: parent ? parent.height : 0
-        signal sizeChanged(Rectangle rect)
+        height: getHeight()
         SystemPalette {
             id: palette;
             colorGroup: SystemPalette.Active
@@ -52,15 +56,9 @@ TableView {
         readonly property int modelRow: styleData.row ? styleData.row : 0
 
         Component.onCompleted: {
-//            sizeChanged(rowDel)
             sizes[modelRow] = rowDel
-        }
-
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                console.log("[!] log: " + sizes[modelRow]);
-            }
         }
     }
 }
+
+

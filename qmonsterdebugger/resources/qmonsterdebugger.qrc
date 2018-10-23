@@ -3,5 +3,6 @@
         <file>SplashView.qml</file>
         <file>qml/MainView.qml</file>
         <file>qml/TracePanel.qml</file>
+        <file>qml/TraceViewStyle.qml</file>
     </qresource>
 </RCC>
