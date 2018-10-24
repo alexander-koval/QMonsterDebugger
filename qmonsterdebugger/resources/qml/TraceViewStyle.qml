@@ -29,9 +29,9 @@ TableViewStyle {
         /*! \qmlproperty Component TableViewStyle::headerDelegate
         Delegate for header. This delegate is described in \l {TableView::headerDelegate}
         */
-        property Component headerDelegate: BorderImage {
-            source: "images/header.png"
-            border.left: 4
+        property Component headerDelegate: Rectangle {
+//            source: "images/header.png"
+//            border.left: 4
             Text {
                 anchors.fill: parent
                 verticalAlignment: Text.AlignVCenter

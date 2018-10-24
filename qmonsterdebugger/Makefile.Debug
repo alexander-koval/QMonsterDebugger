@@ -528,6 +528,7 @@ bin\windows\msvc2015\x64\debug\.qrc\qrc_qmonsterdebugger.cpp: resources\qmonster
 		C:\Qt\5.8\msvc2015_64\bin\rcc.exe \
 		resources\SplashView.qml \
 		resources\qml\MainView.qml \
+		resources\qml\TraceViewStyle.qml \
 		resources\qml\TracePanel.qml
 	C:\Qt\5.8\msvc2015_64\bin\rcc.exe -name qmonsterdebugger resources\qmonsterdebugger.qrc -o bin\windows\msvc2015\x64\debug\.qrc\qrc_qmonsterdebugger.cpp
 
