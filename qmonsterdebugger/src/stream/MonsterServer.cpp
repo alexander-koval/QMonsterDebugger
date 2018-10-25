@@ -59,18 +59,11 @@ void MonsterServer::incomingConnection(qintptr handle) {
 }
 
 void MonsterServer::onReadyRead() {
-    uint32_t size;
-    QBuffer buffer;
     QTcpSocket* socket = static_cast<QTcpSocket*>(sender());
     QByteArray bytes = socket->readAll();
-    buffer.open(QIODevice::ReadWrite);
-    buffer.write(bytes);
-    buffer.seek(0);
-
-    if (buffer.bytesAvailable() == 0) return;
+    if (bytes.size() == 0) return;
     QByteArray package;
-    buffer.read(reinterpret_cast<char*>(&size), sizeof(uint32_t));
-    QString command = buffer.buffer();
+    QString command = bytes;
     if (command == "<policy-file-request/>") {
         QByteArray xml;
         CommandProcessor::policyRequest(&xml);
@@ -107,7 +100,6 @@ void MonsterServer::onReadyRead() {
 
     }
     qDebug() << "COMMAND: " << command;
-    buffer.close();
 }
 
 void MonsterServer::onDisconnect() {

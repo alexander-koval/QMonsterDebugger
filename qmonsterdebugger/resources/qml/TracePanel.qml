@@ -5,7 +5,7 @@ import QtQuick.Controls.Styles 1.4
 
 TableView {
     id: tableView
-    property var sizes: ({})
+//    property var sizes: ({})
     TableViewColumn { id: line; role: "Line"; title: "#"; width: 40; movable: false }
     TableViewColumn { id: time; role: "Time"; title: "Time"; width: 100; movable: false }
     TableViewColumn { id: target; role: "Target"; title: "Target"; width: 170; movable: false }
@@ -46,15 +46,15 @@ TableView {
                 text: styleData.value !== undefined ? styleData.value.toString() : ""
                 color: styleData.textColor
                 renderType: Text.NativeRendering
-                wrapMode: Text.WordWrap
+//                wrapMode: Text.WordWrap
             }
 
-            Component.onCompleted: {
-                if (styleData.role === "Message") {
-                    var item = sizes[modelRow]
-                    item.height = Qt.binding(function() { return itemDel.height })
-                }
-            }
+//            Component.onCompleted: {
+//                if (styleData.role === "Message") {
+//                    var item = sizes[modelRow]
+//                    item.height = Qt.binding(function() { return itemDel.height })
+//                }
+//            }
         }
 
         rowDelegate: Rectangle {
@@ -86,9 +86,9 @@ TableView {
             }
 
 
-            Component.onCompleted: {
-                sizes[modelRow] = this
-            }
+//            Component.onCompleted: {
+//                sizes[modelRow] = this
+//            }
         }
     }
 }

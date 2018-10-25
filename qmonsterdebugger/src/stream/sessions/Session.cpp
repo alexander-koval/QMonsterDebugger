@@ -29,18 +29,19 @@
 #include "amf/types/amfarray.hpp"
 
 #include "utils/LoggerUtils.h"
+#include <QFile>
 
 namespace monster {
 
 Session::Session()
-    : QObject(), m_socket(),
+    : QObject(), m_size(), m_socket(),
       m_playerType(), m_playerVersion(), m_isDebugger(), m_isFlex(),
       m_fileTitle(), m_fileLocation(), m_traces(TraceModelPtr::create()) {
 
 }
 
 Session::Session(TcpSocketPtr socket)
-    : QObject(), m_socket(socket),
+    : QObject(), m_size(), m_socket(socket),
       m_playerType(), m_playerVersion(), m_isDebugger(), m_isFlex(),
       m_fileTitle(), m_fileLocation(), m_traces(TraceModelPtr::create()) {
 
@@ -87,15 +88,21 @@ QString Session::address() const {
 }
 
 void Session::onReadyRead() {
-    qDebug() << "READY READ ";
+//    qDebug() << "READY READ " << m_socket->bytesAvailable();
     QBuffer buffer;
-    QByteArray bytes = m_socket->readAll();
-//    qDebug() << "BUFFER: " << bytes.size();
-    buffer.open(QIODevice::ReadWrite);
-    buffer.write(bytes);
-    buffer.seek(0);
-    decode(buffer, 0);
-    buffer.close();
+    if (m_size == 0) {
+        m_socket->read(reinterpret_cast<char*>(&m_size),
+                       sizeof(uint32_t));
+        m_size = (((m_size & 0xFF) << 24) | ((m_size & 0xFF00) << 8) |
+                  ((m_size & 0xFF0000) >> 8) | ((m_size & 0xFF000000) >> 24));
+    }
+    if (m_size < m_socket->bytesAvailable()) {
+        decode(m_socket->read(m_size), static_cast<int32_t>(m_size));
+        m_size = 0;
+    }
+    if (m_size == 0 && m_socket->bytesAvailable() > 0) {
+        onReadyRead();
+    }
 }
 
 void Session::onDisconnected() {
@@ -103,7 +110,7 @@ void Session::onDisconnected() {
 }
 
 void Session::onSocketError(QAbstractSocket::SocketError error) {
-    int kkk = 0;
+    qWarning() << error;
 }
 
 qintptr Session::socketDescriptor() const {
@@ -124,41 +131,28 @@ void Session::socket(TcpSocketPtr socket) {
     }
 }
 
-void Session::decode(QBuffer& bytes, int32_t size) {
+void Session::decode(const QByteArray& bytes, int32_t size) {
+    static quint64 idx = 0;
     QByteArray package;
-    if (bytes.size() == 0) return;
-    if (size == 0) {
-        QByteArray s = bytes.read(sizeof(uint32_t));
-        QDataStream dataStream(&s, QIODevice::ReadOnly);
-        dataStream >> size;
-        if (size == 0) {
-            bytes.buffer().clear();
-        }
-//        bytes.buffer().remove(0, sizeof(uint32_t));
-//        package.clear();
-    }
-
-    if (package.size() < size && bytes.bytesAvailable() > 0) {
-        qint64 l = bytes.bytesAvailable();
+    if (bytes.size() == 0 || size == 0) return;
+    if (package.size() < size && bytes.size() > 0) {
+        int l = bytes.size();
         if (l > size - package.size()) {
             l = size - package.size();
         }
-        package = bytes.read(l);
-        bytes.buffer().remove(0, static_cast<int>(l + sizeof(uint32_t)));
+        package = QByteArray(bytes.begin(), l);
     }
     qDebug() << size << " " << package.size() << " " << bytes.size();
     if (size != 0 && package.size() == size) {
+        QFile file(QString::number(idx++));
+        file.open(QIODevice::WriteOnly);
+        file.write(package, size);
+        file.close();
         MessagePack pack = MessagePack::read(package);
         const std::string& id = pack.getID().as<amf::AmfString>().value;
         if (!id.empty() && id == LOGGER_ID) {
             process(pack);
         }
-        size = 0;
-        package.clear();
-    }
-    qDebug() << "BYTES: " << bytes.bytesAvailable() << " " << bytes.size();
-    if (size == 0 && bytes.size() > 0) {
-        decode(bytes, size);
     }
 }
 

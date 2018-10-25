@@ -2418,7 +2418,10 @@ bin\windows\msvc2015\x64\debug\.obj\Session.obj: src\stream\sessions\Session.cpp
 		src/amf/types/amfxmldocument.hpp \
 		src/amf/types/amfarray.hpp \
 		src/utils/LoggerUtils.h \
-		C:\Qt\5.8\msvc2015_64\include\QtCore\QStringRef
+		C:\Qt\5.8\msvc2015_64\include\QtCore\QStringRef \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\QFile \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qfile.h \
+		C:\Qt\5.8\msvc2015_64\include\QtCore\qfiledevice.h
 
 bin\windows\msvc2015\x64\debug\.obj\MonsterServer.obj: src\stream\MonsterServer.cpp src/stream/MonsterServer.h \
 		C:\Qt\5.8\msvc2015_64\include\QtNetwork\QTcpServer \

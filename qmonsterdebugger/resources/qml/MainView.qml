@@ -71,7 +71,7 @@ ApplicationWindow {
 
             Tab {
                 title: "Home"
-                Rectangle { color: "green" }
+                Rectangle { color: "lightblue" }
             }
         }
     }
