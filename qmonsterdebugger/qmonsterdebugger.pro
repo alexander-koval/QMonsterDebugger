@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network widgets qml quick quickwidgets
+QT       += core gui network widgets qml quick quickwidgets quickcontrols2
 CONFIG += c++14
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += xml widgets

@@ -1,7 +1,7 @@
 import QtQuick 2.8
-import QtQuick.Window 2.2
-import QtQuick.Controls 1.4
-import QtQuick.Layouts 1.3
+import QtQuick.Window 2.4
+import QtQuick.Controls 2.4
+import QtQuick.Layouts 1.11
 import DeMonsters.Debug 1.0
 
 ApplicationWindow {
@@ -24,55 +24,99 @@ ApplicationWindow {
 //        }
 //    }
 
-    menuBar: MenuBar {
-        Menu {
-            title: qsTr("&Edit")
-            MenuItem {
-                text: qsTr("&Edit")
-                onTriggered: console.log("Open action triggered");
-            }
-        }
-        Menu {
-            title: "View"
-            MenuItem {
-                text: qsTr("View")
-                onTriggered: Qt.quit();
-            }
-        }
-        Menu {
-            title: "Extra"
-            MenuItem {
-                text: qsTr("Extra")
-                onTriggered: Qt.quit();
-            }
-        }
-    }
+//    menuBar: MenuBar {
+//        Menu {
+//            title: qsTr("&Edit")
+//            MenuItem {
+//                text: qsTr("&Edit")
+//                onTriggered: console.log("Open action triggered");
+//            }
+//        }
+//        Menu {
+//            title: "View"
+//            MenuItem {
+//                text: qsTr("View")
+//                onTriggered: Qt.quit();
+//            }
+//        }
+//        Menu {
+//            title: "Extra"
+//            MenuItem {
+//                text: qsTr("Extra")
+//                onTriggered: Qt.quit();
+//            }
+//        }
+//    }
 
     Item {
         anchors.fill: parent
 
-//        Rectangle {
-//            anchors.fill: parent
-//            color: "lightblue"
-//        }
-
-        TabView {
-            id: tabView
+        Rectangle {
             anchors.fill: parent
+            color: "lightblue"
+        }
+
+        TabBar {
+            id: bar
+            width: parent.width
+            TabButton {
+                width: Math.max(150, implicitWidth * 1.5)
+                text: qsTr("Home");
+            }
             Repeater {
                 model: sessions
-                delegate: Tab {
-                    title: session.title
-                    sourceComponent: TracePanel {
-                        model: session.traces
-                    }
+                delegate: TabButton {
+                    width: Math.max(150, implicitWidth * 1.5)
+                    text: session ? session.title : ""
                 }
             }
+        }
 
-            Tab {
-                title: "Home"
-                Rectangle { color: "lightblue" }
+        Loader {
+            id: viewer
+            width: parent.width
+            anchors.top: bar.bottom
+            anchors.bottom: parent.bottom
+        }
+
+        StackLayout {
+            id: viewStack
+            width: parent.width
+            anchors.top: bar.bottom
+            anchors.bottom: parent.bottom
+            currentIndex: bar.currentIndex
+
+            Rectangle {
+                color: "lightblue"
+            }
+
+            Repeater {
+                model: sessions
+                delegate: Loader {
+                    id: loader
+                    sourceComponent: TracePanel { model: session ? session.traces : "" }
+                }
             }
         }
+
+
+//        TabView {
+//            id: tabView
+//            anchors.fill: parent
+//            Repeater {
+//                model: sessions
+//                delegate: Tab {
+//                    title: session ? session.title : ""
+//                    sourceComponent: TracePanel {
+//                        model: session.traces
+//                    }
+//                }
+//            }
+
+//            Tab {
+//                title: "Home"
+//                Rectangle { color: "lightblue" }
+//            }
+//        }
     }
 }

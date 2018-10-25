@@ -27,7 +27,7 @@ TableView {
 
         itemDelegate: Item {
             id: itemDel
-            height: Math.max(20, label.implicitHeight * 1.2)
+            height: Math.max(30, label.implicitHeight * 1.2)
             readonly property int modelRow: styleData.row ? styleData.row : 0
             readonly property int modelCol: styleData.column ? styleData.column : 0
             property int implicitWidth: label.implicitWidth + 20
@@ -59,6 +59,7 @@ TableView {
 
         rowDelegate: Rectangle {
             id: rowDel
+            height: 30
             property color selectedColor: styleData.hasActiveFocus ? "#38d" : "#999"
             readonly property int modelRow: styleData.row ? styleData.row : 0
             gradient: Gradient {

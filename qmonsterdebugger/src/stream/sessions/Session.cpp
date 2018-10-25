@@ -198,7 +198,7 @@ void Session::process(MessagePack& pack) {
 //        double mem = item.getDynamicProperty<amf::AmfDouble>("memory").value;
         QString memory = QString::number(mem / 1024) + "kb";
         QString target = QString::fromStdString(item.getDynamicProperty<amf::AmfString>("target").value);
-        QString message = QString::fromStdString(item.getDynamicProperty<amf::AmfXml>("xml").value);
+        QString message = QString::fromStdString(item.getDynamicProperty<amf::AmfString>("xml").value);
         qDebug() << message;
         message.remove(QRegExp("[\\n\\t\\r]"));
         doc.setContent(message);
