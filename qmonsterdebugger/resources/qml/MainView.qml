@@ -24,80 +24,69 @@ ApplicationWindow {
 //        }
 //    }
 
-//    menuBar: MenuBar {
-//        Menu {
-//            title: qsTr("&Edit")
-//            MenuItem {
-//                text: qsTr("&Edit")
-//                onTriggered: console.log("Open action triggered");
-//            }
-//        }
-//        Menu {
-//            title: "View"
-//            MenuItem {
-//                text: qsTr("View")
-//                onTriggered: Qt.quit();
-//            }
-//        }
-//        Menu {
-//            title: "Extra"
-//            MenuItem {
-//                text: qsTr("Extra")
-//                onTriggered: Qt.quit();
-//            }
-//        }
-//    }
+    menuBar: MenuBar {
+        Menu {
+            title: qsTr("&Edit")
+            MenuItem {
+                text: qsTr("&Edit")
+                onTriggered: console.log("Open action triggered");
+            }
+        }
+        Menu {
+            title: "View"
+            MenuItem {
+                text: qsTr("View")
+                onTriggered: Qt.quit();
+            }
+        }
+        Menu {
+            title: "Extra"
+            MenuItem {
+                text: qsTr("Extra")
+                onTriggered: Qt.quit();
+            }
+        }
+    }
 
-    Item {
-        anchors.fill: parent
+    header: TabBar {
+        id: bar
+//            width: parent.width
+        TabButton {
+            width: Math.max(150, implicitWidth * 1.5)
+            text: qsTr("Home");
+        }
+        Repeater {
+            model: sessions
+            delegate: TabButton {
+                width: Math.max(150, implicitWidth * 1.5)
+                text: session ? session.title : ""
+            }
+
+            onItemAdded: {
+                bar.currentIndex = index + 1
+            }
+        }
+    }
+
+    StackLayout {
+        id: viewStack
+        width: parent.width
+        anchors.top: bar.bottom
+        anchors.bottom: parent.bottom
+        currentIndex: bar.currentIndex
 
         Rectangle {
-            anchors.fill: parent
             color: "lightblue"
         }
 
-        TabBar {
-            id: bar
-            width: parent.width
-            TabButton {
-                width: Math.max(150, implicitWidth * 1.5)
-                text: qsTr("Home");
-            }
-            Repeater {
-                model: sessions
-                delegate: TabButton {
-                    width: Math.max(150, implicitWidth * 1.5)
-                    text: session ? session.title : ""
-                }
+        Repeater {
+            model: sessions
+            delegate: Loader {
+                id: loader
+                sourceComponent: TracePanel { model: session ? session.traces : "" }
             }
         }
-
-        Loader {
-            id: viewer
-            width: parent.width
-            anchors.top: bar.bottom
-            anchors.bottom: parent.bottom
-        }
-
-        StackLayout {
-            id: viewStack
-            width: parent.width
-            anchors.top: bar.bottom
-            anchors.bottom: parent.bottom
-            currentIndex: bar.currentIndex
-
-            Rectangle {
-                color: "lightblue"
-            }
-
-            Repeater {
-                model: sessions
-                delegate: Loader {
-                    id: loader
-                    sourceComponent: TracePanel { model: session ? session.traces : "" }
-                }
-            }
-        }
+    }
 
 
 //        TabView {
@@ -118,5 +107,5 @@ ApplicationWindow {
 //                Rectangle { color: "lightblue" }
 //            }
 //        }
-    }
+//    }
 }
