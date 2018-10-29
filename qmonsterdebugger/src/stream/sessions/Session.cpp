@@ -132,7 +132,6 @@ void Session::socket(TcpSocketPtr socket) {
 }
 
 void Session::decode(const QByteArray& bytes, int32_t size) {
-    static quint64 idx = 0;
     QByteArray package;
     if (bytes.size() == 0 || size == 0) return;
     if (package.size() < size && bytes.size() > 0) {
@@ -144,10 +143,6 @@ void Session::decode(const QByteArray& bytes, int32_t size) {
     }
     qDebug() << size << " " << package.size() << " " << bytes.size();
     if (size != 0 && package.size() == size) {
-        QFile file(QString::number(idx++));
-        file.open(QIODevice::WriteOnly);
-        file.write(package, size);
-        file.close();
         MessagePack pack = MessagePack::read(package);
         const std::string& id = pack.getID().as<amf::AmfString>().value;
         if (!id.empty() && id == LOGGER_ID) {
@@ -198,7 +193,7 @@ void Session::process(MessagePack& pack) {
 //        double mem = item.getDynamicProperty<amf::AmfDouble>("memory").value;
         QString memory = QString::number(mem / 1024) + "kb";
         QString target = QString::fromStdString(item.getDynamicProperty<amf::AmfString>("target").value);
-        QString message = QString::fromStdString(item.getDynamicProperty<amf::AmfString>("xml").value);
+        QString message = QString::fromStdString(item.getDynamicProperty<amf::AmfXml>("xml").value);
         qDebug() << message;
         message.remove(QRegExp("[\\n\\t\\r]"));
         doc.setContent(message);

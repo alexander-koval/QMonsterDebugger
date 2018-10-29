@@ -1,14 +1,32 @@
 import QtQuick 2.8
+import QtQuick.Dialogs 1.3
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 import QtQuick.Controls 2.2 as Qml2
 import QtQuick.Controls.Styles 1.4
+import QtQml.Models 2.3
 
 Item {
+    Dialog {
+        id: msgDlg
+        modality: Qt.WindowModal
+        title: "Message"
+//        standardButtons: StandardButton.Close
+
+        TextArea {
+            id: textArea
+        }
+    }
+
     anchors.fill: parent
     property alias model: tableView.model
     TableView {
         id: tableView
+
+        DelegateModel {
+            id:visualModel
+        }
+
     //    property var sizes: ({})
         TableViewColumn { id: line; role: "Line"; title: "#"; width: 40; movable: false }
         TableViewColumn { id: time; role: "Time"; title: "Time"; width: 100; movable: false }
@@ -24,6 +42,11 @@ Item {
             if (autoSwitch.checked) {
                 tableView.positionViewAtRow(rowCount - 1, ListView.Contain)
             }
+        }
+
+        onDoubleClicked: {
+            textArea.text = model.data(model.index(row, row), 260)
+            msgDlg.open()
         }
 
         style: TableViewStyle {

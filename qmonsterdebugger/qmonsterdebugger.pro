@@ -4,7 +4,9 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network widgets qml quick quickwidgets quickcontrols2
+QT       += core gui network widgets \
+            qml quick quickwidgets quickcontrols2
+
 CONFIG += c++14
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += xml widgets
@@ -110,6 +112,7 @@ RCC_DIR = $PWD/../bin/$$DESTINATION_PATH/.qrc
 UI_DIR = $PWD/../bin/$$DESTINATION_PATH/.ui
 #MAKEFILE = $PWD/../../bin/$$DESTINATION_PATH/.makefile
 
+#TARGETPATH = $PWD/../bin/$$DESTINATION_PATH/.qmlc
 LIBS += -L$$PWD/../bin/$$DESTINATION_PATH
 
 DISTFILES += \
