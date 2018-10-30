@@ -55,6 +55,8 @@ int main(int argc, char *argv[])
 {
     using namespace monster;
     qmlRegisterType<TraceModel>("DeMonsters.Debug", 1, 0, "TraceModel");
+    qmlRegisterUncreatableType<TraceItem>("DeMonsters.Debug", 1, 0, "TraceItem",
+                                          "Cannot create TraceName in QML");
 
     QGuiApplication app(argc, argv);    
     Core::start();

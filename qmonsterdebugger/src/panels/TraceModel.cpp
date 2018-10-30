@@ -120,4 +120,10 @@ bool TraceModel::removeRows(int row, int count, const QModelIndex&) {
     return true;
 }
 
+void TraceModel::clear() {
+    beginResetModel();
+    m_items.clear();
+    endResetModel();
+}
+
 }

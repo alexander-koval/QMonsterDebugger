@@ -5,16 +5,22 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls 2.2 as Qml2
 import QtQuick.Controls.Styles 1.4
 import QtQml.Models 2.3
+import DeMonsters.Debug 1.0
 
 Item {
     Dialog {
         id: msgDlg
         modality: Qt.WindowModal
         title: "Message"
-//        standardButtons: StandardButton.Close
 
-        TextArea {
-            id: textArea
+        contentItem: Rectangle {
+            color: "lightskyblue"
+            implicitWidth: 800
+            implicitHeight: 600
+            TextArea {
+                anchors.fill: parent
+                id: textArea
+            }
         }
     }
 
@@ -22,10 +28,6 @@ Item {
     property alias model: tableView.model
     TableView {
         id: tableView
-
-        DelegateModel {
-            id:visualModel
-        }
 
     //    property var sizes: ({})
         TableViewColumn { id: line; role: "Line"; title: "#"; width: 40; movable: false }
@@ -45,7 +47,7 @@ Item {
         }
 
         onDoubleClicked: {
-            textArea.text = model.data(model.index(row, row), 260)
+            textArea.text = model.data(model.index(row, row), TraceItem.Message)
             msgDlg.open()
         }
 
@@ -132,6 +134,12 @@ Item {
         anchors.bottom: parent.bottom
         text: qsTr("Auto Scroll")
         checked: true
+    }
+    Qml2.Button {
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        text: "Clear traces"
+        onClicked: model.clear()
     }
 }
 

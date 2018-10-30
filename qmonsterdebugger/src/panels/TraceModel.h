@@ -33,6 +33,8 @@ public:
 
     bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
+    Q_INVOKABLE void clear();
+
     QHash<int, QByteArray> roleNames() const override { return m_roles; }
 
 private:
