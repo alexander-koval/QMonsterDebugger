@@ -1,6 +1,6 @@
 import QtQuick 2.8
 import QtQuick.Window 2.4
-import QtQuick.Controls 2.4
+import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.4
 import DeMonsters.Debug 1.0
 
@@ -48,64 +48,77 @@ ApplicationWindow {
         }
     }
 
-    header: TabBar {
-        id: bar
-//            width: parent.width
-        TabButton {
-            width: Math.max(150, implicitWidth * 1.5)
-            text: qsTr("Home");
-        }
-        Repeater {
-            model: sessions
-            delegate: TabButton {
-                width: Math.max(150, implicitWidth * 1.5)
-                text: session ? session.title : ""
-            }
-
-            onItemAdded: {
-                bar.currentIndex = index + 1
-            }
-        }
-    }
-
-    StackLayout {
-        id: viewStack
-        width: parent.width
-        anchors.top: bar.bottom
-        anchors.bottom: parent.bottom
-        currentIndex: bar.currentIndex
-
-        Rectangle {
-            color: "lightblue"
-        }
-
-        Repeater {
-            model: sessions
-            delegate: Loader {
-                id: loader
-                sourceComponent: TracePanel { model: session ? session.traces : "" }
-            }
-        }
-    }
-
-
-//        TabView {
-//            id: tabView
-//            anchors.fill: parent
-//            Repeater {
-//                model: sessions
-//                delegate: Tab {
-//                    title: session ? session.title : ""
-//                    sourceComponent: TracePanel {
-//                        model: session.traces
-//                    }
-//                }
+//    header: TabBar {
+//        id: bar
+////            width: parent.width
+//        TabButton {
+//            width: Math.max(150, implicitWidth * 1.5)
+//            text: qsTr("Home");
+//        }
+//        Repeater {
+//            model: sessions
+//            delegate: TabButton {
+//                width: Math.max(150, implicitWidth * 1.5)
+//                text: session ? session.title : ""
 //            }
 
-//            Tab {
-//                title: "Home"
-//                Rectangle { color: "lightblue" }
+//            onItemAdded: {
+//                bar.currentIndex = index + 1
 //            }
 //        }
 //    }
+
+//    StackLayout {
+//        id: viewStack
+//        width: parent.width
+//        anchors.top: bar.bottom
+//        anchors.bottom: parent.bottom
+//        currentIndex: bar.currentIndex
+
+//        Rectangle {
+//            color: "lightblue"
+//        }
+
+//        Repeater {
+//            model: sessions
+//            delegate: Loader {
+//                id: loader
+//                sourceComponent: TracePanel { model: session ? session.traces : "" }
+//            }
+//        }
+//    }
+
+
+        TabView {
+            id: tabView
+            anchors.fill: parent
+            Repeater {
+                model: sessions
+                delegate: Tab {
+                    width: Math.max(150, implicitWidth * 1.5)
+                    title: session ? session.title : ""
+                    sourceComponent: SplitView {
+                        anchors.fill: parent
+                        orientation: Qt.Vertical
+                        MemoryView {
+                            id: memoryPanel
+                            height: 200
+                        }
+
+                        TracePanel {
+                            id: tracePanel
+                            Layout.minimumHeight: 50
+                            Layout.fillHeight: true
+                            model: session ? session.traces : ""
+                        }
+                    }
+
+                }
+            }
+
+            Tab {
+                title: "Home"
+                Rectangle { color: "lightblue" }
+            }
+        }
 }

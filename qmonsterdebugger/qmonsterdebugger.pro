@@ -50,7 +50,8 @@ SOURCES += main.cpp\
     src/Repo.cpp \
     src/models/SessionDataModel.cpp \
     src/Core.cpp \
-    src/utils/LoggerUtils.cpp
+    src/utils/LoggerUtils.cpp \
+    src/models/MemoryModel.cpp
 
 HEADERS  += MainWindow.h \
     MonsterTabWidget.h \
@@ -93,7 +94,8 @@ HEADERS  += MainWindow.h \
     src/models/SessionDataModel.h \
     src/models/ModelsFwd.h \
     src/Core.h \
-    src/utils/LoggerUtils.h
+    src/utils/LoggerUtils.h \
+    src/models/MemoryModel.h
 
 FORMS    += forms/MainWindow.ui \
     forms/StreamView.ui \

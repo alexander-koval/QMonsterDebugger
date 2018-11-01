@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.4
 import QtQuick.Controls 1.4
 import QtQuick.Controls 2.2 as Qml2
 import QtQuick.Controls.Styles 1.4
-//import DeMonsters.Debug 1.0
+import DeMonsters.Debug 1.0
 
 Item {
     Dialog {
@@ -23,7 +23,7 @@ Item {
         }
     }
 
-    anchors.fill: parent
+//    anchors.fill: parent
     property alias model: tableView.model
     TableView {
         id: tableView
@@ -36,7 +36,7 @@ Item {
         TableViewColumn { id: memory; role: "Memory"; title: "Memory"; width: 90; movable: false }
 
         anchors.top: parent.top
-        anchors.bottom: autoSwitch.top
+        anchors.bottom: clearBtn.top
         width: parent.width
 
         onRowCountChanged: {
@@ -128,17 +128,18 @@ Item {
             }
         }
     }
-    Qml2.Switch {
-        id: autoSwitch
-        anchors.bottom: parent.bottom
-        text: qsTr("Auto Scroll")
-        checked: true
-    }
-    Qml2.Button {
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-        text: "Clear traces"
-        onClicked: model.clear()
-    }
+        Switch {
+            id: autoSwitch
+            anchors.bottom: parent.bottom
+    //        text: qsTr("Auto Scroll")
+            checked: true
+        }
+        Button {
+            id: clearBtn
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+            text: "Clear traces"
+            onClicked: model.clear()
+        }
 }
 

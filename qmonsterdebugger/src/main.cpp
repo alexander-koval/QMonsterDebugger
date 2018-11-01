@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
     qmlRegisterType(QUrl("qrc:qml/TracePanel.qml"), uri, 1, 0, "MainView");
 
 
-    QGuiApplication app(argc, argv);    
+    QApplication app(argc, argv);
     Core::start();
 
     QQmlApplicationEngine engine;

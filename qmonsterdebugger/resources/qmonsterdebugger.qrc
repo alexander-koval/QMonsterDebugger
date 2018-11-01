@@ -3,5 +3,6 @@
         <file>qml/MainView.qml</file>
         <file>qml/TracePanel.qml</file>
         <file>qml/TraceViewStyle.qml</file>
+        <file>qml/MemoryView.qml</file>
     </qresource>
 </RCC>
