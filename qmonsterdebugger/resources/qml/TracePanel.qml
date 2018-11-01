@@ -1,11 +1,10 @@
 import QtQuick 2.8
 import QtQuick.Dialogs 1.3
-import QtQuick.Layouts 1.3
+import QtQuick.Layouts 1.4
 import QtQuick.Controls 1.4
 import QtQuick.Controls 2.2 as Qml2
 import QtQuick.Controls.Styles 1.4
-import QtQml.Models 2.3
-import DeMonsters.Debug 1.0
+//import DeMonsters.Debug 1.0
 
 Item {
     Dialog {

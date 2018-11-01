@@ -54,9 +54,17 @@ using monster::MonsterServer;
 int main(int argc, char *argv[])
 {
     using namespace monster;
-    qmlRegisterType<TraceModel>("DeMonsters.Debug", 1, 0, "TraceModel");
-    qmlRegisterUncreatableType<TraceItem>("DeMonsters.Debug", 1, 0, "TraceItem",
+//    qmlRegisterType<TraceModel>("DeMonsters.Debug", 1, 0, "TraceModel");
+//    qmlRegisterUncreatableType<TraceItem>("DeMonsters.Debug", 1, 0, "TraceItem",
+//                                          "Cannot create TraceName in QML");
+    const char* uri = "DeMonsters.Debug";
+    qmlRegisterType<monster::TraceModel>(uri, 1, 0, "TraceModel");
+    qmlRegisterUncreatableType<monster::TraceItem>(uri, 1, 0, "TraceItem",
                                           "Cannot create TraceName in QML");
+
+    qmlRegisterType(QUrl("qrc:qml/MainView.qml"), uri, 1, 0, "MainView");
+    qmlRegisterType(QUrl("qrc:qml/TracePanel.qml"), uri, 1, 0, "MainView");
+
 
     QGuiApplication app(argc, argv);    
     Core::start();
