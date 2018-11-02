@@ -66,9 +66,11 @@ int main(int argc, char *argv[])
     qmlRegisterType(QUrl("qrc:qml/TracePanel.qml"), uri, 1, 0, "MainView");
 
 
+#if defined(Q_OS_WIN)
+    QCoreApplication::setAttribute( Qt::AA_UseSoftwareOpenGL );
+#endif
     QApplication app(argc, argv);
     Core::start();
-
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("sessions", Core::sessions().data());
     engine.load(QUrl("qrc:/qml/MainView.qml"));

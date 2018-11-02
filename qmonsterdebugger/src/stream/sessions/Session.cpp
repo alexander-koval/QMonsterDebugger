@@ -222,6 +222,16 @@ void Session::process(MessagePack& pack) {
         m_traces->setData(m_traces->index(row, ++col), memory, TraceItem::Memory);
         m_traces->setData(m_traces->index(row, ++col), target, TraceItem::Target);
         m_traces->setData(m_traces->index(row, ++col), message, TraceItem::Message);
+    } else if (cmd.value == COMMAND_MONITOR) {
+//        int64_t memory = static_cast<int64_t>(
+//                    item.getDynamicProperty<amf::AmfDouble>("memory").value);
+//        int64_t fps = item.getDynamicProperty<amf::AmfInteger>("fps").value;
+//        int64_t fpsMovie;
+//        std::map<std::string, amf::AmfItemPtr>::iterator it = item.dynamicProperties.find("fpsMovie");
+//        if (it != item.dynamicProperties.end()) {
+//            fpsMovie = it->second.as<amf::AmfInteger>().value;
+//        }
+//        qDebug() << "MEM: " << memory << "FPS: " << fps << "MOV: " << fpsMovie;
     }
 //    if (cmd.value != COMMAND_INFO) {
 //        emit inboundMessage(pack);
