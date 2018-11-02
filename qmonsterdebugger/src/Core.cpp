@@ -1,5 +1,5 @@
 #include "Core.h"
-#include "panels/TraceModel.h"
+#include "models/TraceModel.h"
 #include "models/SessionDataModel.h"
 #include "stream/MonsterServer.h"
 #include "stream/MessagePack.h"

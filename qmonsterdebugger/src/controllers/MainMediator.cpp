@@ -5,7 +5,7 @@
 #include <stream/sessions/Session.h>
 #include "stream/MessagePack.h"
 #include "stream/constants.h"
-#include "panels/TraceModel.h"
+#include "models/TraceModel.h"
 #include "models/SessionDataModel.h"
 #include "stream/sessions/Session.h"
 #include "Repo.h"

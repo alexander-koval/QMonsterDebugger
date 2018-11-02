@@ -5,7 +5,7 @@
 #include <QQuickWidget>
 #include <QScopedPointer>
 #include "stream/MonsterServer.h"
-#include "panels/TraceModel.h"
+#include "models/TraceModel.h"
 #include "controllers/MainMediator.h"
 #include "models/SessionDataModel.h"
 #include "stream/sessions/Sessions.h"

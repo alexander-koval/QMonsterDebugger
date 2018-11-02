@@ -9,18 +9,18 @@ namespace monster {
 struct MonitorItem {
     enum Roles { MEMORY = Qt::UserRole + 1, FPS, FPS_MOVIE };
 
-    int64_t memory{};
-    int64_t fps{};
-    int64_t fpsMovie{};
+    qlonglong memory{};
+    qint32 fps{};
+    qint32 fpsMovie{};
 };
 
-class MemoryModel : public QAbstractListModel
+class MonitorModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
     using Base = QAbstractListModel;
 
-    explicit MemoryModel(QObject *parent = nullptr);
+    explicit MonitorModel(QObject *parent = nullptr);
 
     QVariant data(const QModelIndex& index, int role) const override;
 

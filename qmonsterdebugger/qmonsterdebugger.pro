@@ -22,8 +22,6 @@ SOURCES += main.cpp\
     stream/sessions/Sessions.cpp \
     stream/sessions/Session.cpp \
     stream/MonsterServer.cpp \
-    panels/TraceItem.cpp \
-    panels/TraceModel.cpp \
     panels/StreamView.cpp \
     panels/TraceView.cpp \
     stream/constants.cpp \
@@ -46,20 +44,19 @@ SOURCES += main.cpp\
     amf/types/amfxml.cpp \
     amf/types/amfxmldocument.cpp \
     utils/AMFConverter.cpp \
-    src/controllers/MainMediator.cpp \
-    src/Repo.cpp \
-    src/models/SessionDataModel.cpp \
-    src/Core.cpp \
-    src/utils/LoggerUtils.cpp \
-    src/models/MemoryModel.cpp
+    controllers/MainMediator.cpp \
+    Repo.cpp \
+    models/SessionDataModel.cpp \
+    Core.cpp \
+    utils/LoggerUtils.cpp \
+    models/TraceModel.cpp \
+    models/MonitorModel.cpp
 
 HEADERS  += MainWindow.h \
     MonsterTabWidget.h \
     stream/sessions/Sessions.h \
     stream/sessions/Session.h \
     stream/MonsterServer.h \
-    panels/TraceItem.h \
-    panels/TraceModel.h \
     panels/StreamView.h \
     panels/TraceView.h \
     stream/constants.h \
@@ -89,13 +86,15 @@ HEADERS  += MainWindow.h \
     amf/utils/amfobjecttraits.hpp \
     stream/StreamFwd.h \
     utils/AMFConverter.h \
-    src/controllers/MainMediator.h \
-    src/Repo.h \
-    src/models/SessionDataModel.h \
-    src/models/ModelsFwd.h \
-    src/Core.h \
-    src/utils/LoggerUtils.h \
-    src/models/MemoryModel.h
+    controllers/MainMediator.h \
+    Repo.h \
+    models/SessionDataModel.h \
+    models/ModelsFwd.h \
+    Core.h \
+    utils/LoggerUtils.h \
+    models/TraceItem.h \
+    models/TraceModel.h \
+    models/MonitorModel.h
 
 FORMS    += forms/MainWindow.ui \
     forms/StreamView.ui \

@@ -29,6 +29,7 @@
 #include "amf/types/amfarray.hpp"
 
 #include "utils/LoggerUtils.h"
+#include "models/TraceModel.h"
 #include <QFile>
 
 namespace monster {
@@ -131,6 +132,10 @@ void Session::socket(TcpSocketPtr socket) {
     }
 }
 
+QObject *Session::traces() const {
+    return m_traces.data();
+}
+
 void Session::decode(const QByteArray& bytes, int32_t size) {
     QByteArray package;
     if (bytes.size() == 0 || size == 0) return;
@@ -193,7 +198,7 @@ void Session::process(MessagePack& pack) {
 //        double mem = item.getDynamicProperty<amf::AmfDouble>("memory").value;
         QString memory = QString::number(mem / 1024) + "kb";
         QString target = QString::fromStdString(item.getDynamicProperty<amf::AmfString>("target").value);
-        QString message = QString::fromStdString(item.getDynamicProperty<amf::AmfXml>("xml").value);
+        QString message = QString::fromStdString(item.getDynamicProperty<amf::AmfString>("xml").value);
         qDebug() << message;
         message.remove(QRegExp("[\\n\\t\\r]"));
         doc.setContent(message);
@@ -223,15 +228,15 @@ void Session::process(MessagePack& pack) {
         m_traces->setData(m_traces->index(row, ++col), target, TraceItem::Target);
         m_traces->setData(m_traces->index(row, ++col), message, TraceItem::Message);
     } else if (cmd.value == COMMAND_MONITOR) {
-//        int64_t memory = static_cast<int64_t>(
-//                    item.getDynamicProperty<amf::AmfDouble>("memory").value);
-//        int64_t fps = item.getDynamicProperty<amf::AmfInteger>("fps").value;
-//        int64_t fpsMovie;
-//        std::map<std::string, amf::AmfItemPtr>::iterator it = item.dynamicProperties.find("fpsMovie");
-//        if (it != item.dynamicProperties.end()) {
-//            fpsMovie = it->second.as<amf::AmfInteger>().value;
-//        }
-//        qDebug() << "MEM: " << memory << "FPS: " << fps << "MOV: " << fpsMovie;
+        qlonglong memory = static_cast<qlonglong>(
+                    item.getDynamicProperty<amf::AmfDouble>("memory").value);
+        qint32 fps = item.getDynamicProperty<amf::AmfInteger>("fps").value;
+        qint32 fpsMovie = 0;
+        std::map<std::string, amf::AmfItemPtr>::iterator it = item.dynamicProperties.find("fpsMovie");
+        if (it != item.dynamicProperties.end()) {
+            fpsMovie = it->second.as<amf::AmfInteger>().value;
+        }
+        qDebug() << "MEM: " << memory << "FPS: " << fps << "MOV: " << fpsMovie;
     }
 //    if (cmd.value != COMMAND_INFO) {
 //        emit inboundMessage(pack);

@@ -8,7 +8,7 @@
 #include <QPointer>
 #include <QWeakPointer>
 #include <QAbstractSocket>
-#include "panels/TraceModel.h"
+#include "models/ModelsFwd.h"
 
 class QTcpSocket;
 namespace monster { class Session; }
@@ -65,7 +65,7 @@ public:
 
     const QString& fileLocation() const { return m_fileLocation; }
 
-    QObject* traces() { return m_traces.data(); }
+    QObject* traces() const;
 
 signals:
     void initialized();
