@@ -3,17 +3,18 @@
 #define AMFDOUBLE_HPP
 
 #include "types/amfitem.hpp"
+#include "types/amfnumber.hpp"
 
 namespace amf {
 
 class SerializationContext;
 
-class AmfDouble : public AmfItem {
+class AmfDouble : public AmfNumber {
 public:
 	AmfDouble() : value(0) { }
 	AmfDouble(double v) : value(v) { }
-	operator double() const { return value; }
-
+    operator double() const override { return value; }
+    operator int() const override { return static_cast<int>(value); }
     u8 marker() const override { return AMF_DOUBLE; }
 
 	bool operator==(const AmfItem& other) const;

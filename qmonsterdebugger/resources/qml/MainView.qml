@@ -97,12 +97,14 @@ ApplicationWindow {
                 delegate: Tab {
                     width: Math.max(150, implicitWidth * 1.5)
                     title: session ? session.title : ""
+                    onLoaded: console.log("LOADED");
                     sourceComponent: SplitView {
                         anchors.fill: parent
                         orientation: Qt.Vertical
                         MemoryView {
                             id: memoryPanel
                             height: 200
+                            monitor: session ? session.monitors : ""
                         }
 
                         TracePanel {

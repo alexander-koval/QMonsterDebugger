@@ -1,10 +1,11 @@
 #include "MonitorModel.h"
+#include <QDebug>
 
 namespace monster {
 
-MonitorModel::MonitorModel(QObject *parent)
-    : QAbstractListModel(parent)
-    , m_items() {
+MonitorModel::MonitorModel(QObject*)
+    : QAbstractListModel()
+    , m_items(), m_minMemory() {
 
 }
 
@@ -32,6 +33,9 @@ bool MonitorModel::setData(const QModelIndex &index, const QVariant &value, int 
         switch (role) {
         case MonitorItem::MEMORY: {
             item.memory = value.toLongLong();
+            if (m_minMemory == 0 || item.memory < m_minMemory) {
+                m_minMemory = item.memory;
+            }
             break;
         }
         case MonitorItem::FPS: {

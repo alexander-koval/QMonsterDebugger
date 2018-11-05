@@ -3,16 +3,18 @@
 #define AMFINTEGER_HPP
 
 #include "types/amfitem.hpp"
+#include "types/amfnumber.hpp"
 
 namespace amf {
 
 class SerializationContext;
 
-class AmfInteger : public AmfItem {
+class AmfInteger : public AmfNumber {
 public:
 	AmfInteger() : value(0) { }
 	AmfInteger(int v) : value(v) { }
-	operator int() const { return value; }
+    operator int() const override { return value; }
+    operator double() const override { return value; }
     u8 marker() const override { return AMF_INTEGER; }
 
 	bool operator==(const AmfItem& other) const;

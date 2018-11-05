@@ -6,8 +6,8 @@
 #include <QScopedPointer>
 #include "stream/MonsterServer.h"
 #include "models/TraceModel.h"
-#include "controllers/MainMediator.h"
 #include "models/SessionDataModel.h"
+#include "models/MonitorModel.h"
 #include "stream/sessions/Sessions.h"
 #include "Core.h"
 #include "Repo.h"
@@ -59,11 +59,12 @@ int main(int argc, char *argv[])
 //                                          "Cannot create TraceName in QML");
     const char* uri = "DeMonsters.Debug";
     qmlRegisterType<monster::TraceModel>(uri, 1, 0, "TraceModel");
+    qmlRegisterType<monster::MonitorModel>(uri, 1, 0, "MonitorModel");
     qmlRegisterUncreatableType<monster::TraceItem>(uri, 1, 0, "TraceItem",
                                           "Cannot create TraceName in QML");
 
     qmlRegisterType(QUrl("qrc:qml/MainView.qml"), uri, 1, 0, "MainView");
-    qmlRegisterType(QUrl("qrc:qml/TracePanel.qml"), uri, 1, 0, "MainView");
+    qmlRegisterType(QUrl("qrc:qml/TracePanel.qml"), uri, 1, 0, "TracePanel");
 
 
 #if defined(Q_OS_WIN)

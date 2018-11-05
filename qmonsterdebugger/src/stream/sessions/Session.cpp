@@ -20,6 +20,7 @@
 #include "amf/types/amfdictionary.hpp"
 #include "amf/types/amfdouble.hpp"
 #include "amf/types/amfinteger.hpp"
+#include "amf/types/amfnumber.hpp"
 #include "amf/types/amfitem.hpp"
 #include "amf/types/amfnull.hpp"
 #include "amf/types/amfundefined.hpp"
@@ -30,21 +31,26 @@
 
 #include "utils/LoggerUtils.h"
 #include "models/TraceModel.h"
+#include "models/MonitorModel.h"
 #include <QFile>
 
 namespace monster {
 
 Session::Session()
-    : QObject(), m_size(), m_socket(),
-      m_playerType(), m_playerVersion(), m_isDebugger(), m_isFlex(),
-      m_fileTitle(), m_fileLocation(), m_traces(TraceModelPtr::create()) {
+    : QObject(), m_size(), m_socket()
+    , m_playerType(), m_playerVersion(), m_isDebugger(), m_isFlex()
+    , m_fileTitle(), m_fileLocation()
+    , m_traces(TraceModelPtr::create())
+    , m_monitors(MonitorModelPtr::create()) {
 
 }
 
 Session::Session(TcpSocketPtr socket)
-    : QObject(), m_size(), m_socket(socket),
-      m_playerType(), m_playerVersion(), m_isDebugger(), m_isFlex(),
-      m_fileTitle(), m_fileLocation(), m_traces(TraceModelPtr::create()) {
+    : QObject(), m_size(), m_socket(socket)
+    , m_playerType(), m_playerVersion(), m_isDebugger(), m_isFlex()
+    , m_fileTitle(), m_fileLocation()
+    , m_traces(TraceModelPtr::create())
+    , m_monitors(MonitorModelPtr::create()) {
 
 }
 
@@ -136,6 +142,10 @@ QObject *Session::traces() const {
     return m_traces.data();
 }
 
+QObject *Session::monitors() const {
+    return m_monitors.data();
+}
+
 void Session::decode(const QByteArray& bytes, int32_t size) {
     QByteArray package;
     if (bytes.size() == 0 || size == 0) return;
@@ -177,25 +187,11 @@ void Session::process(MessagePack& pack) {
         emit initialized();
     } else if (cmd.value == COMMAND_TRACE) {
         int col = 0;
-        double mem = 0.0;
         int row = m_traces->rowCount();
         QDomDocument doc;
         m_traces->insertRow(row);
         long long time = item.getDynamicProperty<amf::AmfDate>("date").value;
-//        const amf::AmfObject& object = item.getDynamicProperty<amf::AmfObject>("memory");
-//        if (object.marker() == amf::AmfMarker::AMF_INTEGER) {
-//            mem = dynamic_cast<const amf::AmfInteger*>(&object)->value;
-//        } else {
-//            mem = dynamic_cast<const amf::AmfDouble*>(&object)->value;
-//        }
-        amf::AmfItem* object = item.dynamicProperties.at("memory").asPtr<amf::AmfItem>();
-        if (object->marker() == amf::AmfMarker::AMF_INTEGER) {
-            mem = dynamic_cast<amf::AmfInteger*>(object)->value;
-        } else {
-            mem = dynamic_cast<amf::AmfDouble*>(object)->value;
-        }
-
-//        double mem = item.getDynamicProperty<amf::AmfDouble>("memory").value;
+        double mem = item.getDynamicProperty<amf::AmfNumber>("memory").operator double();
         QString memory = QString::number(mem / 1024) + "kb";
         QString target = QString::fromStdString(item.getDynamicProperty<amf::AmfString>("target").value);
         QString message = QString::fromStdString(item.getDynamicProperty<amf::AmfString>("xml").value);
@@ -228,15 +224,20 @@ void Session::process(MessagePack& pack) {
         m_traces->setData(m_traces->index(row, ++col), target, TraceItem::Target);
         m_traces->setData(m_traces->index(row, ++col), message, TraceItem::Message);
     } else if (cmd.value == COMMAND_MONITOR) {
+        int col = 0;
+        int row = m_monitors->rowCount();
         qlonglong memory = static_cast<qlonglong>(
-                    item.getDynamicProperty<amf::AmfDouble>("memory").value);
-        qint32 fps = item.getDynamicProperty<amf::AmfInteger>("fps").value;
+                    item.getDynamicProperty<amf::AmfNumber>("memory").operator double());
+        qint32 fps = item.getDynamicProperty<amf::AmfNumber>("fps").operator int();
         qint32 fpsMovie = 0;
         std::map<std::string, amf::AmfItemPtr>::iterator it = item.dynamicProperties.find("fpsMovie");
         if (it != item.dynamicProperties.end()) {
-            fpsMovie = it->second.as<amf::AmfInteger>().value;
+            fpsMovie = it->second.as<amf::AmfNumber>().operator int();
         }
-        qDebug() << "MEM: " << memory << "FPS: " << fps << "MOV: " << fpsMovie;
+        m_monitors->insertRow(row);
+        m_monitors->setData(m_monitors->index(row, col), memory, MonitorItem::MEMORY);
+        m_monitors->setData(m_monitors->index(row, ++col), fps, MonitorItem::FPS);
+        m_monitors->setData(m_monitors->index(row, ++col), fpsMovie, MonitorItem::FPS_MOVIE);
     }
 //    if (cmd.value != COMMAND_INFO) {
 //        emit inboundMessage(pack);

@@ -17,6 +17,9 @@ struct MonitorItem {
 class MonitorModel : public QAbstractListModel
 {
     Q_OBJECT
+    Q_PROPERTY(qlonglong minMemory READ minMemory CONSTANT)
+//    Q_PROPERTY(qlonglong minMemory READ minMemory WRITE setMinMemory NOTIFY minMemoryChanged)
+
 public:
     using Base = QAbstractListModel;
 
@@ -34,9 +37,19 @@ public:
 
     QHash<int,QByteArray> roleNames() const override;
 
-private:
-    QList<MonitorItem> m_items;
+    qlonglong minMemory() const { return m_minMemory; }
 
+//    void setMinMemory(qlonglong memory) {
+//        m_minMemory = memory;
+//        emit minMemoryChanged(m_minMemory);
+//    }
+
+//Q_SIGNALS:
+//    void minMemoryChanged(qlonglong memory);
+
+private:
+    qlonglong m_minMemory;
+    QList<MonitorItem> m_items;
 };
 
 }

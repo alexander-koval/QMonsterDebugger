@@ -44,7 +44,6 @@ SOURCES += main.cpp\
     amf/types/amfxml.cpp \
     amf/types/amfxmldocument.cpp \
     utils/AMFConverter.cpp \
-    controllers/MainMediator.cpp \
     Repo.cpp \
     models/SessionDataModel.cpp \
     Core.cpp \
@@ -86,7 +85,6 @@ HEADERS  += MainWindow.h \
     amf/utils/amfobjecttraits.hpp \
     stream/StreamFwd.h \
     utils/AMFConverter.h \
-    controllers/MainMediator.h \
     Repo.h \
     models/SessionDataModel.h \
     models/ModelsFwd.h \
@@ -94,7 +92,8 @@ HEADERS  += MainWindow.h \
     utils/LoggerUtils.h \
     models/TraceItem.h \
     models/TraceModel.h \
-    models/MonitorModel.h
+    models/MonitorModel.h \
+    src/amf/types/amfnumber.hpp
 
 FORMS    += forms/MainWindow.ui \
     forms/StreamView.ui \

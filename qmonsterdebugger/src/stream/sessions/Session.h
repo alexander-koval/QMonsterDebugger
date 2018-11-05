@@ -29,6 +29,7 @@ class Session : public QObject {
     Q_PROPERTY(const QString& title READ fileTitle CONSTANT)
     Q_PROPERTY(const QString& location READ fileLocation CONSTANT)
     Q_PROPERTY(QObject* traces READ traces CONSTANT)
+    Q_PROPERTY(QObject* monitors READ monitors CONSTANT)
 public:
     enum Roles { Title = Qt::UserRole + 1, Socket, Trace, Monitor };
     using Base = QObject;
@@ -67,6 +68,8 @@ public:
 
     QObject* traces() const;
 
+    QObject* monitors() const;
+
 signals:
     void initialized();
 
@@ -96,6 +99,7 @@ private:
     QString m_fileTitle;
     QString m_fileLocation;
     TraceModelPtr m_traces;
+    MonitorModelPtr m_monitors;
 };
 //Q_DECLARE_METATYPE(Session*);
 }
