@@ -101,11 +101,16 @@ ApplicationWindow {
                     sourceComponent: SplitView {
                         anchors.fill: parent
                         orientation: Qt.Vertical
-                        MemoryView {
-                            id: memoryPanel
-                            height: 200
-                            monitor: session ? session.monitors : ""
-                        }
+//                        ScrollView {
+//                            id: scrollView
+//                            width: memoryPanel.width
+//                            height: memoryPanel.height
+                            MemoryView {
+                                id: memoryPanel
+                                height: 200
+                                monitor: session ? session.monitors : ""
+                            }
+//                        }
 
                         TracePanel {
                             id: tracePanel

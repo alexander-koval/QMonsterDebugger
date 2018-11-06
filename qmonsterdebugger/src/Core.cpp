@@ -1,4 +1,5 @@
 #include "Core.h"
+#include <QDateTime>
 #include "models/TraceModel.h"
 #include "models/SessionDataModel.h"
 #include "stream/MonsterServer.h"
@@ -10,6 +11,7 @@ namespace monster {
 static Core* _core;
 static MonsterServerPtr _server;
 static SessionDataModelPtr _sessions;
+static QDateTime _startTime;
 
 Core::Core()
     : QObject() {
@@ -19,6 +21,7 @@ void Core::start() {
     _core = new Core();
     _server = MonsterServerPtr::create();
     _sessions = SessionDataModelPtr::create();
+    _startTime = QDateTime::currentDateTime();
 
     if (_server->start()) {
         connect(_server.data(), &MonsterServer::sessionCreated,
@@ -59,6 +62,16 @@ MonsterServerPtr Core::server() {
 SessionDataModelPtr Core::sessions() {
     return _sessions;
 }
+
+QDateTime Core::getCurrentTime() {
+    return QDateTime::currentDateTime();
+}
+
+const QDateTime &Core::getStartTime() {
+    return _startTime;
+}
+
+
 
 
 }

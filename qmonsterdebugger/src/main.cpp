@@ -68,7 +68,8 @@ int main(int argc, char *argv[])
 
 
 #if defined(Q_OS_WIN)
-    QCoreApplication::setAttribute( Qt::AA_UseSoftwareOpenGL );
+    QApplication::setStyle("fusion");
+//    QCoreApplication::setAttribute( Qt::AA_UseSoftwareOpenGL );
 #endif
     QApplication app(argc, argv);
     Core::start();

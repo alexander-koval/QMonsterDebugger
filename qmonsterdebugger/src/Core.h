@@ -22,6 +22,10 @@ public:
 
     static SessionDataModelPtr sessions();
 
+    static const QDateTime& getStartTime();
+
+    static QDateTime getCurrentTime();
+
 public slots:
     void onSessionCreated(SessionPtr session);
     void onInboundMessage(MessagePack& message);
