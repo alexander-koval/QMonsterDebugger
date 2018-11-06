@@ -4,5 +4,6 @@
         <file>qml/TracePanel.qml</file>
         <file>qml/TraceViewStyle.qml</file>
         <file>qml/MemoryView.qml</file>
+        <file>assets/close_cross_grey.png</file>
     </qresource>
 </RCC>

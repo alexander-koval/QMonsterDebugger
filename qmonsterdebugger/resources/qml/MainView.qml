@@ -92,25 +92,33 @@ ApplicationWindow {
         TabView {
             id: tabView
             anchors.fill: parent
+
+            Connections {
+                target: sessions
+                onDataChanged: {
+                    tabView.currentIndex = topLeft.row + 1
+                }
+            }
+
             Repeater {
                 model: sessions
                 delegate: Tab {
-                    width: Math.max(150, implicitWidth * 1.5)
                     title: session ? session.title : ""
-                    onLoaded: console.log("LOADED");
+                    width: Math.max(150, implicitWidth * 1.5)
+
                     sourceComponent: SplitView {
                         anchors.fill: parent
                         orientation: Qt.Vertical
-//                        ScrollView {
-//                            id: scrollView
-//                            width: memoryPanel.width
-//                            height: memoryPanel.height
+                        ScrollView {
+                            id: scrollView
+                            height: 200
                             MemoryView {
                                 id: memoryPanel
                                 height: 200
+                                width: 5000
                                 monitor: session ? session.monitors : ""
                             }
-//                        }
+                        }
 
                         TracePanel {
                             id: tracePanel

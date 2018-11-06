@@ -7,7 +7,7 @@ ChartView {
     property int timer: 0
 
     id: monitorChart
-    antialiasing: true
+//    antialiasing: true
 
     ValueAxis {
         id: yAxis
@@ -17,10 +17,11 @@ ChartView {
 
     DateTimeAxis {
         id: xAxis
-        format: "H:mm:ss"
-        tickCount: 5
+        format: "hh:mm:ss"
+        tickCount: 30
+
         min: new Date(Date.now())
-        max: new Date(Date.now() + 1500000)
+        max: new Date(Date.now() + 1800000/*30min*/)
     }
 
     Connections {
@@ -29,11 +30,8 @@ ChartView {
         onDataChanged: {
             var memory = monitor.data(topLeft, 257) / 1024 / 1024;
             var date = new Date()
-//            yAxis.min = monitor.minMemory / 1024 / 1024;
             yAxis.max = Math.round(memory / 1000) * 1000;
             monitorSeries.append(date.getTime(), memory)
-//                var time = date.setSeconds((Date.now / 1000) + timer);
-//                console.log("DATA_CHANED", memory, time)
         }
     }
 
