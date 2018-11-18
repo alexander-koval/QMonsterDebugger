@@ -194,20 +194,15 @@ void Session::process(MessagePack& pack) {
         double mem = item.getDynamicProperty<amf::AmfNumber>("memory").operator double();
         QString memory = QString::number(mem / 1024) + "kb";
         QString target = QString::fromStdString(item.getDynamicProperty<amf::AmfString>("target").value);
+#if defined (Q_OS_WIN)
 //        QString message = QString::fromStdString(item.getDynamicProperty<amf::AmfXml>("xml").value);
-        QByteArray bytes = QByteArray::fromStdString(item.getDynamicProperty<amf::AmfXml>("xml").value);
-//        QBuffer buffer(&bytes);
-
-//        qDebug() << "MSG: " << message;
-//        qDebug() << "mslg_SZIE: " << message.size();
-        QString message;
-        message.append(bytes);
+#else
+        QString message = QString::fromStdString(item.getDynamicProperty<amf::AmfString>("xml").value);
+#endif
         message.remove(QRegExp("[\\n\\t\\r]"));
-//        message = logutils::stripBreaks(logutils::htmlUnescape(message));
-        doc.setContent(bytes);
+        doc.setContent(message);
         const QDomNode& root = doc.documentElement().firstChild();
         int nodes_size = root.childNodes().count();
-//        qDebug() << "ELEMENT " << root.firstChild().attributes().namedItem("label").nodeValue();
         const QDomNamedNodeMap& map = doc.firstChild().attributes();
         if (nodes_size > 1 && nodes_size <= 3) {
             if (map.namedItem("type").nodeValue() == "String") {
